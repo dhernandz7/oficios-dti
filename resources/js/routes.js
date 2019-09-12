@@ -8,27 +8,28 @@ export default new Router({
 		{
 			path: '/',
 			name: 'index',
-			component: require('./views/Index').default
+			component: require('./components/IndexComponent').default
 		},
-		{
-			path: '/oficios',
-			name: 'oficios',
-			component: require('./views/Oficios').default
-		},
-		{
-			path: '/dictamenes',
-			name: 'dictamenes',
-			component: require('./views/Dictamenes').default
-		},
+		// {
+		// 	path: '/oficios',
+		// 	name: 'oficios',
+		// 	component: require('./views/Oficios').default
+		// },
+		// {
+		// 	path: '/dictamenes',
+		// 	name: 'dictamenes',
+		// 	component: require('./views/Dictamenes').default
+		// },
 		{
 			path: '/memorandums',
 			name: 'memorandums',
-			component: require('./views/Memorandums').default
-		},
-		{
-			path: '*',
-			component: require('./views/404').default
+			component: require('./components/MemorandumsComponent').default
 		}
+		// ,
+		// {
+		// 	path: '*',
+		// 	component: require('./views/404').default
+		// }
 	],
 	mode: 'history',
 	scrollBehavior() {

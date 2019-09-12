@@ -16,8 +16,17 @@
 
 <script>
     export default {
-        mounted() {
+        data() {
+            return {
+                datatable
+            }
+        },
+        created() {
+            this.datatable = $('#datatable').DataTable({
+                autoWidth: false
+            });
             console.log('Component mounted.')
+            console.log(this.datatable.fnGetData()[0]);
         }
     }
 </script>
