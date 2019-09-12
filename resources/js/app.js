@@ -22,7 +22,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-import router from './routes'
+//import router from './routes'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,6 +31,6 @@ import router from './routes'
  */
 
 const app = new Vue({
-    el: '#app',
-    router
+    el: '#app'//,
+    //router
 });
