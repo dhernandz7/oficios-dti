@@ -24,7 +24,7 @@
         <li class="nav-item">
           <router-link :to="'dashboard'" class="nav-link">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboardss</span>
+            <span>Dashboard</span>
           </router-link>
         </li>
         <hr class="sidebar-divider">
@@ -38,8 +38,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">ACCESO</h6>
               <router-link :to="{name: 'oficios'}" class="collapse-item">Oficios</router-link>
-              <router-link :to="{name: 'dictamenes'}" class="collapse-item">Dictamenes</router-link>
-              <router-link :to="{name: 'memorandums'}" class="collapse-item">Memorandum</router-link>
+              <router-link :to="{name: 'dictamenes'}" class="collapse-item">Dictámenes</router-link>
+              <router-link :to="{name: 'memorandums'}" class="collapse-item">Memorándum</router-link>
             </div>
           </div>
         </li>
@@ -157,20 +157,11 @@
   <script src="/js/admin.js"></script>
   <script>
     $(document).ready(function() {
-      $("#prueba").click(function() {
-        alert("jquery está funcionando")
-        Swal.fire({
-          title: 'Prueba',
-          html: 'Al parecer si funciona',
-          type: 'info'
-        });
-      });
+      if(localStorage.getItem('nombre') == null) {
+
+        localStorage.setItem('nombre', "{{Auth::user()->nombre}}");
+      }
     });
   </script>
-  <!--
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/sb-admin-2.min.js"></script>-->
 </body>
 </html>

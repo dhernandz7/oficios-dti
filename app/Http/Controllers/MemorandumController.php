@@ -11,34 +11,39 @@ class MemorandumController extends Controller
     {
         $memorandums = Memorandum::
         leftJoin('asignacion', function($join) {
-            $join->on('memorandum.id', 'asignacion.oficio_id')
-            ->where('asignacion.tipo_documento_id', 3);
+            $join->on('memorandum.id', '=', 'asignacion.oficio_id');
+            $join->on('memorandum.anio', '=', 'asignacion.oficio_anio')
+            ->where('asignacion.tipo_documento_id', '=', 3);
         })
         ->leftJoin('users', function($join) {
-            $join->on('asignacion.user_id', 'users.id');
+            $join->on('asignacion.user_id', '=', 'users.id');
         })
         ->leftJoin('documento', function($join) {
-            $join->on('memorandum.id', 'documento.oficio_id')
-            ->where('documento.tipo_documento_id', 3);
+            $join->on('memorandum.id', '=', 'documento.oficio_id');
+            $join->on('memorandum.anio', '=', 'documento.oficio_anio')
+            ->where('documento.tipo_documento_id', '=',3);
         })
-        ->where('memorandum.anio', 2019)
-        ->where('asignacion.tipo_documento_id', 3)
+        //->where('memorandum.anio', 2019)
         ->select([
             'memorandum.id',
             'memorandum.anio',
             'asignacion.fecha_asignacion',
             'users.nombre',
-            'documento.hash_oficio',
+            'documento.direccion_server',
             'asignacion.tipo_documento_id'
         ])
-        ->distinct()
+        ->orderBy('memorandum.id')
         ->get();
 
         return response()->json(["data" => $memorandums], 200);
     }
 
-    public function update(Request $request, $id)
+    public function asignar(Request $request, $id, $anio)
     {
-        return $request->id;
+        //
+    }
+    public function asignar(Request $request)
+    {
+        // Para generar un memorándum y asignarle el usuario automáticamente
     }
 }

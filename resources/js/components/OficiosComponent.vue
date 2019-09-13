@@ -105,7 +105,7 @@
 					</div>
 					<form v-on:submit.prevent="actualizar">
 						<div class="modal-body">
-							<input type="text" id="nombre" value="nombre">
+							...
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-primary"><i class="fa fa-save fa-lg mr-2"></i>Actualizar oficio</button>
@@ -142,11 +142,8 @@
 		methods: {
 			editar() {
 				$("#datatable tbody").on("click", "button.edit", function(e){
-					console.log(this.datatable.api)
 					this.data = this.datatable.fnGetData( this.datatable.fnGetPosition( $(e.target).parents("tr")[0] ) );
 					this.idRow = this.datatable.fnGetPosition( $(e.target).parents("tr")[0] );
-
-					$("#nombre").val("hola");
 				}.bind(this));
 
 			},
