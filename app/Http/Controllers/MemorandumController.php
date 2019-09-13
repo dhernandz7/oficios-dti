@@ -36,4 +36,9 @@ class MemorandumController extends Controller
 
         return response()->json(["data" => $memorandums], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        return $request->id;
+    }
 }

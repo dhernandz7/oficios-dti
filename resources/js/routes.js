@@ -7,32 +7,36 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'index',
+			name: '/',
 			component: require('./components/IndexComponent').default
 		},
-		// {
-		// 	path: '/oficios',
-		// 	name: 'oficios',
-		// 	component: require('./views/Oficios').default
-		// },
-		// {
-		// 	path: '/dictamenes',
-		// 	name: 'dictamenes',
-		// 	component: require('./views/Dictamenes').default
-		// },
+		{
+			path: '/dashboard',
+			name: '/dashboard',
+			component: require('./components/IndexComponent').default
+		},
+		{
+			path: '/oficios',
+			name: 'oficios',
+			component: require('./components/OficiosComponent').default
+		},
+		{
+			path: '/dictamenes',
+			name: 'dictamenes',
+			component: require('./components/DictamenesComponent').default
+		},
 		{
 			path: '/memorandums',
 			name: 'memorandums',
 			component: require('./components/MemorandumsComponent').default
+		},
+		{
+			path: '*',
+			component: require('./views/404').default
 		}
-		// ,
-		// {
-		// 	path: '*',
-		// 	component: require('./views/404').default
-		// }
 	],
-	mode: 'history',
-	scrollBehavior() {
-		return {x:0, y:0}
-	}
+	mode: 'history'//,
+	// scrollBehavior() {
+	// 	return {x:0, y:0}
+	// }
 })

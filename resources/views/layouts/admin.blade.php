@@ -9,11 +9,6 @@
   <meta name="author" content="">
   <title>Titulo</title>
   <link rel="stylesheet" href="/css/admin.css">
-  <!--
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link href="css/sb-admin-2.css" rel="stylesheet">
--->
 </head>
 <body id="page-top">
   <div id="app">
@@ -23,14 +18,14 @@
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
           </div>
-          <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+          <div class="sidebar-brand-text mx-3">OFICIOS <sup>DTI</sup></div>
         </a>
         <hr class="sidebar-divider my-0">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <router-link :to="'dashboard'" class="nav-link">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-          </a>
+            <span>Dashboardss</span>
+          </router-link>
         </li>
         <hr class="sidebar-divider">
         <div class="sidebar-heading">MÓDULOS</div>
@@ -42,8 +37,8 @@
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">ACCESO</h6>
-              <router-link :to="{name: 'index'}" class="collapse-item">Oficio</router-link>
-              {{-- <router-link :to="{name: 'memorandums'}" class="collapse-item">Dictamene</router-link> --}}
+              <router-link :to="{name: 'oficios'}" class="collapse-item">Oficios</router-link>
+              <router-link :to="{name: 'dictamenes'}" class="collapse-item">Dictamenes</router-link>
               <router-link :to="{name: 'memorandums'}" class="collapse-item">Memorandum</router-link>
             </div>
           </div>

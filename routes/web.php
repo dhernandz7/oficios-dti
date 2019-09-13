@@ -1,9 +1,5 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes([
 	'verify' => true,
 	'register' => false
@@ -17,8 +13,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('api/memorandum')->group(function(){
 	Route::get('/', 'MemorandumController@index')->name('memorandum.index');
+	Route::put('/{id}', 'MemorandumController@update');
 });
 
 Route::get('/{any}', function(){
-	return view('index');
+	return view('layouts.admin');
 })->where('any', '.*');
