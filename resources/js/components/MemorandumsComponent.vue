@@ -63,7 +63,7 @@
           }},
           {'render': function(data, type, row) {
             if(row.nombre == null && ultimoPorAsignar == null){
-              return '<i class="fa fa-bell mr-2 text-success"></i>Disponible para reservar';
+              return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
             } else if(row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
             } else if(row.nombre != null && row.direccion_server == null) {
@@ -133,15 +133,53 @@
           this.data = this.datatable.fnGetData( this.datatable.fnGetPosition( $(e.target).parents("tr")[0] ) );
           this.idRow = this.datatable.fnGetPosition( $(e.target).parents("tr")[0] );
 
+          this.data.nombre = "Yesenia Bravo";
+          console.log(this.datatable)
+          console.log(this.idRow)
+
+          this.datatable.fnUpdate(this.data, this.idRow);
+
           Swal.fire({
             title: 'Reservar memorándum',
-            type: 'question',
             html: `
             ¿Está seguro de reservar el memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>?
-            `
+            `,
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar memorándum',
+            cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
           }).then( (result) => {
             if( result.value) {
-              //axios.put
+              axios.put(`/api/memorandum/${this.data.id}/${this.data.anio}`, this.data).then(response => {
+                Swal.fire({
+                  title: "Oficio actualizado",
+                  type: "info",
+                  html: `Se actualizó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>`
+                });
+                this.datatable
+              }).catch( error => {
+                let cadena = '';
+                if(error.response.status == 403) {
+                  cadena = 'No tiene permisos para realizar esta acción';
+                } else if(error.response.status == 404) {
+                  cadena = 'No se encontró la ruta a la que intenta acceder';
+                } else if(error.response.status == 500) {
+                  cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+                } else if(error.response.status == 503){
+                  cadena = error.response.request.response;
+                } else if (error.response.status == 422) {
+                  let response = JSON.parse(error.response.request.response);
+                  cadena = `No pudimos asignar el memorándum por los siguientes errores:<br><br>`;
+                  cadena += '<ul class="list-group">';
+                  $.each(response.errors, function (i, field) {
+                    cadena +=`<li class="list-group-item"><span class="text-danger">${field}</span></li>`;
+                  });
+                  cadena += '</ul>';
+                }
+                Swal.fire(`Error al reservar el memorándum`, `${cadena}`, 'error');                
+              });
             }
           });
         }.bind(this));
@@ -159,10 +197,11 @@
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar memorándum',
-          cancelButtonText: '<i class="fa fa-close fa-lg mr-2"></i>Cancelar'
+          cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
         }).then( (result) => {
           if( result.value) {
-            //
+            // para agregar fila a datatable
+            //this.datatable.fnAddData(this.data);
           } else {
             //this.mostrarBotonReservar == true;
           }

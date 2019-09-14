@@ -1945,7 +1945,7 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           'render': function render(data, type, row) {
             if (row.nombre == null && ultimoPorAsignar == null) {
-              return '<i class="fa fa-bell mr-2 text-success"></i>Disponible para reservar';
+              return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
             } else if (row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
             } else if (row.nombre != null && row.direccion_server == null) {
@@ -1999,20 +1999,61 @@ __webpack_require__.r(__webpack_exports__);
     },
     reservar: function reservar() {
       $("#datatable tbody").on("click", "button.asignar", function (e) {
+        var _this = this;
+
         this.data = this.datatable.fnGetData(this.datatable.fnGetPosition($(e.target).parents("tr")[0]));
         this.idRow = this.datatable.fnGetPosition($(e.target).parents("tr")[0]);
+        this.data.nombre = "Yesenia Bravo";
+        console.log(this.datatable);
+        console.log(this.idRow);
+        this.datatable.fnUpdate(this.data, this.idRow);
         Swal.fire({
           title: 'Reservar memorándum',
+          html: "\n          \xBFEst\xE1 seguro de reservar el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(this.data.id, "-").concat(this.data.anio, "</span>?\n          "),
           type: 'question',
-          html: "\n          \xBFEst\xE1 seguro de reservar el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(this.data.id, "-").concat(this.data.anio, "</span>?\n          ")
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar memorándum',
+          cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
         }).then(function (result) {
-          if (result.value) {//axios.put
+          if (result.value) {
+            axios.put("/api/memorandum/".concat(_this.data.id, "/").concat(_this.data.anio), _this.data).then(function (response) {
+              Swal.fire({
+                title: "Oficio actualizado",
+                type: "info",
+                html: "Se actualiz\xF3 correctamente el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this.data.id, "-").concat(_this.data.anio, "</span>")
+              });
+              _this.datatable;
+            })["catch"](function (error) {
+              var cadena = '';
+
+              if (error.response.status == 403) {
+                cadena = 'No tiene permisos para realizar esta acción';
+              } else if (error.response.status == 404) {
+                cadena = 'No se encontró la ruta a la que intenta acceder';
+              } else if (error.response.status == 500) {
+                cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+              } else if (error.response.status == 503) {
+                cadena = error.response.request.response;
+              } else if (error.response.status == 422) {
+                var response = JSON.parse(error.response.request.response);
+                cadena = "No pudimos asignar el memor\xE1ndum por los siguientes errores:<br><br>";
+                cadena += '<ul class="list-group">';
+                $.each(response.errors, function (i, field) {
+                  cadena += "<li class=\"list-group-item\"><span class=\"text-danger\">".concat(field, "</span></li>");
+                });
+                cadena += '</ul>';
+              }
+
+              Swal.fire("Error al reservar el memor\xE1ndum", "".concat(cadena), 'error');
+            });
           }
         });
       }.bind(this));
     },
     reservarAutomaticamente: function reservarAutomaticamente() {
-      var _this = this;
+      var _this2 = this;
 
       this.mostrarBotonReservar = false;
       Swal.fire({
@@ -2023,13 +2064,14 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar memorándum',
-        cancelButtonText: '<i class="fa fa-close fa-lg mr-2"></i>Cancelar'
+        cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
       }).then(function (result) {
-        if (result.value) {//
+        if (result.value) {// para agregar fila a datatable
+          //this.datatable.fnAddData(this.data);
         } else {//this.mostrarBotonReservar == true;
           }
 
-        _this.mostrarBotonReservar = true;
+        _this2.mostrarBotonReservar = true;
       });
     },
     subirDocumento: function subirDocumento() {},
@@ -70644,8 +70686,8 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: [{
-    path: '/',
-    name: '/',
+    path: '/index',
+    name: 'index',
     component: __webpack_require__(/*! ./components/IndexComponent */ "./resources/js/components/IndexComponent.vue")["default"]
   }, {
     path: '/dashboard',
@@ -70667,11 +70709,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     path: '*',
     component: __webpack_require__(/*! ./views/404 */ "./resources/js/views/404.vue")["default"]
   }],
-  mode: 'history' //,
-  // scrollBehavior() {
-  // 	return {x:0, y:0}
-  // }
-
+  mode: 'history',
+  scrollBehavior: function scrollBehavior() {
+    return {
+      x: 0,
+      y: 0
+    };
+  }
 }));
 
 /***/ }),

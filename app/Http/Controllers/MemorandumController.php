@@ -40,9 +40,13 @@ class MemorandumController extends Controller
 
     public function asignar(Request $request, $id, $anio)
     {
-        //
+        $request->validate([
+            'id' => 'unique:memorandum',
+            'anio' => 'unique:memorandum'
+        ]);
+        return response()->json($request, 500);
     }
-    public function asignar(Request $request)
+    public function asignarAutomaticamente(Request $request)
     {
         // Para generar un memorándum y asignarle el usuario automáticamente
     }

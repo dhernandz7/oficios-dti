@@ -5,12 +5,12 @@ Auth::routes([
 	'register' => false
 ]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@welcome')->name('welcome');
+Route::get('home', 'HomeController@home')->name('home');
 
-Route::prefix('api/memorandum')->middleware(['auth', 'verified', 'only.ajax'])->group(function(){
+Route::prefix('api/memorandum')->middleware(['auth', 'verified'])->group(function(){
 	Route::get('/', 'MemorandumController@index')->name('memorandum.index');
-	Route::put('/{id}', 'MemorandumController@update');
+	Route::put('/{id}/{anio}', 'MemorandumController@asignar')->name('memorandum.update');
 });
 
-//Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');
 Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');
