@@ -24,8 +24,11 @@ class AsignarMemorandumRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
-            'anio' => 'required'
+            'oficio_id' => 'required',
+            'oficio_anio' => 'required',
+            'personal' => 'required',
+            'tipo_documento_id' => 'required',
+            'user_id' => 'required'
         ];
     }
 }

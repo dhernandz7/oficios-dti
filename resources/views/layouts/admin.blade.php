@@ -7,7 +7,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Titulo</title>
+  <title>Documentos DTI</title>
   <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body id="page-top">

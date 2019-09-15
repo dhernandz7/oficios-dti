@@ -1891,6 +1891,8 @@ __webpack_require__.r(__webpack_exports__);
       data: {},
       idRow: 0,
       showEmbed: false,
+      btnSubmit: false,
+      mostrarInputFile: true,
       pdf: null,
       src: null
     };
@@ -1899,6 +1901,7 @@ __webpack_require__.r(__webpack_exports__);
     this.inicializarTabla();
     this.reservar();
     this.mostrarModalPdf();
+    this.mostrarDocumento();
   },
   methods: {
     inicializarTabla: function inicializarTabla() {
@@ -1929,7 +1932,7 @@ __webpack_require__.r(__webpack_exports__);
           'data': 'fecha_asignacion',
           'name': 'fecha_asignacion',
           'render': function render(data) {
-            return data != null ? moment(data.substring(0, 10)).locale('es').format('DD MMMM YYYY') : '';
+            return data != null ? moment(data).locale('es').format('LLL') : '';
           }
         }, {
           'render': function render(data, type, row) {
@@ -1957,7 +1960,7 @@ __webpack_require__.r(__webpack_exports__);
             } else if (row.nombre == null && row.direccion_server == null) {
               return '';
             } else {
-              opciones += "\n            <button class=\"dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            ";
+              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            ";
             }
 
             return "\n          <div class=\"dropdown dropleft text-right\">\n          <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Opciones\n          </button>\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n          ".concat(opciones, "\n          </div>\n          </div>\n          ");
@@ -1989,6 +1992,8 @@ __webpack_require__.r(__webpack_exports__);
       $("#datatable tbody").on("click", "button.asignar", function (e) {
         var _this = this;
 
+        this.data = this.datatable.fnGetData(this.datatable.fnGetPosition($(e.target).parents("tr")[0]));
+        this.idRow = this.datatable.fnGetPosition($(e.target).parents("tr")[0]);
         Swal.fire({
           title: 'Reservar memorándum',
           html: "\n          \xBFEst\xE1 seguro de reservar el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(this.data.id, "-").concat(this.data.anio, "</span>?\n          "),
@@ -2000,37 +2005,24 @@ __webpack_require__.r(__webpack_exports__);
           cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
         }).then(function (result) {
           if (result.value) {
-            _this.data = _this.datatable.fnGetData(_this.datatable.fnGetPosition($(e.target).parents("tr")[0]));
-            _this.idRow = _this.datatable.fnGetPosition($(e.target).parents("tr")[0]);
-            axios.put("/api/memorandum/".concat(_this.data.id, "/").concat(_this.data.anio), _this.data).then(function (response) {
+            var formulario = new FormData();
+            formulario.append('oficio_id', _this.data.id);
+            formulario.append('oficio_anio', _this.data.anio);
+            formulario.append('personal', localStorage.getItem("nombre"));
+            formulario.append('tipo_documento_id', 3);
+            formulario.append('user_id', localStorage.getItem("id"));
+            axios.post("/api/memorandum/".concat(_this.data.id, "/").concat(_this.data.anio), formulario).then(function (response) {
               Swal.fire({
                 title: "Oficio actualizado",
                 type: "info",
                 html: "Se actualiz\xF3 correctamente el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this.data.id, "-").concat(_this.data.anio, "</span>")
-              }); // Actualizar fila
-              // this.datatable.fnUpdate(this.data, this.idRow);
+              });
+              _this.data.nombre = response.data.nombre;
+              _this.data.fecha_asignacion = response.data.fecha_asignacion;
+
+              _this.datatable.fnUpdate(_this.data, _this.idRow);
             })["catch"](function (error) {
-              var cadena = '';
-
-              if (error.response.status == 403) {
-                cadena = 'No tiene permisos para realizar esta acción';
-              } else if (error.response.status == 404) {
-                cadena = 'No se encontró la ruta a la que intenta acceder';
-              } else if (error.response.status == 500) {
-                cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
-              } else if (error.response.status == 503) {
-                cadena = error.response.request.response;
-              } else if (error.response.status == 422) {
-                var response = JSON.parse(error.response.request.response);
-                cadena = "No pudimos asignar el memor\xE1ndum por los siguientes errores:<br><br>";
-                cadena += '<ul class="list-group">';
-                $.each(response.errors, function (i, field) {
-                  cadena += "<li class=\"list-group-item\"><span class=\"text-danger\">".concat(field, "</span></li>");
-                });
-                cadena += '</ul>';
-              }
-
-              Swal.fire("Error al reservar el memor\xE1ndum", "".concat(cadena), 'error');
+              _this.mostrarErrores(error, "Error reservar el memorándum", "No pudimos asignar el memorándum por los siguientes motivos:<br><br>");
             });
           }
         });
@@ -2059,6 +2051,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     mostrarModalPdf: function mostrarModalPdf() {
       $("#datatable tbody").on("click", "button.adjuntar", function (e) {
+        this.mostrarInputFile = true;
+        this.showEmbed = false;
         this.data = this.datatable.fnGetData(this.datatable.fnGetPosition($(e.target).parents("tr")[0]));
         this.idRow = this.datatable.fnGetPosition($(e.target).parents("tr")[0]);
         $("#adjuntarModal").modal("show");
@@ -2071,28 +2065,60 @@ __webpack_require__.r(__webpack_exports__);
       formulario.append("pdf", this.pdf);
       axios.post("api/memorandum/".concat(this.data.id, "/").concat(this.data.anio, "/pdf"), formulario).then(function (response) {
         Swal.fire({
-          title: 'Pdf cargado correctamente',
+          title: 'Pdf cargado',
           type: 'success',
-          html: "\n          Se subi\xF3 correctamente el pdf para el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this3.data.id, "-").concat(_this3.data.anio, "</span>\n          ")
+          html: "\n          Se adjunt\xF3 correctamente el pdf al memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this3.data.id, "-").concat(_this3.data.anio, "</span>\n          ")
         });
         console.log(response);
         $("#formulario")[0].reset();
         _this3.showEmbed = false;
         $("#adjuntarModal").modal("toggle");
-        _this3.data.direccion_server = JSON.parse(response.request.response).direccion_server;
+        _this3.data.direccion_server = response.data.direccion_server;
 
         _this3.datatable.fnUpdate(_this3.data, _this3.idRow);
-
-        console.log(_this3.ultimoPorAsignar);
       })["catch"](function (error) {
-        console.log(error);
+        _this3.mostrarErrores(error, "Error al subir el pdf", "No pudimos cargar el archivo por los siguientes motivos:<br><br>");
       });
     },
-    mostrarDocumento: function mostrarDocumento() {},
+    mostrarDocumento: function mostrarDocumento() {
+      $("#datatable tbody").on("click", "button.mostrar", function (e) {
+        this.mostrarInputFile = false;
+        this.showEmbed = true;
+        this.btnSubmit = false;
+        this.data = this.datatable.fnGetData(this.datatable.fnGetPosition($(e.target).parents("tr")[0]));
+        this.idRow = this.datatable.fnGetPosition($(e.target).parents("tr")[0]);
+        this.src = this.data.direccion_server;
+        $("#adjuntarModal").modal("show");
+      }.bind(this));
+    },
     mostrarEmbed: function mostrarEmbed() {
       this.showEmbed = true;
+      this.btnSubmit = true;
       this.pdf = document.getElementById("pdf").files[0];
       this.src = URL.createObjectURL(this.pdf);
+    },
+    mostrarErrores: function mostrarErrores(error, titulo, mensaje) {
+      var cadena = '';
+
+      if (error.response.status == 403) {
+        cadena = 'No tiene permisos para realizar esta acción';
+      } else if (error.response.status == 404) {
+        cadena = 'No se encontró la ruta a la que intenta acceder';
+      } else if (error.response.status == 500) {
+        cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+      } else if (error.response.status == 503) {
+        cadena = error.response.request.response;
+      } else if (error.response.status == 422) {
+        var response = JSON.parse(error.response.request.response);
+        cadena = "".concat(mensaje);
+        cadena += '<ul class="list-group">';
+        $.each(response.errors, function (i, field) {
+          cadena += "<li class=\"list-group-item\"><span class=\"text-danger\">".concat(field, "</span></li>");
+        });
+        cadena += '</ul>';
+      }
+
+      Swal.fire(titulo, "".concat(cadena), 'error');
     }
   }
 });
@@ -76240,7 +76266,7 @@ var render = function() {
                   [
                     _c("i", { staticClass: "fa fa-file-pdf fa-lg mr-2" }),
                     _vm._v(
-                      "\n            Adjuntar pdf al memorándum DTI-ME-" +
+                      "\n            Memorándum DTI-ME-" +
                         _vm._s(_vm.data.id) +
                         "-" +
                         _vm._s(_vm.data.anio) +
@@ -76265,23 +76291,25 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "pdf" } }, [
-                        _vm._v("Seleccione un documento pdf")
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        attrs: {
-                          type: "file",
-                          id: "pdf",
-                          name: "pdf",
-                          accept: "application/pdf",
-                          required: ""
-                        },
-                        on: { change: _vm.mostrarEmbed }
-                      })
-                    ]),
+                    _vm.mostrarInputFile
+                      ? _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "pdf" } }, [
+                            _vm._v("Seleccione un documento pdf")
+                          ]),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            attrs: {
+                              type: "file",
+                              id: "pdf",
+                              name: "pdf",
+                              accept: "application/pdf",
+                              required: ""
+                            },
+                            on: { change: _vm.mostrarEmbed }
+                          })
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _vm.showEmbed
                       ? _c(
@@ -76301,7 +76329,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
-                    _vm.showEmbed
+                    _vm.btnSubmit
                       ? _c(
                           "button",
                           {
@@ -76355,7 +76383,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Reservado por")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Fecha de reservación")]),
+              _c("th", [_vm._v("Fecha y hora de reservación")]),
               _vm._v(" "),
               _c("th", [_vm._v("Estado del memorandum")]),
               _vm._v(" "),
@@ -91908,6 +91936,10 @@ window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component('app-component', __webpack_require__(/*! ./components/AppComponent.vue */ "./resources/js/components/AppComponent.vue")["default"]);
 
+_routes__WEBPACK_IMPORTED_MODULE_0__["default"].beforeEach(function (to, from, next) {
+  document.title = to.meta.title;
+  next();
+});
 var app = new Vue({
   el: '#app',
   router: _routes__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -92339,26 +92371,42 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
   routes: [{
     path: '/index',
     name: 'index',
-    component: __webpack_require__(/*! ./components/IndexComponent */ "./resources/js/components/IndexComponent.vue")["default"]
+    component: __webpack_require__(/*! ./components/IndexComponent */ "./resources/js/components/IndexComponent.vue")["default"],
+    meta: {
+      title: 'Inicio'
+    }
   }, {
     path: '/dashboard',
     name: '/dashboard',
-    component: __webpack_require__(/*! ./components/IndexComponent */ "./resources/js/components/IndexComponent.vue")["default"]
+    component: __webpack_require__(/*! ./components/IndexComponent */ "./resources/js/components/IndexComponent.vue")["default"],
+    meta: {
+      title: 'Dashboard'
+    }
   }, {
     path: '/oficios',
     name: 'oficios',
-    component: __webpack_require__(/*! ./components/OficiosComponent */ "./resources/js/components/OficiosComponent.vue")["default"]
+    component: __webpack_require__(/*! ./components/OficiosComponent */ "./resources/js/components/OficiosComponent.vue")["default"],
+    meta: {
+      title: 'Oficios'
+    }
   }, {
     path: '/dictamenes',
     name: 'dictamenes',
-    component: __webpack_require__(/*! ./components/DictamenesComponent */ "./resources/js/components/DictamenesComponent.vue")["default"]
+    component: __webpack_require__(/*! ./components/DictamenesComponent */ "./resources/js/components/DictamenesComponent.vue")["default"],
+    meta: {
+      title: 'Dictámenes'
+    }
   }, {
     path: '/memorandums',
     name: 'memorandums',
-    component: __webpack_require__(/*! ./components/MemorandumsComponent */ "./resources/js/components/MemorandumsComponent.vue")["default"]
+    component: __webpack_require__(/*! ./components/MemorandumsComponent */ "./resources/js/components/MemorandumsComponent.vue")["default"],
+    meta: {
+      title: 'Memorándum'
+    }
   }, {
     path: '*',
-    component: __webpack_require__(/*! ./views/404 */ "./resources/js/views/404.vue")["default"]
+    component: __webpack_require__(/*! ./views/404 */ "./resources/js/views/404.vue")["default"],
+    title: 'Página no encontrada'
   }],
   mode: 'history',
   scrollBehavior: function scrollBehavior() {

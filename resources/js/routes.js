@@ -8,31 +8,37 @@ export default new Router({
 	{
 		path: '/index',
 		name: 'index',
-		component: require('./components/IndexComponent').default
+		component: require('./components/IndexComponent').default,
+		meta: {title: 'Inicio'}
 	},
 	{
 		path: '/dashboard',
 		name: '/dashboard',
-		component: require('./components/IndexComponent').default
+		component: require('./components/IndexComponent').default,
+		meta: {title: 'Dashboard'}
 	},
 	{
 		path: '/oficios',
 		name: 'oficios',
-		component: require('./components/OficiosComponent').default
+		component: require('./components/OficiosComponent').default,
+		meta: {title: 'Oficios'}
 	},
 	{
 		path: '/dictamenes',
 		name: 'dictamenes',
-		component: require('./components/DictamenesComponent').default
+		component: require('./components/DictamenesComponent').default,
+		meta: {title: 'Dictámenes'}
 	},
 	{
 		path: '/memorandums',
 		name: 'memorandums',
-		component: require('./components/MemorandumsComponent').default
+		component: require('./components/MemorandumsComponent').default,
+		meta: {title: 'Memorándum'}
 	},
 	{
 		path: '*',
-		component: require('./views/404').default
+		component: require('./views/404').default,
+		title: 'Página no encontrada'
 	}
 	],
 	mode: 'history',
