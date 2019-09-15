@@ -158,8 +158,10 @@
   <script>
     $(document).ready(function() {
       if(localStorage.getItem('nombre') == null) {
-
         localStorage.setItem('nombre', "{{Auth::user()->nombre}}");
+      }
+      if(localStorage.getItem('id') == null) {
+        localStorage.setItem('id', "{{Auth::user()->id}}");
       }
     });
   </script>

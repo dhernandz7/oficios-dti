@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-Use App\Memorandum;
+use App\Memorandum;
+use App\Http\Requests\AsignarMemorandumRequest;
+use App\Http\Requests\AsignarPdfMemorandumRequest;
 
 class MemorandumController extends Controller
 {
@@ -38,16 +40,21 @@ class MemorandumController extends Controller
         return response()->json(["data" => $memorandums], 200);
     }
 
-    public function asignar(Request $request, $id, $anio)
+    public function asignar(AsignarMemorandumRequest $request, $id, $anio)
     {
-        $request->validate([
-            'id' => 'unique:memorandum',
-            'anio' => 'unique:memorandum'
-        ]);
-        return response()->json($request, 500);
+        return response()->json($request, 403);
     }
+
     public function asignarAutomaticamente(Request $request)
     {
         // Para generar un memorándum y asignarle el usuario automáticamente
+    }
+
+    public function pdf(AsignarPdfMemorandumRequest $request, $id, $anio)
+    {
+        // Ejecutar procedimiento y devolver la ruta del archivo,
+        // Verficar si es factible ejecutar el procedimiento
+        $path = "url_del_pdf";
+        return response()->json(["direccion_server" => $path], 200);
     }
 }
