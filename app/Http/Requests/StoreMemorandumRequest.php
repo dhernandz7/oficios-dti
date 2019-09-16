@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AsignarMemorandumRequest extends FormRequest
+class StoreMemorandumRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,7 @@ class AsignarMemorandumRequest extends FormRequest
     public function rules()
     {
         return [
-            'oficio_id' => 'required',
-            'oficio_anio' => 'required',
-            'nombre' => 'required',
-            'tipo_documento_id' => 'required',
-            'user_id' => 'required'
+            //
         ];
     }
 }

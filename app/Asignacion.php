@@ -6,5 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Asignacion extends Model
 {
-    protected $table = 'asignacion';
+	protected $table = 'asignacion';
+
+	protected $fillable = [
+		'oficio_id',
+		'oficio_anio',
+		'correspondencia_ref',
+		'nombre',
+		'fecha_asignacion',
+		'activo',
+		'tipo_documento_id',
+		'user_id'
+	];
+
+	public $timestamps = false;
 }

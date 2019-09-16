@@ -1,5 +1,6 @@
 <template>
   <div>
+    <input type="hidden" id="ultimo" value="nada">
     <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-users mr-2"></i>Memorándum</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
       <button v-on:click="reservarAutomaticamente" id="reservar-memorandum" class="btn btn-primary mb-3">
@@ -41,7 +42,7 @@
                 <input v-on:change="mostrarEmbed" type="file" id="pdf" name="pdf" accept="application/pdf" required>
               </div>
               <div v-if="showEmbed" class="embed-responsive embed-responsive-16by9">
-                <embed class="embed-responsive-item" v-bind:src="src"></embed>
+                <iframe class="embed-responsive-item" v-bind:src="src"></iframe>
               </div>
             </div>
             <div class="modal-footer">
@@ -65,6 +66,7 @@
         showEmbed: false,
         btnSubmit: false,
         mostrarInputFile: true,
+        //mostrarBotonReservar: false,
         pdf: null,
         src: null
       }
@@ -77,10 +79,9 @@
     },
     methods: {
       inicializarTabla() {
-        let ultimo = null;
         this.datatable = $('#datatable').DataTable({
           ajax: '/api/memorandum',
-          order: [[1,'desc'], [0, 'desc']],
+          order: [[1,'asc'], [0, 'asc']],
           lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
           info: true,
           paging: true,
@@ -96,7 +97,7 @@
             return data != null ? moment(data).locale('es').format('LLL') : '';
           }},
           {'render': function(data, type, row) {
-            if(row.nombre == null && ultimo == null){
+            if(row.nombre == null && $("#ultimo").val() == "nada"){
               return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
             } else if(row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
@@ -110,15 +111,17 @@
           }},
           {'render': function(data, type, row) {
             let opciones = ``;
-            if(row.nombre == null && ultimo == null) {
+            if(row.nombre == null && $("#ultimo").val() == "nada") {
               opciones += `
               <button class="asignar dropdown-item"><i class="fa fa-bell mr-2"></i>Reservar memorandum</button>
               `;
-              ultimo = row.id;
+              $("#ultimo").val(row.id);
             } else if(row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
               opciones += `
               <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
+            } else if(row.nombre != localStorage.getItem("nombre") && row.direccion_server == null) {
+              return '';
             } else if(row.nombre == null && row.direccion_server == null) {
               return '';
             } else {
@@ -162,8 +165,8 @@
 
       reservar() {
         $("#datatable tbody").on("click", "button.asignar", function(e){
-          this.data = this.datatable.fnGetData( this.datatable.fnGetPosition( $(e.target).parents("tr")[0] ) );
-          this.idRow = this.datatable.fnGetPosition( $(e.target).parents("tr")[0] );
+          this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+          this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index();
           Swal.fire({
             title: 'Reservar memorándum',
             html: `
@@ -180,20 +183,22 @@
               let formulario = new FormData();
               formulario.append('oficio_id', this.data.id);
               formulario.append('oficio_anio', this.data.anio);
-              formulario.append('personal', localStorage.getItem("nombre"));
+              formulario.append('nombre', localStorage.getItem("nombre"));
               formulario.append('tipo_documento_id', 3);
               formulario.append('user_id', localStorage.getItem("id"));
               axios.post(`/api/memorandum/${this.data.id}/${this.data.anio}`, formulario)
               .then(response => {
                 Swal.fire({
-                  title: "Oficio actualizado",
+                  title: "Memorándum reservado",
                   type: "info",
-                  html: `Se actualizó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>`
+                  html: `Se reservó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>`
+                }).then((result) => {
+                  this.data.nombre = response.data.nombre;
+                  this.data.fecha_asignacion = response.data.fecha_asignacion;
+                  this.datatable.row(this.idRow).data(this.data);
+                  $("#ultimo").val("nada");
+                  this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
                 });
-                this.data.nombre = response.data.nombre;
-                this.data.fecha_asignacion = response.data.fecha_asignacion;
-                this.datatable.fnUpdate(this.data, this.idRow);
-                this.datatable.fnUpdate('1111', 1, 5);
               }).catch( error => {
                 this.mostrarErrores(error, "Error reservar el memorándum", "No pudimos asignar el memorándum por los siguientes motivos:<br><br>");
               });
@@ -216,12 +221,24 @@
           cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
         }).then( (result) => {
           if( result.value) {
+            let formulario = new FormData();
+            formulario.append("id", 1);
+            axios.post("/api/memorandum", formulario)
+            .then(response => {
+              Swal.fire({
+                title: "Memorándum reservado",
+                type: "info",
+                html: `Se reservó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${response.data.id}-${response.data.anio}</span>`
+              }).then((result) => {
+                this.datatable.row.add(response.data).draw();
+              });
+            })
+            .catch(error => {
+              this.mostrarErrores(error, "Error al reservar un memorándum", "No pudimos reservar el memorándum por los siguientes motivos:<br><br>");
+            });
             // para agregar fila a datatable
             //this.datatable.fnAddData(this.data);
-          } else {
-            //this.mostrarBotonReservar == true;
           }
-          this.mostrarBotonReservar = true;
         });
       },
 
@@ -229,8 +246,8 @@
         $("#datatable tbody").on("click", "button.adjuntar", function(e){
           this.mostrarInputFile = true;
           this.showEmbed = false;
-          this.data = this.datatable.fnGetData( this.datatable.fnGetPosition( $(e.target).parents("tr")[0] ) );
-          this.idRow = this.datatable.fnGetPosition( $(e.target).parents("tr")[0] );
+          this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+          this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index();
           $("#adjuntarModal").modal("show");
         }.bind(this));
       },
@@ -239,19 +256,19 @@
         let formulario = new FormData();
         formulario.append("pdf", this.pdf);
         axios.post(`api/memorandum/${this.data.id}/${this.data.anio}/pdf`, formulario).then(response => {
+          $("#adjuntarModal").modal("toggle");
           Swal.fire({
             title: 'Pdf cargado',
             type: 'success',
             html: `
             Se adjuntó correctamente el pdf al memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>
             `
+          }).then((result) => {
+            $("#formulario")[0].reset();
+            this.showEmbed = false;
+            this.data.direccion_server = response.data.direccion_server;
+            this.datatable.row(this.idRow).data(this.data);
           });
-          console.log(response);
-          $("#formulario")[0].reset();
-          this.showEmbed = false;
-          $("#adjuntarModal").modal("toggle");
-          this.data.direccion_server = response.data.direccion_server;
-          this.datatable.fnUpdate(this.data, this.idRow);
         }).catch(error => {
           this.mostrarErrores(error, "Error al subir el pdf", "No pudimos cargar el archivo por los siguientes motivos:<br><br>");
         });
@@ -263,9 +280,9 @@
           this.mostrarInputFile = false;
           this.showEmbed = true;
           this.btnSubmit = false;
-          this.data = this.datatable.fnGetData( this.datatable.fnGetPosition( $(e.target).parents("tr")[0] ) );
-          this.idRow = this.datatable.fnGetPosition( $(e.target).parents("tr")[0] );
-          this.src = this.data.direccion_server;
+          this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+          this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index();
+          this.src = this.data.direccion_server.replace("public", "storage");
           $("#adjuntarModal").modal("show");
         }.bind(this));
       },
