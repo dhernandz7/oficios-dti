@@ -1966,7 +1966,7 @@ __webpack_require__.r(__webpack_exports__);
             return "\n          <div class=\"dropdown dropleft text-right\">\n          <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Opciones\n          </button>\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n          ".concat(opciones, "\n          </div>\n          </div>\n          ");
           }
         }],
-        "language": {
+        language: {
           "sProcessing": "Procesando...",
           "sLengthMenu": "Mostrar _MENU_ registros",
           "sZeroRecords": "No se encontraron resultados",
@@ -2021,6 +2021,8 @@ __webpack_require__.r(__webpack_exports__);
               _this.data.fecha_asignacion = response.data.fecha_asignacion;
 
               _this.datatable.fnUpdate(_this.data, _this.idRow);
+
+              _this.datatable.fnUpdate('1111', 1, 5);
             })["catch"](function (error) {
               _this.mostrarErrores(error, "Error reservar el memorándum", "No pudimos asignar el memorándum por los siguientes motivos:<br><br>");
             });

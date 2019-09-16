@@ -58,7 +58,7 @@ class MemorandumController extends Controller
         ]);
         */
         $asignacion = [
-            "nombre"=> "Yesenia Sureydy Bravo Gómez",
+            "nombre"=> "Elmer Danilo",
             "fecha_asignacion" => date('Y-m-d H:i:s')
         ];
         return response()->json($asignacion, 200);

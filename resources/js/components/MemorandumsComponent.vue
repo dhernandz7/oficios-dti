@@ -136,9 +136,8 @@
             </div>
             </div>
             `;
-          }}
-          ],
-          "language": {
+          }}],
+          language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
             "sZeroRecords": "No se encontraron resultados",
@@ -194,6 +193,7 @@
                 this.data.nombre = response.data.nombre;
                 this.data.fecha_asignacion = response.data.fecha_asignacion;
                 this.datatable.fnUpdate(this.data, this.idRow);
+                this.datatable.fnUpdate('1111', 1, 5);
               }).catch( error => {
                 this.mostrarErrores(error, "Error reservar el memorándum", "No pudimos asignar el memorándum por los siguientes motivos:<br><br>");
               });
