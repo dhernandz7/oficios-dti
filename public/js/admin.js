@@ -1894,7 +1894,7 @@ __webpack_require__.r(__webpack_exports__);
       showEmbed: false,
       btnSubmit: false,
       mostrarInputFile: true,
-      //mostrarBotonReservar: false,
+      showBotonReservar: false,
       pdf: null,
       src: null
     };
@@ -1904,6 +1904,9 @@ __webpack_require__.r(__webpack_exports__);
     this.reservar();
     this.mostrarModalPdf();
     this.mostrarDocumento();
+  },
+  updated: function updated() {
+    this.mostrarBotonReservar();
   },
   methods: {
     inicializarTabla: function inicializarTabla() {
@@ -2028,6 +2031,8 @@ __webpack_require__.r(__webpack_exports__);
                 $("#ultimo").val("nada");
 
                 _this.datatable.row(_this.idRow + 1).data(_this.datatable.row(_this.idRow + 1).data());
+
+                _this.mostrarBotonReservar();
               });
             })["catch"](function (error) {
               _this.mostrarErrores(error, "Error reservar el memorándum", "No pudimos asignar el memorándum por los siguientes motivos:<br><br>");
@@ -2140,6 +2145,15 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       Swal.fire(titulo, "".concat(cadena), 'error');
+    },
+    mostrarBotonReservar: function mostrarBotonReservar() {
+      console.log($("#ultimo").val() == "nada");
+
+      if ($("#ultimo").val() == "nada") {
+        this.showBotonReservar = true;
+      } else {
+        this.showBotonReservar = false;
+      }
     }
   }
 });
@@ -74412,18 +74426,20 @@ var render = function() {
     _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "shadow-lg p-4 mb-5 bg-white rounded" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary mb-3",
-          attrs: { id: "reservar-memorandum" },
-          on: { click: _vm.reservarAutomaticamente }
-        },
-        [
-          _c("i", { staticClass: "fa fa-bell fa-lg mr-2" }),
-          _vm._v("\n      Reservar memorándum\n    ")
-        ]
-      ),
+      _vm.showBotonReservar
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-primary mb-3",
+              attrs: { id: "reservar-memorandum" },
+              on: { click: _vm.reservarAutomaticamente }
+            },
+            [
+              _c("i", { staticClass: "fa fa-bell fa-lg mr-2" }),
+              _vm._v("\n      Reservar memorándum\n    ")
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _vm._m(1)
     ]),
@@ -74555,7 +74571,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h1", { staticClass: "h3 mb-4 text-gray-800" }, [
-      _c("i", { staticClass: "fa fa-users mr-2" }),
+      _c("i", { staticClass: "fa fa-book mr-2" }),
       _vm._v("Memorándum")
     ])
   },

@@ -1,9 +1,9 @@
 <template>
   <div>
     <input type="hidden" id="ultimo" value="nada">
-    <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-users mr-2"></i>Memorándum</h1>
+    <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Memorándum</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
-      <button v-on:click="reservarAutomaticamente" id="reservar-memorandum" class="btn btn-primary mb-3">
+      <button v-if="showBotonReservar" v-on:click="reservarAutomaticamente" id="reservar-memorandum" class="btn btn-primary mb-3">
         <i class="fa fa-bell fa-lg mr-2"></i>
         Reservar memorándum
       </button>
@@ -66,7 +66,7 @@
         showEmbed: false,
         btnSubmit: false,
         mostrarInputFile: true,
-        //mostrarBotonReservar: false,
+        showBotonReservar: false,
         pdf: null,
         src: null
       }
@@ -76,6 +76,9 @@
       this.reservar();
       this.mostrarModalPdf();
       this.mostrarDocumento();
+    },
+    updated() {
+      this.mostrarBotonReservar();
     },
     methods: {
       inicializarTabla() {
@@ -198,6 +201,7 @@
                   this.datatable.row(this.idRow).data(this.data);
                   $("#ultimo").val("nada");
                   this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
+                  this.mostrarBotonReservar();
                 });
               }).catch( error => {
                 this.mostrarErrores(error, "Error reservar el memorándum", "No pudimos asignar el memorándum por los siguientes motivos:<br><br>");
@@ -317,6 +321,15 @@
           cadena += '</ul>';
         }
         Swal.fire(titulo, `${cadena}`, 'error');
+      },
+
+      mostrarBotonReservar() {
+        console.log($("#ultimo").val() == "nada");
+        if($("#ultimo").val() == "nada") {
+          this.showBotonReservar = true;
+        } else {
+          this.showBotonReservar = false;
+        }
       }
 
     }
