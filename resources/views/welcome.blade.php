@@ -1,99 +1,46 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="/index">Home</a>
-                    @else
-                        <a href="/login">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="/register">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Bienvenido</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/cover.css">
+</head>
+<body class="bg-mineco text-center text-white">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">
+                    <img class="img" src="/img/logo.png" width="100">
+                </h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link active" href="#">Inicio</a>
+                    <a href="/oficios" class="nav-link">Oficios</a>
+                    <a href="/dictamenes" class="nav-link">Dictámenes</a>
+                    <a href="/memorandums" class="nav-link">Memorándum</a>
+                </nav>
             </div>
-        </div>
-    </body>
+        </header>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Bienvenido</h1>
+            <p class="lead">
+                Sistema para gestión de oficios, memorándum y dictámenes de la Dirección de Tecnologías de la Información
+            </p>
+            <p class="lead">
+                @auth
+                <a class="btn btn-primary" href="/index">Ir a la aplicación</a>
+                @else
+                <a class="btn btn-primary" href="/login">Iniciar sesión</a>
+                @endauth
+            </p>
+        </main>
+        <footer class="mastfoot mt-auto">
+            <div class="inner">
+                <p>Dirección de Tecnologías de la Informacíón - Ministerio de Economía</p>
+            </div>
+        </footer>
+    </div>
+</body>
 </html>

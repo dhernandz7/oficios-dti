@@ -19,3 +19,5 @@ mix.js('resources/js/admin.js', 'public/js')
 
 mix.js('resources/js/session.js', 'public/js')
    .sass('resources/sass/session.scss', 'public/css');
+
+mix.sass('resources/sass/cover.scss', 'public/css');
