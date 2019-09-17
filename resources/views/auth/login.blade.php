@@ -7,19 +7,19 @@
     {{ csrf_field() }}
     <div class="text-center mt-3">
         <i class="fa fa-lock fa-5x text-dark"></i>
-        <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión<br><small>{{config('app.name')}}</small></h1>
+        <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión<br><small class="app-name"></small></h1>
     </div>
     <div class="form-label-group">
-        <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Ingrese su email" required {{ old('email') ? '' : 'autofocus' }}>
-        <label for="email">Ingrese su email</label>
+        <input type="text" id="username" name="username" value="{{ old('username') }}" class="form-control" placeholder="Ingrese su usuario de windows" required {{ old('username') ? '' : 'autofocus' }}>
+        <label for="username" title="Usuario de windows">Usuario de Windows</label>
     </div>    
     <div class="form-label-group">
-        <input type="password" id="password" name="password" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Contraseña" required>
+        <input type="password" id="password" name="password" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="Contraseña" required>
         <label for="password">Contraseña</label>
         <a href="#" id="show-password" class="float-right my-2 text-decoration-none text-danger">Mostrar contraseña</a>
-        @if ($errors->has('email'))
+        @if ($errors->has('username'))
         <span class="text-danger">
-            {{ $errors->first('email') }}
+            {{ $errors->first('username') }}
         </span>
         @endif
     </div>
@@ -59,6 +59,8 @@
                 $('#password').focus();
             }
         });
+
+        $(".app-name").html(localStorage.getItem('app-name'));
     });
 </script>
 @endsection

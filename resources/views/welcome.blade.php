@@ -42,5 +42,12 @@
             </div>
         </footer>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if(localStorage.getItem('app-name') == null) {
+                localStorage.setItem('app-name', "{{config('app.name')}}");
+            }
+        });
+    </script>
 </body>
 </html>

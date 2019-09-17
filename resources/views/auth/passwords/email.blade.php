@@ -7,7 +7,7 @@
     {{ csrf_field() }}
     <div class="text-center mt-3">
         <i class="fa fa-lock fa-5x text-dark"></i>
-        <h1 class="h3 mb-3 font-weight-normal">Solicitud de reinicio de contraseña<br><small>{{config('app.name')}}</small></h1>
+        <h1 class="h3 mb-3 font-weight-normal">Solicitud de reinicio de contraseña<br><small class="app-name"></h1>
         @if (session('status'))
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
@@ -34,4 +34,9 @@
     </div>
     <!-- <p class="mt-5 mb-3 text-muted text-center">&copy; 2018-2019</p> -->
 </form>
+@endsection
+@section('script')
+<script>
+    document.getElementsByClassName("app-name")[0].innerHTML = localStorage.getItem('app-name');
+</script>
 @endsection

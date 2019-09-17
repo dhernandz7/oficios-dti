@@ -33,7 +33,7 @@ class MemorandumController extends Controller
             'memorandum.id',
             'memorandum.anio',
             'asignacion.fecha_asignacion',
-            'users.nombre',
+            'users.name as nombre',
             'documento.direccion_server',
             'asignacion.tipo_documento_id'
         ])
@@ -72,9 +72,10 @@ class MemorandumController extends Controller
     public function asignar(AsignarMemorandumRequest $request, $id, $anio)
     {
         $asignacion = Asignacion::create([
+            'id' => 176,
             'oficio_id' => $id,
             'oficio_anio' => $anio,
-            'correspondencia_ref' => null,
+            'correspondencia_ref' => 'null',
             'nombre' => $request->nombre,
             'fecha_asignacion' => date('Y-m-d H:i:s'),
             'activo' => true,

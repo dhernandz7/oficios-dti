@@ -12,7 +12,7 @@ class Asignacion extends Model
 		'oficio_id',
 		'oficio_anio',
 		'correspondencia_ref',
-		'nombre',
+		'personal',
 		'fecha_asignacion',
 		'activo',
 		'tipo_documento_id',

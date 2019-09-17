@@ -18,7 +18,7 @@
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-book"></i>
           </div>
-          <div class="sidebar-brand-text mx-3">OFICIOS <sup>DTI</sup></div>
+          <div class="app-name sidebar-brand-text mx-3"></div>
         </a>
         <hr class="sidebar-divider my-0">
         <li class="nav-item">
@@ -162,10 +162,13 @@
   <script>
     $(document).ready(function() {
       if(localStorage.getItem('nombre') == null) {
-        localStorage.setItem('nombre', "{{Auth::user()->nombre}}");
+        localStorage.setItem('nombre', "{{Auth::user()->name}}");
       }
       if(localStorage.getItem('id') == null) {
         localStorage.setItem('id', "{{Auth::user()->id}}");
+      }
+      if(localStorage.getItem('app-name') == null) {
+        localStorage.setItem('app-name', "{{config('app.name')}}");
       }
       $('.logout').click(function(){
         $('#logout').submit();
@@ -173,6 +176,7 @@
         localStorage.removeItem('id');
       });
       $(".user").html(localStorage.getItem('nombre'));
+      $(".app-name").html(localStorage.getItem('app-name').replace("DTI", "<sup>DTI</sup>"));
     });
   </script>
 </body>

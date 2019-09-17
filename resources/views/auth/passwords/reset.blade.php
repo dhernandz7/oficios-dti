@@ -6,7 +6,7 @@
 <form class="form-signin p-4 shadow bg-white rounded" method="POST" action="/password/reset">
     <div class="text-center mt-3">
         <i class="fa fa-lock fa-5x text-dark"></i>
-        <h1 class="h3 mb-3 font-weight-normal">Reinicio de contraseña<br><small>{{config('app.name')}}</small></h1>
+        <h1 class="h3 mb-3 font-weight-normal">Reinicio de contraseña<br><small class="app-name"></small></h1>
         @if (session('status'))
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
@@ -47,4 +47,9 @@
         <a class="btn btn-link text-center link" href="/password/reset">Solicitar reestablecimiento de contraseña</a>
     </div>
 </form>
+@endsection
+@section('script')
+<script>
+    document.getElementsByClassName("app-name")[0].innerHTML = localStorage.getItem('app-name');
+</script>
 @endsection

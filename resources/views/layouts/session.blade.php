@@ -10,6 +10,6 @@
 </head>
 <body class="bg-mineco">
 	@yield('contenido')
-	@yield('script');
+	@yield('script')
 </body>
 </html>

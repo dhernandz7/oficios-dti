@@ -15,20 +15,22 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('objectguid')->nullable();
             $table->string('dpi')->nullable();
-            $table->string('nombre');
+            $table->string('name')->nullable();
             $table->date('fecha_nacimiento')->nullable();
-            $table->integer('genero_id')->unsigned();
-            $table->string('email')->unique();
+            $table->bigInteger('genero_id')->unsigned()->nullable();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('departamento_id')->unsigned();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
+            $table->bigInteger('departamento_id')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('genero_id')->references('id')->on('generos');
-            $table->foreign('departamento_id')->references('id')->on('departamentos');
+            $table->foreign('genero_id', 'fk_generos_users')->references('id')->on('generos');
+            $table->foreign('departamento_id', 'fk_departamentos_users')->references('id')->on('departamentos');
         });
     }
 

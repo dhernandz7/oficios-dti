@@ -133,7 +133,7 @@ return [
 
         'ldap' => [
 
-            'locate_users_by' => 'userprincipalname',
+            'locate_users_by' => 'sAMAccountName', // 'userprincipalname'
 
             'bind_users_by' => 'distinguishedname',
 
@@ -171,7 +171,7 @@ return [
             |
             */
 
-            'username_column' => 'email',
+            'username_column' => 'username', // 'email'
 
         ],
 
@@ -233,7 +233,7 @@ return [
         |
         */
 
-        'sync' => env('LDAP_PASSWORD_SYNC', false),
+        'sync' => env('LDAP_PASSWORD_SYNC', true),
 
         /*
         |--------------------------------------------------------------------------
@@ -292,6 +292,8 @@ return [
         'email' => 'userprincipalname',
 
         'name' => 'cn',
+
+        'username' => 'sAMAccountName'
 
     ],
 
