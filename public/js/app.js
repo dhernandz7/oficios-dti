@@ -64670,16 +64670,28 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/sass/session.scss":
+/*!*************************************!*\
+  !*** ./resources/sass/session.scss ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 0:
-/*!*****************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/admin.scss ***!
-  \*****************************************************************************************/
+/*!***********************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/admin.scss ./resources/sass/session.scss ***!
+  \***********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! C:\webserver\apache\htdocs\laravel\oficios-dti\resources\js\app.js */"./resources/js/app.js");
 __webpack_require__(/*! C:\webserver\apache\htdocs\laravel\oficios-dti\resources\sass\app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! C:\webserver\apache\htdocs\laravel\oficios-dti\resources\sass\admin.scss */"./resources/sass/admin.scss");
+__webpack_require__(/*! C:\webserver\apache\htdocs\laravel\oficios-dti\resources\sass\admin.scss */"./resources/sass/admin.scss");
+module.exports = __webpack_require__(/*! C:\webserver\apache\htdocs\laravel\oficios-dti\resources\sass\session.scss */"./resources/sass/session.scss");
 
 
 /***/ })

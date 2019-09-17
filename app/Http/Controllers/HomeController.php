@@ -11,8 +11,8 @@ class HomeController extends Controller
         return view('welcome');
     }
     
-    public function home()
+    public function index()
     {
-        return view('home');
+        return view('layouts.admin');
     }
 }

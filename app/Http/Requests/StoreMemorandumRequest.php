@@ -24,7 +24,9 @@ class StoreMemorandumRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nombre' => 'required|string',
+            'tipo_documento_id' => 'required|integer',
+            'user_id' => 'required|integer'
         ];
     }
 }

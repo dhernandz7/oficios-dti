@@ -1,16 +1,15 @@
 <?php
 
 Auth::routes([
-	'verify' => true,
-	'register' => false
+	'verify' => true
 ]);
 
 Route::get('/', 'HomeController@welcome')->name('welcome');
-Route::get('home', 'HomeController@home')->name('home');
+Route::get('index', 'HomeController@index')->name('index');
 
 Route::prefix('api/memorandum')->middleware(['auth', 'verified'])->group(function(){
 	Route::get('/', 'MemorandumController@index')->name('memorandum.index');
-	Route::post('/', 'MemorandumController@store')->name('memorandum.store');
+	Route::post('/', 'MemorandumController@asignarAutomaticamente')->name('memorandum.asignar-automaticamente');
 	Route::post('{id}/{anio}', 'MemorandumController@asignar')->name('memorandum.update');
 	Route::post('{id}/{anio}/pdf', 'MemorandumController@pdf')->name('memorandum.pdf.store');
 });

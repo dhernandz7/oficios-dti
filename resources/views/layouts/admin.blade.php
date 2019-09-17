@@ -13,7 +13,7 @@
 <body id="page-top">
   <div id="app">
     <div id="wrapper">
-      <ul class="navbar-nav bg-gradient sidebar-mineco sidebar sidebar-dark accordion" id="accordionSidebar">
+      <ul class="navbar-nav sidebar-mineco sidebar sidebar-dark accordion" id="accordionSidebar">
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-book"></i>
@@ -129,10 +129,10 @@
                     Logs
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <button class="logout dropdown-item">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Cerrar sesión
-                  </a>
+                  </button>
                 </div>
               </li>
             </ul>
@@ -144,7 +144,7 @@
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; Oficios dti 2019</span>
+              <span>Copyright &copy; Oficios DTI 2019</span>
             </div>
           </div>
         </footer>
@@ -154,6 +154,9 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+  <form action="/logout" method="post" id="logout">
+    @csrf
+  </form>
   <script src="/js/admin.js"></script>
   <script>
     $(document).ready(function() {
@@ -163,6 +166,11 @@
       if(localStorage.getItem('id') == null) {
         localStorage.setItem('id', "{{Auth::user()->id}}");
       }
+      $('.logout').click(function(){
+        $('#logout').submit();
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('id');
+      });
     });
   </script>
 </body>

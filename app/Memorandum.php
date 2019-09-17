@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Memorandum extends Model
 {
     protected $table = 'memorandum';
+
+    protected $fillable = [
+    	'anio'
+    ];
+
+    public $timestamps = false;
 }

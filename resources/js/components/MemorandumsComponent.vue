@@ -222,7 +222,9 @@
         }).then( (result) => {
           if( result.value) {
             let formulario = new FormData();
-            formulario.append("id", 1);
+            formulario.append('nombre', localStorage.getItem("nombre"));
+            formulario.append('tipo_documento_id', 3);
+            formulario.append('user_id', localStorage.getItem("id"));
             axios.post("/api/memorandum", formulario)
             .then(response => {
               Swal.fire({
@@ -248,6 +250,7 @@
           this.showEmbed = false;
           this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
           this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index();
+          $("#formulario")[0].reset();
           $("#adjuntarModal").modal("show");
         }.bind(this));
       },

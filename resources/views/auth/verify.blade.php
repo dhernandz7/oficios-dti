@@ -1,24 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+@section('titulo', 'Usuario no autorizado')
 
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
-
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }}, <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
-                </div>
-            </div>
-        </div>
+@section('contenido')
+@if (session('resent'))
+<div class="alert alert-success lead" role="alert">
+    Se le ha enviado un correo electrónico al delegado de Recursos Humanos para que agilice la habilitación de su usuario.
+</div>
+@endif
+<div class="row">
+    <div class="col-md-12">
+        <h1>Usuario no autorizado
+        <p class="lead">Lo sentimos, usted no está autorizado para acceder a esta página.</p>
+        <a class="btn btn-outline-primary" href="/email/resend"><i class="fa fa-send fa-lg mr-2"></i>Solicitar la autorización de mi usuario</a>
     </div>
 </div>
 @endsection

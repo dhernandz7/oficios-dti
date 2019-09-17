@@ -43,16 +43,30 @@ class MemorandumController extends Controller
         return response()->json(["data" => $memorandums], 200);
     }
 
-    public function store(StoreMemorandumRequest $request)
+    public function asignarAutomaticamente(StoreMemorandumRequest $request)
     {
-        return response()->json([
-            'id' => 5,
-            'anio' => 2019,
+        $memorandum = Memorandum::create([
+            'anio' => date('Y')
+        ]);
+
+        $asignacion = Asignacion::create([
+            'oficio_id' => $memorandum->id,
+            'oficio_anio' => $memorandum->anio,
+            'correspondencia_ref' => null,
+            'nombre' => $request->nombre,
             'fecha_asignacion' => date('Y-m-d H:i:s'),
-            'nombre' => 'Elmer Danilo',
-            'direccion_server' => null,
-            'tipo_documento_id' => 3
-        ] ,200);
+            'activo' => true,
+            'tipo_documento_id' => $request->tipo_documento_id,
+            'user_id' => $request->user_id
+        ]);
+        return response()->json([
+            'id' => $asignacion->oficio_id,
+            'anio' => $asignacion->oficio_anio,
+            'fecha_asignacion' => $asignacion->fecha_asignacion,
+            'nombre' => $asignacion->nombre,
+            'direccion_server' => $asignacion->direccion_server,
+            'tipo_documento_id' => $asignacion->tipo_documento_id
+        ],200);
     }
 
     public function asignar(AsignarMemorandumRequest $request, $id, $anio)
@@ -70,16 +84,13 @@ class MemorandumController extends Controller
         return response()->json($asignacion, 200);
     }
 
-    public function asignarAutomaticamente(Request $request)
-    {
-        // Para generar un memorándum y asignarle el usuario automáticamente
-    }
-
     public function pdf(AsignarPdfMemorandumRequest $request, $id, $anio)
     {
         // Ejecutar procedimiento y devolver la ruta del archivo,
         // Verficar si es factible ejecutar el procedimiento
-        $path = $request->file('pdf')->store("public/memorandum");
+        $hash_pdf = str_replace("/", "", \Hash::make("$id-$anio"));
+        $path = $request->file('pdf')->storeAs("public/memorandum/$anio/$id", "$hash_pdf.pdf");
+        // Insertar fila en tabla: documento
         return response()->json(["direccion_server" => $path], 200);
     }
 }
