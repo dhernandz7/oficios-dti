@@ -36,6 +36,12 @@ export default new Router({
 		meta: {title: 'Memorándum'}
 	},
 	{
+		path: '/perfil',
+		name: 'perfil',
+		component: require('./components/PerfilUsuarioComponent').default,
+		meta: {title: 'Memorándum'}
+	},
+	{
 		path: '*',
 		component: require('./views/404').default,
 		title: 'Página no encontrada'
