@@ -66,7 +66,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'ldap',//'eloquent',
+            'driver' => env('AUTH_DRIVER', 'eloquent'),//'ldap',//'eloquent',
             'model' => App\User::class,
         ],
 

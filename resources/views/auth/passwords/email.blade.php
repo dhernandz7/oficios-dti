@@ -37,6 +37,6 @@
 @endsection
 @section('script')
 <script>
-    document.getElementsByClassName("app-name")[0].innerHTML = localStorage.getItem('app-name');
+    document.getElementsByClassName("app-name")[0].innerHTML = localStorage.getItem('app-name-od');
 </script>
 @endsection
