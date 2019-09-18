@@ -1703,7 +1703,339 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      datatable: [],
+      data: {},
+      idRow: 0,
+      showEmbed: false,
+      btnSubmit: false,
+      mostrarInputFile: true,
+      showBotonReservar: true,
+      pdf: null,
+      src: null
+    };
+  },
+  mounted: function mounted() {
+    this.inicializarTabla();
+    this.reservar();
+    this.mostrarModalPdf();
+    this.mostrarDocumento();
+  },
+  updated: function updated() {
+    this.mostrarBotonReservar();
+  },
+  methods: {
+    inicializarTabla: function inicializarTabla() {
+      this.datatable = $('#datatable').DataTable({
+        ajax: '/api/dictamen',
+        order: [[1, 'asc'], [0, 'asc']],
+        lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
+        info: true,
+        paging: true,
+        autoWidth: false,
+        columns: [{
+          'data': 'asignacion_id',
+          'name': 'asignacion_id',
+          'visible': false
+        }, {
+          'data': 'oficio_id',
+          'name': 'oficio_id',
+          'visible': false
+        }, {
+          'data': 'oficio_anio',
+          'name': 'oficio_anio',
+          'visible': false
+        }, {
+          'render': function render(data, type, row) {
+            return "<span class=\"font-weight-bold\">DTI-".concat(row.oficio_id, "-").concat(row.oficio_anio, "</span>");
+          }
+        }, {
+          'data': 'name',
+          'name': 'name'
+        }, {
+          'data': 'created_at',
+          'name': 'created_at',
+          'render': function render(data) {
+            return data != null ? moment(data).locale('es').format('LLL') : '';
+          }
+        }, {
+          'render': function render(data, type, row) {
+            if (row.name == null && $("#ultimo").val() == "nada") {
+              return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
+            } else if (row.name == localStorage.getItem('nombre') && row.path == null) {
+              return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
+            } else if (row.name != null && row.path == null) {
+              return '<i class="fa fa-bell mr-2 text-danger"></i>Pendiente de subir documento';
+            } else if (row.path != null) {
+              return '<i class="fa fa-bell mr-2 text-success"></i>Documento cargado';
+            } else {
+              return '<i class="fa fa-bell mr-2 text-info"></i>Sin asignar';
+            }
+          }
+        }, {
+          'render': function render(data, type, row) {
+            var opciones = "";
+
+            if (row.name == null && $("#ultimo").val() == "nada") {
+              opciones += "\n            <button class=\"asignar dropdown-item\"><i class=\"fa fa-bell mr-2\"></i>Reservar dict\xE1men</button>\n            ";
+              $("#ultimo").val(row.id);
+            } else if (row.name == localStorage.getItem('nombre') && row.path == null) {
+              opciones += "\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
+            } else if (row.name != localStorage.getItem('nombre') && row.path == null) {
+              return '';
+            } else if (row.name == null && row.path == null) {
+              return '';
+            } else {
+              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
+            }
+
+            return "\n          <div class=\"dropdown dropleft text-right\">\n          <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Opciones\n          </button>\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n          ".concat(opciones, "\n          </div>\n          </div>\n          ");
+          }
+        }],
+        language: {
+          "sProcessing": "Procesando...",
+          "sLengthMenu": "Mostrar _MENU_ registros",
+          "sZeroRecords": "No se encontraron resultados",
+          "sEmptyTable": "Ningún dato disponible en esta tabla",
+          "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix": "",
+          "sSearch": "Búsqueda general:",
+          "sUrl": "",
+          "sInfoThousands": ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          }
+        }
+      });
+    },
+    reservar: function reservar() {
+      $("#datatable tbody").on("click", "button.asignar", function (e) {
+        var _this = this;
+
+        this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+        this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
+        Swal.fire({
+          title: 'Reservar dictámen',
+          html: "\n          \xBFEst\xE1 seguro de reservar el dict\xE1men <span class=\"font-weight-bold\">DTI-".concat(this.data.oficio_id, "-").concat(this.data.oficio_anio, "</span>?\n          "),
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar dictámen',
+          cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
+        }).then(function (result) {
+          if (result.value) {
+            var formulario = new FormData();
+            formulario.append('oficio_id', _this.data.oficio_id);
+            formulario.append('oficio_anio', _this.data.oficio_anio);
+            formulario.append('tipo_documento_id', 2);
+            formulario.append('user_id', localStorage.getItem("id"));
+            formulario.append('name', localStorage.getItem("nombre"));
+            axios.post("/api/dictamen/reservar", formulario).then(function (response) {
+              Swal.fire({
+                title: "Dictámen reservado",
+                type: "info",
+                html: "Se reserv\xF3 correctamente el dict\xE1men <span class=\"font-weight-bold\">DTI-".concat(_this.data.oficio_id, "-").concat(_this.data.oficio_anio, "</span>")
+              }).then(function (result) {
+                _this.data.asignacion_id = response.data.asignacion_id;
+                _this.data.name = response.data.name;
+                _this.data.created_at = response.data.created_at.date;
+
+                _this.datatable.row(_this.idRow).data(_this.data);
+
+                $("#ultimo").val("nada");
+
+                _this.datatable.row(_this.idRow + 1).data(_this.datatable.row(_this.idRow + 1).data());
+
+                _this.mostrarBotonReservar();
+              });
+            })["catch"](function (error) {
+              _this.mostrarErrores(error, "Error reservar el dictámen", "No pudimos asignar el dictámen por los siguientes motivos:<br><br>");
+            });
+          }
+        });
+      }.bind(this));
+    },
+    reservarAutomaticamente: function reservarAutomaticamente() {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Reservar dictámen',
+        html: "\n        \xBFEst\xE1 seguro de reservar un dict\xE1men?\n        ",
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar dictámen',
+        cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
+      }).then(function (result) {
+        if (result.value) {
+          var formulario = new FormData();
+          formulario.append('name', localStorage.getItem("nombre"));
+          formulario.append('tipo_documento_id', 2);
+          formulario.append('user_id', localStorage.getItem("id"));
+          axios.post("/api/dictamen", formulario).then(function (response) {
+            Swal.fire({
+              title: "Dictámen reservado",
+              type: "info",
+              html: "Se reserv\xF3 correctamente el dict\xE1men <span class=\"font-weight-bold\">DTI-".concat(response.data.oficio_id, "-").concat(response.data.oficio_anio, "</span>")
+            }).then(function (result) {
+              _this2.data = response.data;
+              _this2.data.created_at = _this2.data.created_at.date;
+
+              _this2.datatable.row.add(_this2.data).draw();
+            });
+          })["catch"](function (error) {
+            _this2.mostrarErrores(error, "Error al reservar un dictámen", "No pudimos reservar el dictámen por los siguientes motivos:<br><br>");
+          }); // para agregar fila a datatable
+          //this.datatable.fnAddData(this.data);
+        }
+      });
+    },
+    mostrarModalPdf: function mostrarModalPdf() {
+      $("#datatable tbody").on("click", "button.adjuntar", function (e) {
+        this.mostrarInputFile = true;
+        this.showEmbed = false;
+        this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+        this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
+        $("#formulario")[0].reset();
+        $("#adjuntarModal").modal("show");
+      }.bind(this));
+    },
+    subirPdf: function subirPdf() {
+      var _this3 = this;
+
+      var formulario = new FormData();
+      formulario.append("pdf", this.pdf);
+      formulario.append("oficio_id", this.data.oficio_id);
+      formulario.append("oficio_anio", this.data.oficio_anio);
+      axios.post("api/dictamen/".concat(this.data.asignacion_id, "/pdf"), formulario).then(function (response) {
+        $("#adjuntarModal").modal("toggle");
+        Swal.fire({
+          title: 'Pdf cargado',
+          type: 'success',
+          html: "\n          Se adjunt\xF3 correctamente el pdf al dict\xE1men <span class=\"font-weight-bold\">DTI-".concat(_this3.data.oficio_id, "-").concat(_this3.data.oficio_anio, "</span>\n          ")
+        }).then(function (result) {
+          $("#formulario")[0].reset();
+          _this3.showEmbed = false;
+          _this3.data.path = response.data.path;
+
+          _this3.datatable.row(_this3.idRow).data(_this3.data);
+        });
+      })["catch"](function (error) {
+        _this3.mostrarErrores(error, "Error al subir el pdf", "No pudimos cargar el archivo por los siguientes motivos:<br><br>");
+      });
+    },
+    mostrarDocumento: function mostrarDocumento() {
+      $("#datatable tbody").on("click", "button.mostrar", function (e) {
+        this.mostrarInputFile = false;
+        this.showEmbed = true;
+        this.btnSubmit = false;
+        this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+        this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
+        this.src = this.data.path.replace("public", "storage");
+        $("#adjuntarModal").modal("show");
+      }.bind(this));
+    },
+    mostrarEmbed: function mostrarEmbed() {
+      this.showEmbed = true;
+      this.btnSubmit = true;
+      this.pdf = document.getElementById("pdf").files[0];
+      this.src = URL.createObjectURL(this.pdf);
+    },
+    mostrarErrores: function mostrarErrores(error, titulo, mensaje) {
+      var cadena = '';
+
+      if (error.response.status == 403) {
+        cadena = 'No tiene permisos para realizar esta acción';
+      } else if (error.response.status == 404) {
+        cadena = 'No se encontró la ruta a la que intenta acceder';
+      } else if (error.response.status == 500) {
+        cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+      } else if (error.response.status == 503) {
+        cadena = error.response.request.response;
+      } else if (error.response.status == 422) {
+        var response = JSON.parse(error.response.request.response);
+        cadena = "".concat(mensaje);
+        cadena += '<ul class="list-group">';
+        $.each(response.errors, function (i, field) {
+          cadena += "<li class=\"list-group-item\"><span class=\"text-danger\">".concat(field, "</span></li>");
+        });
+        cadena += '</ul>';
+      }
+
+      Swal.fire(titulo, "".concat(cadena), 'error');
+    },
+    mostrarBotonReservar: function mostrarBotonReservar() {
+      if ($("#ultimo").val() == "nada") {
+        this.showBotonReservar = true;
+      } else {
+        this.showBotonReservar = false;
+      }
+    }
+  }
+});
 
 /***/ }),
 
@@ -1885,6 +2217,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1894,7 +2227,7 @@ __webpack_require__.r(__webpack_exports__);
       showEmbed: false,
       btnSubmit: false,
       mostrarInputFile: true,
-      showBotonReservar: false,
+      showBotonReservar: true,
       pdf: null,
       src: null
     };
@@ -1918,35 +2251,39 @@ __webpack_require__.r(__webpack_exports__);
         paging: true,
         autoWidth: false,
         columns: [{
-          'data': 'id',
-          'name': 'id',
+          'data': 'asignacion_id',
+          'name': 'asignacion_id',
           'visible': false
         }, {
-          'data': 'anio',
-          'name': 'anio',
+          'data': 'oficio_id',
+          'name': 'oficio_id',
+          'visible': false
+        }, {
+          'data': 'oficio_anio',
+          'name': 'oficio_anio',
           'visible': false
         }, {
           'render': function render(data, type, row) {
-            return "<span class=\"font-weight-bold\">DTI-ME-".concat(row.id, "-").concat(row.anio, "</span>");
+            return "<span class=\"font-weight-bold\">DTI-ME-".concat(row.oficio_id, "-").concat(row.oficio_anio, "</span>");
           }
         }, {
-          'data': 'nombre',
-          'name': 'nombre'
+          'data': 'name',
+          'name': 'name'
         }, {
-          'data': 'fecha_asignacion',
-          'name': 'fecha_asignacion',
+          'data': 'created_at',
+          'name': 'created_at',
           'render': function render(data) {
             return data != null ? moment(data).locale('es').format('LLL') : '';
           }
         }, {
           'render': function render(data, type, row) {
-            if (row.nombre == null && $("#ultimo").val() == "nada") {
+            if (row.name == null && $("#ultimo").val() == "nada") {
               return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
-            } else if (row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
+            } else if (row.name == localStorage.getItem('nombre') && row.path == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
-            } else if (row.nombre != null && row.direccion_server == null) {
+            } else if (row.name != null && row.path == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Pendiente de subir documento';
-            } else if (row.direccion_server != null) {
+            } else if (row.path != null) {
               return '<i class="fa fa-bell mr-2 text-success"></i>Documento cargado';
             } else {
               return '<i class="fa fa-bell mr-2 text-info"></i>Sin asignar';
@@ -1956,14 +2293,14 @@ __webpack_require__.r(__webpack_exports__);
           'render': function render(data, type, row) {
             var opciones = "";
 
-            if (row.nombre == null && $("#ultimo").val() == "nada") {
-              opciones += "\n            <button class=\"asignar dropdown-item\"><i class=\"fa fa-bell mr-2\"></i>Reservar memorandum</button>\n            ";
+            if (row.name == null && $("#ultimo").val() == "nada") {
+              opciones += "\n            <button class=\"asignar dropdown-item\"><i class=\"fa fa-bell mr-2\"></i>Reservar memor\xE1ndum</button>\n            ";
               $("#ultimo").val(row.id);
-            } else if (row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
+            } else if (row.name == localStorage.getItem('nombre') && row.path == null) {
               opciones += "\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
-            } else if (row.nombre != localStorage.getItem("nombre") && row.direccion_server == null) {
+            } else if (row.name != localStorage.getItem('nombre') && row.path == null) {
               return '';
-            } else if (row.nombre == null && row.direccion_server == null) {
+            } else if (row.name == null && row.path == null) {
               return '';
             } else {
               opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            ";
@@ -2002,7 +2339,7 @@ __webpack_require__.r(__webpack_exports__);
         this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
         Swal.fire({
           title: 'Reservar memorándum',
-          html: "\n          \xBFEst\xE1 seguro de reservar el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(this.data.id, "-").concat(this.data.anio, "</span>?\n          "),
+          html: "\n          \xBFEst\xE1 seguro de reservar el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(this.data.oficio_id, "-").concat(this.data.oficio_anio, "</span>?\n          "),
           type: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -2012,19 +2349,20 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (result) {
           if (result.value) {
             var formulario = new FormData();
-            formulario.append('oficio_id', _this.data.id);
-            formulario.append('oficio_anio', _this.data.anio);
-            formulario.append('nombre', localStorage.getItem("nombre"));
+            formulario.append('oficio_id', _this.data.oficio_id);
+            formulario.append('oficio_anio', _this.data.oficio_anio);
             formulario.append('tipo_documento_id', 3);
             formulario.append('user_id', localStorage.getItem("id"));
-            axios.post("/api/memorandum/".concat(_this.data.id, "/").concat(_this.data.anio), formulario).then(function (response) {
+            formulario.append('name', localStorage.getItem("nombre"));
+            axios.post("/api/memorandum/reservar", formulario).then(function (response) {
               Swal.fire({
                 title: "Memorándum reservado",
                 type: "info",
-                html: "Se reserv\xF3 correctamente el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this.data.id, "-").concat(_this.data.anio, "</span>")
+                html: "Se reserv\xF3 correctamente el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this.data.oficio_id, "-").concat(_this.data.oficio_anio, "</span>")
               }).then(function (result) {
-                _this.data.nombre = response.data.nombre;
-                _this.data.fecha_asignacion = response.data.fecha_asignacion;
+                _this.data.asignacion_id = response.data.asignacion_id;
+                _this.data.name = response.data.name;
+                _this.data.created_at = response.data.created_at.date;
 
                 _this.datatable.row(_this.idRow).data(_this.data);
 
@@ -2056,16 +2394,19 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           var formulario = new FormData();
-          formulario.append('nombre', localStorage.getItem("nombre"));
+          formulario.append('name', localStorage.getItem("nombre"));
           formulario.append('tipo_documento_id', 3);
           formulario.append('user_id', localStorage.getItem("id"));
           axios.post("/api/memorandum", formulario).then(function (response) {
             Swal.fire({
               title: "Memorándum reservado",
               type: "info",
-              html: "Se reserv\xF3 correctamente el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(response.data.id, "-").concat(response.data.anio, "</span>")
+              html: "Se reserv\xF3 correctamente el memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(response.data.oficio_id, "-").concat(response.data.oficio_anio, "</span>")
             }).then(function (result) {
-              _this2.datatable.row.add(response.data).draw();
+              _this2.data = response.data;
+              _this2.data.created_at = _this2.data.created_at.date;
+
+              _this2.datatable.row.add(_this2.data).draw();
             });
           })["catch"](function (error) {
             _this2.mostrarErrores(error, "Error al reservar un memorándum", "No pudimos reservar el memorándum por los siguientes motivos:<br><br>");
@@ -2089,16 +2430,18 @@ __webpack_require__.r(__webpack_exports__);
 
       var formulario = new FormData();
       formulario.append("pdf", this.pdf);
-      axios.post("api/memorandum/".concat(this.data.id, "/").concat(this.data.anio, "/pdf"), formulario).then(function (response) {
+      formulario.append("oficio_id", this.data.oficio_id);
+      formulario.append("oficio_anio", this.data.oficio_anio);
+      axios.post("api/memorandum/".concat(this.data.asignacion_id, "/pdf"), formulario).then(function (response) {
         $("#adjuntarModal").modal("toggle");
         Swal.fire({
           title: 'Pdf cargado',
           type: 'success',
-          html: "\n          Se adjunt\xF3 correctamente el pdf al memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this3.data.id, "-").concat(_this3.data.anio, "</span>\n          ")
+          html: "\n          Se adjunt\xF3 correctamente el pdf al memor\xE1ndum <span class=\"font-weight-bold\">DTI-ME-".concat(_this3.data.oficio_id, "-").concat(_this3.data.oficio_anio, "</span>\n          ")
         }).then(function (result) {
           $("#formulario")[0].reset();
           _this3.showEmbed = false;
-          _this3.data.direccion_server = response.data.direccion_server;
+          _this3.data.path = response.data.path;
 
           _this3.datatable.row(_this3.idRow).data(_this3.data);
         });
@@ -2113,7 +2456,7 @@ __webpack_require__.r(__webpack_exports__);
         this.btnSubmit = false;
         this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
         this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
-        this.src = this.data.direccion_server.replace("public", "storage");
+        this.src = this.data.path.replace("public", "storage");
         $("#adjuntarModal").modal("show");
       }.bind(this));
     },
@@ -2147,8 +2490,6 @@ __webpack_require__.r(__webpack_exports__);
       Swal.fire(titulo, "".concat(cadena), 'error');
     },
     mostrarBotonReservar: function mostrarBotonReservar() {
-      console.log($("#ultimo").val() == "nada");
-
       if ($("#ultimo").val() == "nada") {
         this.showBotonReservar = true;
       } else {
@@ -2228,114 +2569,284 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       datatable: [],
       data: {},
-      idRow: 0
+      idRow: 0,
+      showEmbed: false,
+      btnSubmit: false,
+      mostrarInputFile: true,
+      showBotonReservar: true,
+      pdf: null,
+      src: null
     };
   },
   mounted: function mounted() {
-    this.datatable = $("#datatable").DataTable();
-    this.editar();
+    this.inicializarTabla();
+    this.reservar();
+    this.mostrarModalPdf();
+    this.mostrarDocumento();
+  },
+  updated: function updated() {
+    this.mostrarBotonReservar();
   },
   methods: {
-    editar: function editar() {
-      $("#datatable tbody").on("click", "button.edit", function (e) {
-        this.data = this.datatable.fnGetData(this.datatable.fnGetPosition($(e.target).parents("tr")[0]));
-        this.idRow = this.datatable.fnGetPosition($(e.target).parents("tr")[0]);
-      }.bind(this));
-    },
-    actualizar: function actualizar() {
-      var _this = this;
+    inicializarTabla: function inicializarTabla() {
+      this.datatable = $('#datatable').DataTable({
+        ajax: '/api/oficio',
+        order: [[1, 'asc'], [0, 'asc']],
+        lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
+        info: true,
+        paging: true,
+        autoWidth: false,
+        columns: [{
+          'data': 'asignacion_id',
+          'name': 'asignacion_id',
+          'visible': false
+        }, {
+          'data': 'oficio_id',
+          'name': 'oficio_id',
+          'visible': false
+        }, {
+          'data': 'oficio_anio',
+          'name': 'oficio_anio',
+          'visible': false
+        }, {
+          'render': function render(data, type, row) {
+            return "<span class=\"font-weight-bold\">DTI-OF-".concat(row.oficio_id, "-").concat(row.oficio_anio, "</span>");
+          }
+        }, {
+          'data': 'name',
+          'name': 'name'
+        }, {
+          'data': 'created_at',
+          'name': 'created_at',
+          'render': function render(data) {
+            return data != null ? moment(data).locale('es').format('LLL') : '';
+          }
+        }, {
+          'render': function render(data, type, row) {
+            if (row.name == null && $("#ultimo").val() == "nada") {
+              return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
+            } else if (row.name == localStorage.getItem('nombre') && row.path == null) {
+              return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
+            } else if (row.name != null && row.path == null) {
+              return '<i class="fa fa-bell mr-2 text-danger"></i>Pendiente de subir documento';
+            } else if (row.path != null) {
+              return '<i class="fa fa-bell mr-2 text-success"></i>Documento cargado';
+            } else {
+              return '<i class="fa fa-bell mr-2 text-info"></i>Sin asignar';
+            }
+          }
+        }, {
+          'render': function render(data, type, row) {
+            var opciones = "";
 
-      $("#exampleModal").modal('toggle');
-      axios.put("/api/memorandum/".concat(this.data[0]), {
-        params: {
-          id: this.data[0]
+            if (row.name == null && $("#ultimo").val() == "nada") {
+              opciones += "\n            <button class=\"asignar dropdown-item\"><i class=\"fa fa-bell mr-2\"></i>Reservar oficio</button>\n            ";
+              $("#ultimo").val(row.id);
+            } else if (row.name == localStorage.getItem('nombre') && row.path == null) {
+              opciones += "\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
+            } else if (row.name != localStorage.getItem('nombre') && row.path == null) {
+              return '';
+            } else if (row.name == null && row.path == null) {
+              return '';
+            } else {
+              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
+            }
+
+            return "\n          <div class=\"dropdown dropleft text-right\">\n          <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Opciones\n          </button>\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n          ".concat(opciones, "\n          </div>\n          </div>\n          ");
+          }
+        }],
+        language: {
+          "sProcessing": "Procesando...",
+          "sLengthMenu": "Mostrar _MENU_ registros",
+          "sZeroRecords": "No se encontraron resultados",
+          "sEmptyTable": "Ningún dato disponible en esta tabla",
+          "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix": "",
+          "sSearch": "Búsqueda general:",
+          "sUrl": "",
+          "sInfoThousands": ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          }
         }
-      }).then(function (response) {
-        Swal.fire({
-          title: "Oficio actualizado",
-          type: "info",
-          html: "Se actualiz\xF3 correctamente el oficio ".concat(_this.data[0])
-        });
-        console.log(response);
-      })["catch"](function (e) {
-        console.log(e);
       });
     },
-    eliminar: function eliminar() {}
+    reservar: function reservar() {
+      $("#datatable tbody").on("click", "button.asignar", function (e) {
+        var _this = this;
+
+        this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+        this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
+        Swal.fire({
+          title: 'Reservar oficio',
+          html: "\n          \xBFEst\xE1 seguro de reservar el oficio <span class=\"font-weight-bold\">DTI-OF-".concat(this.data.oficio_id, "-").concat(this.data.oficio_anio, "</span>?\n          "),
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar oficio',
+          cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
+        }).then(function (result) {
+          if (result.value) {
+            var formulario = new FormData();
+            formulario.append('oficio_id', _this.data.oficio_id);
+            formulario.append('oficio_anio', _this.data.oficio_anio);
+            formulario.append('tipo_documento_id', 1);
+            formulario.append('user_id', localStorage.getItem("id"));
+            formulario.append('name', localStorage.getItem("nombre"));
+            axios.post("/api/oficio/reservar", formulario).then(function (response) {
+              Swal.fire({
+                title: "Oficio reservado",
+                type: "info",
+                html: "Se reserv\xF3 correctamente el oficio <span class=\"font-weight-bold\">DTI-OF-".concat(_this.data.oficio_id, "-").concat(_this.data.oficio_anio, "</span>")
+              }).then(function (result) {
+                _this.data.asignacion_id = response.data.asignacion_id;
+                _this.data.name = response.data.name;
+                _this.data.created_at = response.data.created_at.date;
+
+                _this.datatable.row(_this.idRow).data(_this.data);
+
+                $("#ultimo").val("nada");
+
+                _this.datatable.row(_this.idRow + 1).data(_this.datatable.row(_this.idRow + 1).data());
+
+                _this.mostrarBotonReservar();
+              });
+            })["catch"](function (error) {
+              _this.mostrarErrores(error, "Error reservar el oficio", "No pudimos asignar el oficio por los siguientes motivos:<br><br>");
+            });
+          }
+        });
+      }.bind(this));
+    },
+    reservarAutomaticamente: function reservarAutomaticamente() {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Reservar oficio',
+        html: "\n        \xBFEst\xE1 seguro de reservar un oficio?\n        ",
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar oficio',
+        cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
+      }).then(function (result) {
+        if (result.value) {
+          var formulario = new FormData();
+          formulario.append('name', localStorage.getItem("nombre"));
+          formulario.append('tipo_documento_id', 1);
+          formulario.append('user_id', localStorage.getItem("id"));
+          axios.post("/api/oficio", formulario).then(function (response) {
+            Swal.fire({
+              title: "Oficio reservado",
+              type: "info",
+              html: "Se reserv\xF3 correctamente el oficio <span class=\"font-weight-bold\">DTI-OF-".concat(response.data.oficio_id, "-").concat(response.data.oficio_anio, "</span>")
+            }).then(function (result) {
+              _this2.data = response.data;
+              _this2.data.created_at = _this2.data.created_at.date;
+
+              _this2.datatable.row.add(_this2.data).draw();
+            });
+          })["catch"](function (error) {
+            _this2.mostrarErrores(error, "Error al reservar un oficio", "No pudimos reservar el oficio por los siguientes motivos:<br><br>");
+          }); // para agregar fila a datatable
+          //this.datatable.fnAddData(this.data);
+        }
+      });
+    },
+    mostrarModalPdf: function mostrarModalPdf() {
+      $("#datatable tbody").on("click", "button.adjuntar", function (e) {
+        this.mostrarInputFile = true;
+        this.showEmbed = false;
+        this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+        this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
+        $("#formulario")[0].reset();
+        $("#adjuntarModal").modal("show");
+      }.bind(this));
+    },
+    subirPdf: function subirPdf() {
+      var _this3 = this;
+
+      var formulario = new FormData();
+      formulario.append("pdf", this.pdf);
+      formulario.append("oficio_id", this.data.oficio_id);
+      formulario.append("oficio_anio", this.data.oficio_anio);
+      axios.post("api/oficio/".concat(this.data.asignacion_id, "/pdf"), formulario).then(function (response) {
+        $("#adjuntarModal").modal("toggle");
+        Swal.fire({
+          title: 'Pdf cargado',
+          type: 'success',
+          html: "\n          Se adjunt\xF3 correctamente el pdf al oficio <span class=\"font-weight-bold\">DTI-OF-".concat(_this3.data.oficio_id, "-").concat(_this3.data.oficio_anio, "</span>\n          ")
+        }).then(function (result) {
+          $("#formulario")[0].reset();
+          _this3.showEmbed = false;
+          _this3.data.path = response.data.path;
+
+          _this3.datatable.row(_this3.idRow).data(_this3.data);
+        });
+      })["catch"](function (error) {
+        _this3.mostrarErrores(error, "Error al subir el pdf", "No pudimos cargar el archivo por los siguientes motivos:<br><br>");
+      });
+    },
+    mostrarDocumento: function mostrarDocumento() {
+      $("#datatable tbody").on("click", "button.mostrar", function (e) {
+        this.mostrarInputFile = false;
+        this.showEmbed = true;
+        this.btnSubmit = false;
+        this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+        this.idRow = this.datatable.row($(e.target).parents("tr")[0]).index();
+        this.src = this.data.path.replace("public", "storage");
+        $("#adjuntarModal").modal("show");
+      }.bind(this));
+    },
+    mostrarEmbed: function mostrarEmbed() {
+      this.showEmbed = true;
+      this.btnSubmit = true;
+      this.pdf = document.getElementById("pdf").files[0];
+      this.src = URL.createObjectURL(this.pdf);
+    },
+    mostrarErrores: function mostrarErrores(error, titulo, mensaje) {
+      var cadena = '';
+
+      if (error.response.status == 403) {
+        cadena = 'No tiene permisos para realizar esta acción';
+      } else if (error.response.status == 404) {
+        cadena = 'No se encontró la ruta a la que intenta acceder';
+      } else if (error.response.status == 500) {
+        cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+      } else if (error.response.status == 503) {
+        cadena = error.response.request.response;
+      } else if (error.response.status == 422) {
+        var response = JSON.parse(error.response.request.response);
+        cadena = "".concat(mensaje);
+        cadena += '<ul class="list-group">';
+        $.each(response.errors, function (i, field) {
+          cadena += "<li class=\"list-group-item\"><span class=\"text-danger\">".concat(field, "</span></li>");
+        });
+        cadena += '</ul>';
+      }
+
+      Swal.fire(titulo, "".concat(cadena), 'error');
+    },
+    mostrarBotonReservar: function mostrarBotonReservar() {
+      if ($("#ultimo").val() == "nada") {
+        this.showBotonReservar = true;
+      } else {
+        this.showBotonReservar = false;
+      }
+    }
   }
 });
 
@@ -74234,19 +74745,224 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("input", { attrs: { type: "hidden", id: "ultimo", value: "nada" } }),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "shadow-lg p-4 mb-5 bg-white rounded" }, [
+      _vm.showBotonReservar
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-primary mb-3",
+              attrs: { id: "reservar-oficio" },
+              on: { click: _vm.reservarAutomaticamente }
+            },
+            [
+              _c("i", { staticClass: "fa fa-bell fa-lg mr-2" }),
+              _vm._v("\n      Reservar dictámen\n    ")
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._m(1)
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "adjuntarModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "adjuntarModalLabel",
+          "aria-hidden": "true",
+          "data-backdrop": "static",
+          "data-keyboard": "false"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title font-weight-bold",
+                    attrs: { id: "adjuntarModalLabel" }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-file-pdf fa-lg mr-2" }),
+                    _vm._v(
+                      "\n            Memorándum DTI-" +
+                        _vm._s(_vm.data.oficio_id) +
+                        "-" +
+                        _vm._s(_vm.data.oficio_anio) +
+                        "\n          "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  attrs: { id: "formulario" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.subirPdf($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _vm.mostrarInputFile
+                      ? _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "pdf" } }, [
+                            _vm._v("Seleccione un documento pdf")
+                          ]),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            attrs: {
+                              type: "file",
+                              id: "pdf",
+                              name: "pdf",
+                              accept: "application/pdf",
+                              required: ""
+                            },
+                            on: { change: _vm.mostrarEmbed }
+                          })
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.showEmbed
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "embed-responsive embed-responsive-16by9"
+                          },
+                          [
+                            _c("iframe", {
+                              staticClass: "embed-responsive-item",
+                              attrs: { src: _vm.src }
+                            })
+                          ]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _vm.btnSubmit
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-upload fa-lg mr-2" }),
+                            _vm._v("Adjuntar documento")
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._m(3)
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h1", { staticClass: "h3 mb-4 text-gray-800" }, [
-        _c("i", { staticClass: "fa fa-book mr-2" }),
-        _vm._v("Dictámenes")
-      ])
+    return _c("h1", { staticClass: "h3 mb-4 text-gray-800" }, [
+      _c("i", { staticClass: "fa fa-book mr-2" }),
+      _vm._v("Dictámenes")
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "table-responsive" }, [
+      _c(
+        "table",
+        { staticClass: "table table-hover border", attrs: { id: "datatable" } },
+        [
+          _c("thead", { staticClass: "bg-dark text-white" }, [
+            _c("tr", [
+              _c("th", [_vm._v("Asignacion id")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("dictámen id")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("dictámen anio")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Número de oficio")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Reservado por")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Fecha y hora de reservación")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Estado del oficio")]),
+              _vm._v(" "),
+              _c("th", { staticClass: "text-right" }, [_vm._v("Acciones")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tbody")
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button", "data-dismiss": "modal" }
+      },
+      [_c("i", { staticClass: "fa fa-times fa-lg mr-2" }), _vm._v("Cancelar")]
+    )
   }
 ]
 render._withStripped = true
@@ -74554,9 +75270,9 @@ var render = function() {
                     _c("i", { staticClass: "fa fa-file-pdf fa-lg mr-2" }),
                     _vm._v(
                       "\n            Memorándum DTI-ME-" +
-                        _vm._s(_vm.data.id) +
+                        _vm._s(_vm.data.oficio_id) +
                         "-" +
-                        _vm._s(_vm.data.anio) +
+                        _vm._s(_vm.data.oficio_anio) +
                         "\n          "
                     )
                   ]
@@ -74662,9 +75378,11 @@ var staticRenderFns = [
         [
           _c("thead", { staticClass: "bg-dark text-white" }, [
             _c("tr", [
-              _c("th", [_vm._v("id")]),
+              _c("th", [_vm._v("Asignacion id")]),
               _vm._v(" "),
-              _c("th", [_vm._v("anio")]),
+              _c("th", [_vm._v("Memorandum id")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Memorandum anio")]),
               _vm._v(" "),
               _c("th", [_vm._v("Número de oficio")]),
               _vm._v(" "),
@@ -74672,7 +75390,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Fecha y hora de reservación")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Estado del memorandum")]),
+              _c("th", [_vm._v("Estado del memorándum")]),
               _vm._v(" "),
               _c("th", { staticClass: "text-right" }, [_vm._v("Acciones")])
             ])
@@ -74736,19 +75454,38 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("input", { attrs: { type: "hidden", id: "ultimo", value: "nada" } }),
+    _vm._v(" "),
     _vm._m(0),
     _vm._v(" "),
-    _vm._m(1),
+    _c("div", { staticClass: "shadow-lg p-4 mb-5 bg-white rounded" }, [
+      _vm.showBotonReservar
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-primary mb-3",
+              attrs: { id: "reservar-oficio" },
+              on: { click: _vm.reservarAutomaticamente }
+            },
+            [
+              _c("i", { staticClass: "fa fa-bell fa-lg mr-2" }),
+              _vm._v("\n      Reservar oficio\n    ")
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._m(1)
+    ]),
     _vm._v(" "),
     _c(
       "div",
       {
         staticClass: "modal fade",
         attrs: {
-          id: "exampleModal",
+          id: "adjuntarModal",
           tabindex: "-1",
           role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
+          "aria-labelledby": "adjuntarModalLabel",
           "aria-hidden": "true",
           "data-backdrop": "static",
           "data-keyboard": "false"
@@ -74757,45 +75494,108 @@ var render = function() {
       [
         _c(
           "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          {
+            staticClass: "modal-dialog modal-dialog-centered modal-lg",
+            attrs: { role: "document" }
+          },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title font-weight-bold",
+                    attrs: { id: "adjuntarModalLabel" }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-file-pdf fa-lg mr-2" }),
+                    _vm._v(
+                      "\n            Memorándum DTI-OF-" +
+                        _vm._s(_vm.data.oficio_id) +
+                        "-" +
+                        _vm._s(_vm.data.oficio_anio) +
+                        "\n          "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
               _vm._v(" "),
               _c(
                 "form",
                 {
+                  attrs: { id: "formulario" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.actualizar($event)
+                      return _vm.subirPdf($event)
                     }
                   }
                 },
                 [
                   _c("div", { staticClass: "modal-body" }, [
-                    _vm._v("\n\t\t\t\t\t\t...\n\t\t\t\t\t")
+                    _vm.mostrarInputFile
+                      ? _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "pdf" } }, [
+                            _vm._v("Seleccione un documento pdf")
+                          ]),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            attrs: {
+                              type: "file",
+                              id: "pdf",
+                              name: "pdf",
+                              accept: "application/pdf",
+                              required: ""
+                            },
+                            on: { change: _vm.mostrarEmbed }
+                          })
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.showEmbed
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "embed-responsive embed-responsive-16by9"
+                          },
+                          [
+                            _c("iframe", {
+                              staticClass: "embed-responsive-item",
+                              attrs: { src: _vm.src }
+                            })
+                          ]
+                        )
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
-                  _vm._m(3)
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _vm.btnSubmit
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-upload fa-lg mr-2" }),
+                            _vm._v("Adjuntar documento")
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._m(3)
+                  ])
                 ]
               )
             ])
           ]
         )
       ]
-    ),
-    _vm._v(" "),
-    _c("div", [
-      _vm._v("\n\t\tObjeto a editar\n\t\t"),
-      _c("br"),
-      _vm._v(" "),
-      _c("pre", [_vm._v(_vm._s(_vm.data))]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v("\n\t\tId row\n\t\t"),
-      _c("pre", [_vm._v(_vm._s(_vm.idRow))])
-    ])
+    )
   ])
 }
 var staticRenderFns = [
@@ -74819,245 +75619,25 @@ var staticRenderFns = [
         [
           _c("thead", { staticClass: "bg-dark text-white" }, [
             _c("tr", [
-              _c("th", [_vm._v("id")]),
+              _c("th", [_vm._v("Asignacion id")]),
               _vm._v(" "),
-              _c("th", [_vm._v("anio")]),
+              _c("th", [_vm._v("Oficio id")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Oficio anio")]),
               _vm._v(" "),
               _c("th", [_vm._v("Número de oficio")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Fecha de asignación")]),
+              _c("th", [_vm._v("Reservado por")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Usuario asignado")]),
+              _c("th", [_vm._v("Fecha y hora de reservación")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Acciones")])
+              _c("th", [_vm._v("Estado del oficio")]),
+              _vm._v(" "),
+              _c("th", { staticClass: "text-right" }, [_vm._v("Acciones")])
             ])
           ]),
           _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v("1")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("OF-DTI-1-2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("13/09/2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Elmer Danilo Hernandez")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "dropdown dropleft text-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-primary dropdown-toggle",
-                      attrs: {
-                        type: "button",
-                        id: "dropdownMenu2",
-                        "data-toggle": "dropdown",
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false"
-                      }
-                    },
-                    [_vm._v("\n\t\t\t\t\t\t\t\tOpciones\n\t\t\t\t\t\t\t")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "dropdown-menu",
-                      attrs: { "aria-labelledby": "dropdownMenu2" }
-                    },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "edit dropdown-item",
-                          attrs: {
-                            type: "button",
-                            "data-toggle": "modal",
-                            "data-target": "#exampleModal"
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "fa fa-edit mr-2" }),
-                          _vm._v("Actualizar oficio\n\t\t\t\t\t\t\t\t")
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("2")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("OF-DTI-2-2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("13/09/2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Elmer Danilo Hernandez")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "dropdown dropleft text-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-primary dropdown-toggle",
-                      attrs: {
-                        type: "button",
-                        id: "dropdownMenu2",
-                        "data-toggle": "dropdown",
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false"
-                      }
-                    },
-                    [_vm._v("\n\t\t\t\t\t\t\t\tOpciones\n\t\t\t\t\t\t\t")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "dropdown-menu",
-                      attrs: { "aria-labelledby": "dropdownMenu2" }
-                    },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "edit dropdown-item",
-                          attrs: {
-                            type: "button",
-                            "data-toggle": "modal",
-                            "data-target": "#exampleModal"
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "fa fa-edit mr-2" }),
-                          _vm._v("Actualizar oficio\n\t\t\t\t\t\t\t\t")
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("3")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("OF-DTI-3-2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("13/09/2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Elmer Danilo Hernandez")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "dropdown dropleft text-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-primary dropdown-toggle",
-                      attrs: {
-                        type: "button",
-                        id: "dropdownMenu2",
-                        "data-toggle": "dropdown",
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false"
-                      }
-                    },
-                    [_vm._v("\n\t\t\t\t\t\t\t\tOpciones\n\t\t\t\t\t\t\t")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "dropdown-menu",
-                      attrs: { "aria-labelledby": "dropdownMenu2" }
-                    },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "edit dropdown-item",
-                          attrs: {
-                            type: "button",
-                            "data-toggle": "modal",
-                            "data-target": "#exampleModal"
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "fa fa-edit mr-2" }),
-                          _vm._v("Actualizar oficio\n\t\t\t\t\t\t\t\t")
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("4")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("OF-DTI-4-2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("13/09/2019")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Elmer Danilo Hernandez")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "dropdown dropleft text-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-primary dropdown-toggle",
-                      attrs: {
-                        type: "button",
-                        id: "dropdownMenu2",
-                        "data-toggle": "dropdown",
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false"
-                      }
-                    },
-                    [_vm._v("\n\t\t\t\t\t\t\t\tOpciones\n\t\t\t\t\t\t\t")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "dropdown-menu",
-                      attrs: { "aria-labelledby": "dropdownMenu2" }
-                    },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "edit dropdown-item",
-                          attrs: {
-                            type: "button",
-                            "data-toggle": "modal",
-                            "data-target": "#exampleModal"
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "fa fa-edit mr-2" }),
-                          _vm._v("Actualizar oficio\n\t\t\t\t\t\t\t\t")
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ])
-          ])
+          _c("tbody")
         ]
       )
     ])
@@ -75066,53 +75646,31 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [
-          _c("i", { staticClass: "fa fa-edit fa-lg mr-2" }),
-          _vm._v("Actualizar oficio")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [
-          _c("i", { staticClass: "fa fa-save fa-lg mr-2" }),
-          _vm._v("Actualizar oficio")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_c("i", { staticClass: "fa fa-close fa-lg mr-2" }), _vm._v("Cerrar")]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button", "data-dismiss": "modal" }
+      },
+      [_c("i", { staticClass: "fa fa-times fa-lg mr-2" }), _vm._v("Cancelar")]
+    )
   }
 ]
 render._withStripped = true
@@ -90867,15 +91425,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************************!*\
   !*** ./resources/js/components/PerfilUsuarioComponent.vue ***!
   \************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PerfilUsuarioComponent_vue_vue_type_template_id_0b20d3f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PerfilUsuarioComponent.vue?vue&type=template&id=0b20d3f4& */ "./resources/js/components/PerfilUsuarioComponent.vue?vue&type=template&id=0b20d3f4&");
 /* harmony import */ var _PerfilUsuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PerfilUsuarioComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PerfilUsuarioComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PerfilUsuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PerfilUsuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -90905,7 +91462,7 @@ component.options.__file = "resources/js/components/PerfilUsuarioComponent.vue"
 /*!*************************************************************************************!*\
   !*** ./resources/js/components/PerfilUsuarioComponent.vue?vue&type=script&lang=js& ***!
   \*************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

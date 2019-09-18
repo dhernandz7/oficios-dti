@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Memorandum extends Model
+class Dictamen extends Model
 {
-	protected $table = 'memorandums';
+	protected $table = 'dictamenes';
 	
     protected $fillable = [
     	'anio'

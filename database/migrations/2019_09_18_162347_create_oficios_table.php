@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGenerosTable extends Migration
+class CreateOficiosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreateGenerosTable extends Migration
      */
     public function up()
     {
-        Schema::create('generos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('genero')->unique('genero', 'unique_genero');
+        Schema::create('oficios', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('anio')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });
+
+        DB::unprepared("
+
+        ");
     }
 
     /**
@@ -28,6 +32,6 @@ class CreateGenerosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('generos');
+        Schema::dropIfExists('oficios');
     }
 }

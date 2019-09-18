@@ -3,48 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreMemorandumRequest;
-use App\Http\Requests\AsignarMemorandumRequest;
-use App\Http\Requests\AsignarPdfMemorandumRequest;
-use App\Memorandum;
+use App\Http\Requests\StoreDictamenRequest;
+use App\Http\Requests\AsignarDictamenRequest;
+use App\Http\Requests\AsignarPdfDictamenRequest;
+use App\Dictamen;
 use App\Asignacion;
 
-class MemorandumController extends Controller
+class DictamenController extends Controller
 {
     public function index()
     {
-        $memorandums = Memorandum::
+        $dictamenes = Dictamen::
         leftJoin('asignaciones', function($join) {
-            $join->on('memorandums.id', '=', 'asignaciones.oficio_id');
-            $join->on('memorandums.anio', '=', 'asignaciones.oficio_anio')
-            ->where('asignaciones.tipo_documento_id', '=', 3);
+            $join->on('dictamenes.id', '=', 'asignaciones.oficio_id');
+            $join->on('dictamenes.anio', '=', 'asignaciones.oficio_anio')
+            ->where('asignaciones.tipo_documento_id', '=', 2);
         })
         ->leftJoin('users', 'asignaciones.user_id','users.id')
-        //->where('memorandums.anio', 2019)
+        //->where('dictamenes.anio', 2019)
         ->select([
             'asignaciones.id as asignacion_id',
-            'memorandums.id as oficio_id',
-            'memorandums.anio as oficio_anio',
+            'dictamenes.id as oficio_id',
+            'dictamenes.anio as oficio_anio',
             'asignaciones.created_at',
             'users.name',
             'asignaciones.path',
             'asignaciones.tipo_documento_id'
         ])
-        ->orderBy('memorandums.id')
+        ->orderBy('dictamenes.id')
         ->get();
 
-        return response()->json(["data" => $memorandums], 200);
+        return response()->json(["data" => $dictamenes], 200);
     }
 
-    public function reservarAutomaticamente(StoreMemorandumRequest $request)
+    public function reservarAutomaticamente(StoreDictamenRequest $request)
     {
-        $memorandum = Memorandum::create([
+        $dictamen = Dictamen::create([
             'anio' => date('Y')
         ]);
 
         $asignacion = Asignacion::create([
-            'oficio_id' => $memorandum->id,
-            'oficio_anio' => $memorandum->anio,
+            'oficio_id' => $dictamen->id,
+            'oficio_anio' => $dictamen->anio,
             'path' => null,
             'tipo_documento_id' => $request->tipo_documento_id,
             'user_id' => $request->user_id
@@ -60,7 +60,7 @@ class MemorandumController extends Controller
         ],200);
     }
 
-    public function reservar(AsignarMemorandumRequest $request)
+    public function reservar(AsignarDictamenRequest $request)
     {
         $asignacion = Asignacion::create([
             'oficio_id' => $request->oficio_id,
@@ -80,7 +80,7 @@ class MemorandumController extends Controller
         ],200);
     }
 
-    public function pdf(AsignarPdfMemorandumRequest $request, $id)
+    public function pdf(AsignarPdfDictamenRequest $request, $id)
     {
         if(!$request->hasFile("pdf")) {
             return response()->json("Debe adjuntar un archivo pdf", 503);
@@ -93,7 +93,7 @@ class MemorandumController extends Controller
         }
         $hash_pdf = "$request->oficio_id-";
         $hash_pdf = $hash_pdf . str_replace("/", "", \Hash::make("$request->oficio_id-$request->oficio_anio"));
-        $path = $request->file('pdf')->storeAs("public/memorandums/$request->oficio_anio", "$hash_pdf.pdf");
+        $path = $request->file('pdf')->storeAs("public/dictamen/$request->oficio_anio", "$hash_pdf.pdf");
 
         if($path != null) {
             $asignacion->path = $path;

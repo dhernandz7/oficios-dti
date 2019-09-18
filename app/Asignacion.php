@@ -6,19 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Asignacion extends Model
 {
-	protected $table = 'asignacion';
-
+	protected $table = 'asignaciones';
+	
 	protected $fillable = [
-		'id',
 		'oficio_id',
 		'oficio_anio',
-		'correspondencia_ref',
-		'personal',
-		'fecha_asignacion',
-		'activo',
+		'path',
 		'tipo_documento_id',
 		'user_id'
 	];
-
-	public $timestamps = false;
 }

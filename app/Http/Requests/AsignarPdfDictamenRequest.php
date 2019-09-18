@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMemorandumRequest extends FormRequest
+class AsignarPdfDictamenRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,26 +24,23 @@ class StoreMemorandumRequest extends FormRequest
     public function rules()
     {
         return [
-            'tipo_documento_id' => 'required|integer',
-            'user_id' => 'required|integer'
+            'pdf' => 'required|mimes:pdf|max:3000'
         ];
     }
 
     public function attributes()
     {
         return [
-            'tipo_documento_id' => 'tipo de documento',
-            'user_id' => 'id del usuario que está reservando el memorándum'
+            'pdf' => 'archivo'
         ];
     }
 
     public function messages()
     {
         return [
-            'tipo_documento_id.required' => 'El :attribute es requerido',
-            'tipo_documento_id.required' => 'El :attribute debe ser un entero',
-            'user_id.required' => 'El :attribute es requerido',
-            'user_id.required' => 'El :attribute debe ser un entero'
+            'pdf.required' => 'El :attribute es requerido',
+            'pdf.mimes:pdf' => 'El :attribute debe ser un pdf',
+            'pdf.max:3000' => 'El :attribute debe pesar como máximo 3MB',
         ];
     }
 }

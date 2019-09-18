@@ -11,12 +11,13 @@
         <table class="table table-hover border" id="datatable">
           <thead class="bg-dark text-white">
             <tr>
-              <th>id</th>
-              <th>anio</th>
+              <th>Asignacion id</th>
+              <th>Memorandum id</th>
+              <th>Memorandum anio</th>
               <th>Número de oficio</th>
               <th>Reservado por</th>
               <th>Fecha y hora de reservación</th>
-              <th>Estado del memorandum</th>
+              <th>Estado del memorándum</th>
               <th class="text-right">Acciones</th>
             </tr>
           </thead>
@@ -29,7 +30,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="adjuntarModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
-              Memorándum DTI-ME-{{data.id}}-{{data.anio}}
+              Memorándum DTI-ME-{{data.oficio_id}}-{{data.oficio_anio}}
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -66,7 +67,7 @@
         showEmbed: false,
         btnSubmit: false,
         mostrarInputFile: true,
-        showBotonReservar: false,
+        showBotonReservar: true,
         pdf: null,
         src: null
       }
@@ -90,23 +91,24 @@
           paging: true,
           autoWidth: false,
           columns: [
-          {'data': 'id', 'name': 'id', 'visible': false},
-          {'data': 'anio', 'name': 'anio', 'visible': false},
+          {'data': 'asignacion_id', 'name': 'asignacion_id', 'visible': false},
+          {'data': 'oficio_id', 'name': 'oficio_id', 'visible': false},
+          {'data': 'oficio_anio', 'name': 'oficio_anio', 'visible': false},
           {'render': function(data, type, row) {
-            return `<span class="font-weight-bold">DTI-ME-${row.id}-${row.anio}</span>`;
+            return `<span class="font-weight-bold">DTI-ME-${row.oficio_id}-${row.oficio_anio}</span>`;
           }},
-          {'data': 'nombre', 'name': 'nombre'},
-          {'data': 'fecha_asignacion', 'name': 'fecha_asignacion', 'render': function(data) {
+          {'data': 'name', 'name': 'name'},
+          {'data': 'created_at', 'name': 'created_at', 'render': function(data) {
             return data != null ? moment(data).locale('es').format('LLL') : '';
           }},
           {'render': function(data, type, row) {
-            if(row.nombre == null && $("#ultimo").val() == "nada"){
+            if(row.name == null && $("#ultimo").val() == "nada"){
               return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
-            } else if(row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
+            } else if(row.name == localStorage.getItem('nombre') && row.path == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
-            } else if(row.nombre != null && row.direccion_server == null) {
+            } else if(row.name != null && row.path == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Pendiente de subir documento';
-            } else if(row.direccion_server != null) {
+            } else if(row.path != null) {
               return '<i class="fa fa-bell mr-2 text-success"></i>Documento cargado';
             } else {
               return '<i class="fa fa-bell mr-2 text-info"></i>Sin asignar';
@@ -114,18 +116,18 @@
           }},
           {'render': function(data, type, row) {
             let opciones = ``;
-            if(row.nombre == null && $("#ultimo").val() == "nada") {
+            if(row.name == null && $("#ultimo").val() == "nada") {
               opciones += `
-              <button class="asignar dropdown-item"><i class="fa fa-bell mr-2"></i>Reservar memorandum</button>
+              <button class="asignar dropdown-item"><i class="fa fa-bell mr-2"></i>Reservar memorándum</button>
               `;
               $("#ultimo").val(row.id);
-            } else if(row.nombre == localStorage.getItem('nombre') && row.direccion_server == null) {
+            } else if(row.name == localStorage.getItem('nombre') && row.path == null) {
               opciones += `
               <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
-            } else if(row.nombre != localStorage.getItem("nombre") && row.direccion_server == null) {
+            } else if(row.name != localStorage.getItem('nombre') && row.path == null) {
               return '';
-            } else if(row.nombre == null && row.direccion_server == null) {
+            } else if(row.name == null && row.path == null) {
               return '';
             } else {
               opciones += `
@@ -173,7 +175,7 @@
           Swal.fire({
             title: 'Reservar memorándum',
             html: `
-            ¿Está seguro de reservar el memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>?
+            ¿Está seguro de reservar el memorándum <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>?
             `,
             type: 'question',
             showCancelButton: true,
@@ -184,20 +186,21 @@
           }).then( (result) => {
             if( result.value) {
               let formulario = new FormData();
-              formulario.append('oficio_id', this.data.id);
-              formulario.append('oficio_anio', this.data.anio);
-              formulario.append('nombre', localStorage.getItem("nombre"));
+              formulario.append('oficio_id', this.data.oficio_id);
+              formulario.append('oficio_anio', this.data.oficio_anio);
               formulario.append('tipo_documento_id', 3);
               formulario.append('user_id', localStorage.getItem("id"));
-              axios.post(`/api/memorandum/${this.data.id}/${this.data.anio}`, formulario)
+              formulario.append('name', localStorage.getItem("nombre"));
+              axios.post(`/api/memorandum/reservar`, formulario)
               .then(response => {
                 Swal.fire({
                   title: "Memorándum reservado",
                   type: "info",
-                  html: `Se reservó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>`
+                  html: `Se reservó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>`
                 }).then((result) => {
-                  this.data.nombre = response.data.nombre;
-                  this.data.fecha_asignacion = response.data.fecha_asignacion;
+                  this.data.asignacion_id = response.data.asignacion_id;
+                  this.data.name = response.data.name;
+                  this.data.created_at = response.data.created_at.date;
                   this.datatable.row(this.idRow).data(this.data);
                   $("#ultimo").val("nada");
                   this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
@@ -226,7 +229,7 @@
         }).then( (result) => {
           if( result.value) {
             let formulario = new FormData();
-            formulario.append('nombre', localStorage.getItem("nombre"));
+            formulario.append('name', localStorage.getItem("nombre"));
             formulario.append('tipo_documento_id', 3);
             formulario.append('user_id', localStorage.getItem("id"));
             axios.post("/api/memorandum", formulario)
@@ -234,9 +237,11 @@
               Swal.fire({
                 title: "Memorándum reservado",
                 type: "info",
-                html: `Se reservó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${response.data.id}-${response.data.anio}</span>`
+                html: `Se reservó correctamente el memorándum <span class="font-weight-bold">DTI-ME-${response.data.oficio_id}-${response.data.oficio_anio}</span>`
               }).then((result) => {
-                this.datatable.row.add(response.data).draw();
+                this.data = response.data;
+                this.data.created_at = this.data.created_at.date;
+                this.datatable.row.add(this.data).draw();
               });
             })
             .catch(error => {
@@ -262,18 +267,20 @@
       subirPdf() {
         let formulario = new FormData();
         formulario.append("pdf", this.pdf);
-        axios.post(`api/memorandum/${this.data.id}/${this.data.anio}/pdf`, formulario).then(response => {
+        formulario.append("oficio_id", this.data.oficio_id);
+        formulario.append("oficio_anio", this.data.oficio_anio);
+        axios.post(`api/memorandum/${this.data.asignacion_id}/pdf`, formulario).then(response => {
           $("#adjuntarModal").modal("toggle");
           Swal.fire({
             title: 'Pdf cargado',
             type: 'success',
             html: `
-            Se adjuntó correctamente el pdf al memorándum <span class="font-weight-bold">DTI-ME-${this.data.id}-${this.data.anio}</span>
+            Se adjuntó correctamente el pdf al memorándum <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>
             `
           }).then((result) => {
             $("#formulario")[0].reset();
             this.showEmbed = false;
-            this.data.direccion_server = response.data.direccion_server;
+            this.data.path = response.data.path;
             this.datatable.row(this.idRow).data(this.data);
           });
         }).catch(error => {
@@ -289,7 +296,7 @@
           this.btnSubmit = false;
           this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
           this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index();
-          this.src = this.data.direccion_server.replace("public", "storage");
+          this.src = this.data.path.replace("public", "storage");
           $("#adjuntarModal").modal("show");
         }.bind(this));
       },
@@ -324,7 +331,6 @@
       },
 
       mostrarBotonReservar() {
-        console.log($("#ultimo").val() == "nada");
         if($("#ultimo").val() == "nada") {
           this.showBotonReservar = true;
         } else {

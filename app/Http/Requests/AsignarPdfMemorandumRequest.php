@@ -27,4 +27,20 @@ class AsignarPdfMemorandumRequest extends FormRequest
             'pdf' => 'required|mimes:pdf|max:3000'
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'pdf' => 'archivo'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'pdf.required' => 'El :attribute es requerido',
+            'pdf.mimes:pdf' => 'El :attribute debe ser un pdf',
+            'pdf.max:3000' => 'El :attribute debe pesar como máximo 3MB',
+        ];
+    }
 }

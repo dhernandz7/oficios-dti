@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
         	DepartamentosTableSeeder::class,
-        	GenerosTableSeeder::class
+        	GenerosTableSeeder::class,
+            TipoDocumentoTableSeeder::class
         ]);
     }
 }
