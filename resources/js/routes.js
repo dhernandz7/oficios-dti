@@ -42,6 +42,24 @@ export default new Router({
 		meta: {title: 'Memorándum'}
 	},
 	{
+		path: '/usuarios',
+		name: 'usuarios',
+		component: require('./components/AdminUsuariosComponent').default,
+		meta: {title: 'Usuarios'}
+	},
+	{
+		path: '/roles',
+		name: 'roles',
+		component: require('./components/RolesComponent').default,
+		meta: {title: 'Roles'}
+	},
+	{
+		path: '/permisos',
+		name: 'permisos',
+		component: require('./components/PermisosComponent').default,
+		meta: {title: 'Permisos'}
+	},
+	{
 		path: '*',
 		component: require('./views/404').default,
 		title: 'Página no encontrada'

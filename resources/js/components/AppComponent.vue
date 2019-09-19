@@ -5,11 +5,11 @@
 </template>
 <style>
 	.router-link-exact-active{
-		margin: 0 -1px;
-		border-bottom: 2px solid #4cc8f1;
+		border-bottom: solid #42b983;
+		border-radius: 0 !important;
 	}
 	.router-link-active{
-		margin: 0 -1px;
-		border-bottom: 2px solid #4cc8f1;
+		border-bottom: solid #42b983;
+		border-radius: 0 !important;
 	}
 </style>

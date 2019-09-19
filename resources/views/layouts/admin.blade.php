@@ -30,6 +30,20 @@
         <hr class="sidebar-divider">
         <div class="sidebar-heading">MÓDULOS</div>
         <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#administracion" aria-expanded="true" aria-controls="administracion">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Usuarios</span>
+          </a>
+          <div id="administracion" class="collapse" aria-labelledby="administracion" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Administración</h6>
+              <router-link :to="{name: 'roles'}" class="collapse-item">Roles</router-link>
+              <router-link :to="{name: 'permisos'}" class="collapse-item">Permisos</router-link>
+              <router-link :to="{name: 'usuarios'}" class="collapse-item">Usuarios</router-link>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-file-pdf"></i>
             <span>Documentos</span>
@@ -102,25 +116,13 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="user mr-2 d-none d-lg-inline text-gray-600 small"></span>
                   <i class="fa fa-user"></i>
-                  {{-- <img class="img-profile rounded-circle" src="img/undraw_posting_photo.svg"> --}}
+                  <!--<img class="img-profile rounded-circle" src="img/undraw_posting_photo.svg">-->
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                   <router-link :to="{name: 'perfil'}" class="dropdown-item">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Perfil
                   </router-link>
-                  {{-- <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Perfil
-                  </a> --}}
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Configuración
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logs
-                  </a>
                   <div class="dropdown-divider"></div>
                   <button class="logout dropdown-item">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

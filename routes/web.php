@@ -7,36 +7,19 @@ Auth::routes([
 Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('index', 'HomeController@index')->name('index');
 
-// Rutas de administrador
-Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
-	Route::get('/', 'HomeController@admin')->name('admin.index')->middleware('role:admin');
-	Route::resource('permisos', 'PermissionsController')->middleware('role:admin');
-	Route::get('usuarios', 'UserController@asignacionUser')->name('admin.asignacion.usuarios')->middleware('permission:admin.asignacion.usuarios');
-	Route::put('updateRol/{id}', 'UserController@updateRol')->name('admin.actualizar.rol')->middleware('permission:admin.actualizar.rol');
-	Route::get('getPermisos', 'PermissionsController@getPermisos')->name('admin.get.permisos')->middleware('permission:admin.get.permisos');
-	Route::get('getRoles', 'RoleController@getRoles')->name('admin.get.roles')->middleware('permission:admin.get.roles');
-	Route::get('getGeneroUsers', 'UserController@getGeneroUsers')->name('admin.get.generos')->middleware('permission:admin.get.generos');
-	Route::post('register', 'UserController@register')->name('admin.register')->middleware('permission:admin.registrar');
-	Route::get('get/users','UserController@getUsers')->name('admin.get.users')->middleware('permission:admin.get.users');
-	Route::get('intrusos', 'IntrusoController@index')->name('admin.intrusos.index')->middleware('permission:admin.intrusos.index');
-	Route::get('get/intrusos', 'IntrusoController@getIntrusos')->name('admin.get.intrusos')->middleware('permission::admin.get.intrusos');
+Route::prefix('api')->middleware(['auth', 'verified'])->group(function() {
+	Route::get('usuarios', 'AdminController@index')->name('api.admin.usuarios.index');
+	Route::get('usuarios/{id}', 'AdminController@update')->name('api.admin.usuarios.update');
+	Route::delete('usuarios/{id}', 'AdminController@destroy')->name('api.admin.usuarios.destroy');
+	Route::put('usuarios/{id}/rol', 'AdminController@role')->name('api.admin.usuarios.rol.update');
 
-	//Roles
-	Route::post('roles/store', 'RoleController@store')->name('admin.roles.store')->middleware('permission:admin.roles.create');
-	Route::get('roles', 'RoleController@index')->name('admin.roles.index')->middleware('permission:admin.roles.index');
-	Route::get('roles/create', 'RoleController@create')->name('admin.roles.create')->middleware('permission:admin.roles.create');
-	Route::put('roles/{role}', 'RoleController@update')->name('admin.roles.update')->middleware('permission:admin.roles.edit');
-	Route::get('roles/{id}', 'RoleController@show')->name('admin.roles.show')->middleware('permission:admin.roles.show');
-	Route::delete('roles/{role}', 'RoleController@destroy')->name('admin.roles.destroy')->middleware('permission:admin.roles.destroy');
-	Route::get('roles/{id}/edit', 'RoleController@edit')->name('admin.roles.edit')->middleware('permission:admin.roles.edit');
-	
-	// Usuarios
-	Route::put('nuevoAdministrador', 'UserController@nuevoAdministrador')->name('admin.registrar.usuario')->middleware('permission:admin.registrar.usuario');
-	Route::get('users', 'UserController@index')->name('admin.users.index')->middleware('permission:admin.users.index');
-	Route::put('users/{user}', 'UserController@update')->name('admin.users.update')->middleware('permission:admin.users.edit');
-	Route::get('users/{user}', 'UserController@show')->name('admin.users.show')->middleware('permission:admin.users.show');
-	Route::delete('users/{user}', 'UserController@destroy')->name('admin.users.destroy')->middleware('permission:admin.users.destroy');
-	Route::get('users/{user}/edit', 'UserController@edit')->name('admin.users.edit')->middleware('permission:admin.users.edit');
+	Route::get('roles', 'RoleController@index')->name('api.admin.roles.index');
+	Route::put('roles/{id}', 'RoleController@update')->name('api.admin.roles.update');
+	Route::delete('roles/{id}', 'RoleController@delete')->name('api.admin.roles.delete');
+
+	Route::get('permisos', 'PermissionController@index')->name('api.admin.permisos.index');
+	Route::put('permisos/{id}', 'PermissionController@update')->name('api.admin.permisos.update');
+	Route::delete('permisos/{id}', 'PermissionController@delete')->name('api.admin.permisos.delete');
 });
 
 Route::prefix('api/user')->middleware(['auth', 'verified'])->group(function() {
