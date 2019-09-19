@@ -2,7 +2,6 @@
 
 @section('titulo', 'Inicio')
 @section('contenido')
-@include('layouts.dashboard')
 <div>
   <h1 class="jumbotron-heading"><i class="fa fa-newspaper mr-2"></i>Inicio</h1>
   <p class="lead text-muted">Sección de noticias</p>

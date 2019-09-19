@@ -14,7 +14,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
         	DepartamentosTableSeeder::class,
         	GenerosTableSeeder::class,
-            TipoDocumentoTableSeeder::class
+            TipoDocumentoTableSeeder::class,
+            PermissionsTableSeeder::class,
+            RolesTableSeeder::class,
+            PermissionsRolesTableSeeder::class
         ]);
     }
 }

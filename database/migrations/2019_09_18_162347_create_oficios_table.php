@@ -19,10 +19,6 @@ class CreateOficiosTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        DB::unprepared("
-
-        ");
     }
 
     /**
