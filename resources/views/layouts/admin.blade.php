@@ -29,6 +29,7 @@
         </li>
         <hr class="sidebar-divider">
         <div class="sidebar-heading">MÓDULOS</div>
+        @can('admin')
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#administracion" aria-expanded="true" aria-controls="administracion">
             <i class="fas fa-fw fa-users"></i>
@@ -43,6 +44,7 @@
             </div>
           </div>
         </li>
+        @endcan
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-file-pdf"></i>

@@ -1906,7 +1906,7 @@ __webpack_require__.r(__webpack_exports__);
     inicializarTabla: function inicializarTabla() {
       this.datatable = $('#datatable').DataTable({
         ajax: '/api/dictamen',
-        order: [[1, 'asc'], [0, 'asc']],
+        order: [[2, 'asc'], [1, 'asc']],
         lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
         info: true,
         paging: true,
@@ -2368,7 +2368,7 @@ __webpack_require__.r(__webpack_exports__);
     inicializarTabla: function inicializarTabla() {
       this.datatable = $('#datatable').DataTable({
         ajax: '/api/memorandum',
-        order: [[1, 'asc'], [0, 'asc']],
+        order: [[2, 'asc'], [1, 'asc']],
         lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
         info: true,
         paging: true,
@@ -2719,7 +2719,7 @@ __webpack_require__.r(__webpack_exports__);
     inicializarTabla: function inicializarTabla() {
       this.datatable = $('#datatable').DataTable({
         ajax: '/api/oficio',
-        order: [[1, 'asc'], [0, 'asc']],
+        order: [[2, 'asc'], [1, 'asc']],
         lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
         info: true,
         paging: true,
@@ -2984,6 +2984,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -75951,15 +75954,13 @@ var render = function() {
       _c("div", { staticClass: "col-md-4" }),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-8" }, [
-        _vm._m(1),
-        _vm._v(" "),
         _c("h3", {}, [_vm._v(_vm._s(_vm.user.name))]),
         _vm._v(" "),
         _c("h4", { staticClass: "text-info" }, [
           _vm._v(_vm._s(_vm.user.departamento))
         ]),
         _vm._v(" "),
-        _vm._m(2),
+        _vm._m(1),
         _vm._v(" "),
         _c(
           "div",
@@ -76087,6 +76088,12 @@ var render = function() {
                       ])
                     ]
                   )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "alert alert-info" }, [
+                  _vm._v(
+                    "\n\t\t\t\t\t\tEsta opción se encuentra en desarrollo.\n\t\t\t\t\t"
+                  )
                 ])
               ]
             )
@@ -76105,19 +76112,6 @@ var staticRenderFns = [
       _c("i", { staticClass: "fa fa-user mr-2" }),
       _vm._v("Mi perfil")
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-outline-secondary float-right" },
-      [
-        _c("i", { staticClass: "fa fa-edit fa-lg mr-2" }),
-        _vm._v("\n\t\t\t\tModificar perfil\n\t\t\t")
-      ]
-    )
   },
   function() {
     var _vm = this
@@ -92075,7 +92069,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     name: 'perfil',
     component: __webpack_require__(/*! ./components/PerfilUsuarioComponent */ "./resources/js/components/PerfilUsuarioComponent.vue")["default"],
     meta: {
-      title: 'Memorándum'
+      title: 'Mi perfil'
     }
   }, {
     path: '/usuarios',

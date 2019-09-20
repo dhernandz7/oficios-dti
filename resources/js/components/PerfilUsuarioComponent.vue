@@ -6,10 +6,10 @@
 				
 			</div>
 			<div class="col-md-8">
-				<button class="btn btn-outline-secondary float-right">
+				<!--button class="btn btn-outline-secondary float-right">
 					<i class="fa fa-edit fa-lg mr-2"></i>
 					Modificar perfil
-				</button>
+				</button-->
 				<h3 class="">{{user.name}}</h3>
 				<h4 class="text-info">{{user.departamento}}</h4>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -34,6 +34,9 @@
 								<option value="1">Masculino</option>
 								<option value="2">Femenino</option>
 							</select>
+						</div>
+						<div class="alert alert-info">
+							Esta opción se encuentra en desarrollo.
 						</div>
 					</div>
 				</div>

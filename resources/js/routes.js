@@ -39,7 +39,7 @@ export default new Router({
 		path: '/perfil',
 		name: 'perfil',
 		component: require('./components/PerfilUsuarioComponent').default,
-		meta: {title: 'Memorándum'}
+		meta: {title: 'Mi perfil'}
 	},
 	{
 		path: '/usuarios',

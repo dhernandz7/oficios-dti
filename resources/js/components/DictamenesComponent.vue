@@ -85,7 +85,7 @@
       inicializarTabla() {
         this.datatable = $('#datatable').DataTable({
           ajax: '/api/dictamen',
-          order: [[1,'asc'], [0, 'asc']],
+          order: [[2,'asc'], [1, 'asc']],
           lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
           info: true,
           paging: true,

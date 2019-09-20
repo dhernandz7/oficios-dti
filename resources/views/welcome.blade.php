@@ -24,7 +24,7 @@
             </div>
         </header>
         <main role="main" class="inner cover">
-            <h1 class="cover-heading">Bienvenido</h1>
+            <h1 class="cover-heading">Bienvenido a <span class="app-name-od"></span></h1>
             <p class="lead">
                 Sistema para gestión de oficios, memorándum y dictámenes de la Dirección de Tecnologías de la Información
             </p>
@@ -44,9 +44,10 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            if(localStorage.getItem('app-name') == null) {
-                localStorage.setItem('app-name', "{{config('app.name')}}");
+            if(localStorage.getItem('app-name-od') == null) {
+                localStorage.setItem('app-name-od', "{{config('app.name')}}");
             }
+            document.getElementsByClassName('app-name-od')[0].innerHTML = localStorage.getItem('app-name-od');
         });
     </script>
 </body>
