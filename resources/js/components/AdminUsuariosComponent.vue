@@ -46,7 +46,7 @@
 					autoWidth: false,
 					columns: [
 					{'data': 'id', 'name': 'id', 'visible': false},
-					{'data': 'dpi', 'name': 'dpi'},
+					{'data': 'dpi', 'name': 'dpi', 'visible': false},
 					{'data': 'name', 'name': 'name'},
 					{'data': 'genero_id', 'name': 'genero_id', "render": function(data) {
 						if(data == 1) {
@@ -68,10 +68,11 @@
 					{"render": function(data, type, row) {
 						return `
 						<div class="dropdown dropleft text-right">
-						<i class="fa fa-cog fa-lg link" data-toggle="dropdown">
-						</i>
+						<button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Opciones
+						</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-							<router-link :to="{name: 'oficios'}" class="dropdown-item">Oficios</router-link>
+						<router-link :to="{name: 'oficios'}" class="dropdown-item"><i class="fa fa-book mr-2"></i>Oficios</router-link>
 						</div>
 						</div>
 						`

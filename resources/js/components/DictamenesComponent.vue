@@ -132,7 +132,6 @@
             } else {
               opciones += `
               <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
-              <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
             }
             return `

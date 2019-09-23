@@ -23,5 +23,23 @@ class PermissionsTableSeeder extends Seeder
             'slug'          => 'documentos',
             'description'   => 'Visualiza el módulo de documentos'
         ]);
+
+        Permission::create([
+            'name'          => 'Oficios',
+            'slug'          => 'oficios',
+            'description'   => 'Visualiza el módulo de oficios'
+        ]);
+
+        Permission::create([
+            'name'          => 'Dictámenes',
+            'slug'          => 'dictamenes',
+            'description'   => 'Visualiza el módulo de dictámenes'
+        ]);
+
+        Permission::create([
+            'name'          => 'Memorándum',
+            'slug'          => 'memorandum',
+            'description'   => 'Visualiza el módulo de memorándum'
+        ]);
     }
 }

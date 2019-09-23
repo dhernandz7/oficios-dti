@@ -26,22 +26,22 @@ Route::prefix('api/user')->middleware(['auth', 'verified'])->group(function() {
 	Route::get('/{id}', 'UserController@show')->name('api.user.show');
 });
 Route::prefix('api/oficio')->middleware(['auth', 'verified'])->group(function(){
-	Route::get('/', 'OficioController@index')->name('oficio.index');
-	Route::post('/', 'OficioController@reservarAutomaticamente')->name('api.oficio.asignar-automaticamente');
-	Route::post('/reservar', 'OficioController@reservar')->name('api.oficio.reservar');
-	Route::post('{id}/pdf', 'OficioController@pdf')->name('api.oficio.pdf.store');
+	Route::get('/', 'OficioController@index')->name('api.oficio.index')->middleware('permission:api.oficio.index');
+	Route::post('/', 'OficioController@reservarAutomaticamente')->name('api.oficio.asignar-automaticamente')->middleware('permission:api.asignar-automaticamente');
+	Route::post('/reservar', 'OficioController@reservar')->name('api.oficio.reservar')->middleware('permission:api.oficio.reservar');
+	Route::post('{id}/pdf', 'OficioController@pdf')->name('api.oficio.pdf.store')->middleware('permission:api.oficio.pdf.store');
 });
 Route::prefix('api/dictamen')->middleware(['auth', 'verified'])->group(function(){
-	Route::get('/', 'DictamenController@index')->name('dictamen.index');
-	Route::post('/', 'DictamenController@reservarAutomaticamente')->name('api.dictamen.asignar-automaticamente');
-	Route::post('/reservar', 'DictamenController@reservar')->name('api.dictamen.reservar');
-	Route::post('{id}/pdf', 'DictamenController@pdf')->name('api.dictamen.pdf.store');
+	Route::get('/', 'DictamenController@index')->name('api.dictamen.index')->middleware('permission:api.dictamen.index');
+	Route::post('/', 'DictamenController@reservarAutomaticamente')->name('api.dictamen.asignar-automaticamente')->middleware('permission:api.dictamen.asignar-automaticamente');
+	Route::post('/reservar', 'DictamenController@reservar')->name('api.dictamen.reservar')->middleware('permission:api.dictamen.reservar');
+	Route::post('{id}/pdf', 'DictamenController@pdf')->name('api.dictamen.pdf.store')->middleware('permission:api.dictamen.pdf.store');
 });
 Route::prefix('api/memorandum')->middleware(['auth', 'verified'])->group(function(){
-	Route::get('/', 'MemorandumController@index')->name('memorandum.index');
-	Route::post('/', 'MemorandumController@reservarAutomaticamente')->name('api.memorandum.asignar-automaticamente');
-	Route::post('/reservar', 'MemorandumController@reservar')->name('api.memorandum.reservar');
-	Route::post('{id}/pdf', 'MemorandumController@pdf')->name('api.memorandum.pdf.store');
+	Route::get('/', 'MemorandumController@index')->name('api.memorandum.index')->middleware('permission:api.memorandum.index');
+	Route::post('/', 'MemorandumController@reservarAutomaticamente')->name('api.memorandum.asignar-automaticamente')->middleware('permission:api.memorandum.asignar-automaticamente');
+	Route::post('/reservar', 'MemorandumController@reservar')->name('api.memorandum.reservar')->middleware('permission:api.memorandum.reservar');
+	Route::post('{id}/pdf', 'MemorandumController@pdf')->name('api.memorandum.pdf.store')->middleware('permission:api.memorandum.pdf.store');
 });
 
 Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');

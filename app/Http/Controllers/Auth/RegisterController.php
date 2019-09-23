@@ -69,4 +69,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function showRegistrationForm()
+    {
+        return abort(503, "Lo sentimos, en esta aplicación no está disponible la opción de registro :(");
+    }
 }

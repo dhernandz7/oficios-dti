@@ -1748,7 +1748,8 @@ __webpack_require__.r(__webpack_exports__);
           'visible': false
         }, {
           'data': 'dpi',
-          'name': 'dpi'
+          'name': 'dpi',
+          'visible': false
         }, {
           'data': 'name',
           'name': 'name'
@@ -1781,7 +1782,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         }, {
           "render": function render(data, type, row) {
-            return "\n\t\t\t\t\t<div class=\"dropdown dropleft text-right\">\n\t\t\t\t\t<i class=\"fa fa-cog fa-lg link\" data-toggle=\"dropdown\">\n\t\t\t\t\t</i>\n\t\t\t\t\t<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n\t\t\t\t\t\t<router-link :to=\"{name: 'oficios'}\" class=\"dropdown-item\">Oficios</router-link>\n\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t";
+            return "\n\t\t\t\t\t<div class=\"dropdown dropleft text-right\">\n\t\t\t\t\t<button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n\t\t\t\t\tOpciones\n\t\t\t\t\t</button>\n\t\t\t\t\t<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n\t\t\t\t\t<router-link :to=\"{name: 'oficios'}\" class=\"dropdown-item\"><i class=\"fa fa-book mr-2\"></i>Oficios</router-link>\n\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t";
           }
         }],
         language: {
@@ -1964,7 +1965,7 @@ __webpack_require__.r(__webpack_exports__);
             } else if (row.name == null && row.path == null) {
               return '';
             } else {
-              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
+              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            ";
             }
 
             return "\n          <div class=\"dropdown dropleft text-right\">\n          <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Opciones\n          </button>\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n          ".concat(opciones, "\n          </div>\n          </div>\n          ");
@@ -2777,7 +2778,7 @@ __webpack_require__.r(__webpack_exports__);
             } else if (row.name == null && row.path == null) {
               return '';
             } else {
-              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            <button class=\"adjuntar dropdown-item\"><i class=\"fa fa-upload mr-2\"></i>Subir documento</button>\n            ";
+              opciones += "\n            <button class=\"mostrar dropdown-item\"><i class=\"fa fa-file-pdf mr-2\"></i>Mostrar documento</button>\n            ";
             }
 
             return "\n          <div class=\"dropdown dropleft text-right\">\n          <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Opciones\n          </button>\n          <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\n          ".concat(opciones, "\n          </div>\n          </div>\n          ");

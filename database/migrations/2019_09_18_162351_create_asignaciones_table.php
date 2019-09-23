@@ -25,6 +25,11 @@ class CreateAsignacionesTable extends Migration
 
             $table->foreign('tipo_documento_id', 'fk_asignaciones_tipo_documento')->references('id')->on('tipo_documento');
             $table->foreign('user_id', 'fk_asignaciones_users')->references('id')->on('users');
+            $table->unique([
+                'oficio_id',
+                'oficio_anio',
+                'tipo_documento_id'
+            ], 'unique_asignaciones');
         });
     }
 

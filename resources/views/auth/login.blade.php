@@ -10,16 +10,16 @@
         <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión<br><small class="app-name"></small></h1>
     </div>
     <div class="form-label-group">
-        <input type="text" id="username" name="username" value="{{ old('username') }}" class="form-control" placeholder="Ingrese su usuario de windows" required {{ old('username') ? '' : 'autofocus' }}>
-        <label for="username" title="Usuario de windows">Usuario de Windows</label>
+        <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Introdúzca su correo mineco" required {{ old('email') ? '' : 'autofocus' }}>
+        <label for="email" title="Correo mineco">Correo mineco</label>
     </div>    
     <div class="form-label-group">
-        <input type="password" id="password" name="password" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="Contraseña" required>
+        <input type="password" id="password" name="password" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Contraseña" required>
         <label for="password">Contraseña</label>
         <a href="#" id="show-password" class="float-right my-2 text-decoration-none text-danger">Mostrar contraseña</a>
-        @if ($errors->has('username'))
+        @if ($errors->has('email'))
         <span class="text-danger">
-            {{ $errors->first('username') }}
+            {{ $errors->first('email') }}
         </span>
         @endif
     </div>

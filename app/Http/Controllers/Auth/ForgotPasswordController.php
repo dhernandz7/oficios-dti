@@ -29,4 +29,9 @@ class ForgotPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function showLinkRequestForm()
+    {
+        return abort(503, "Lo sentimos, en esta aplicación no está disponible la opción de reinicio de contraseña, por favor consulte en la Dirección de Tecnologías de la Información como solicitar un reinicio de contraseña");
+    }
 }

@@ -9,6 +9,19 @@
   <meta name="author" content="">
   <title>Documentos DTI</title>
   <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    .cards tbody td {
+      display: block;
+    }
+    .cards tbody tr {
+      float: left;
+      width: 20rem;
+      margin: 0.5rem;
+      border: 0.0625rem solid;
+      border-radius: 25rem;
+      box-shadow: 0.25rem 0.5rem rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body id="page-top">
   <div id="app">
@@ -45,6 +58,7 @@
           </div>
         </li>
         @endcan
+        @can('documentos')
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-file-pdf"></i>
@@ -53,12 +67,19 @@
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">ACCESO</h6>
+              @can('oficios')
               <router-link :to="{name: 'oficios'}" class="collapse-item">Oficios</router-link>
+              @endcan
+              @can('dictamenes')
               <router-link :to="{name: 'dictamenes'}" class="collapse-item">Dictámenes</router-link>
+              @endcan
+              @can('memorandum')
               <router-link :to="{name: 'memorandums'}" class="collapse-item">Memorándum</router-link>
+              @endcan
             </div>
           </div>
         </li>
+        @endcan
         <hr class="sidebar-divider d-none d-md-block">
         <div class="text-center d-none d-md-inline">
           <button class="rounded-circle border-0" id="sidebarToggle"></button>
