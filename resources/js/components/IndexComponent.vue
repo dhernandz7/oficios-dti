@@ -15,7 +15,7 @@
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{oficiosPendientes}}</div>
 							</div>
 							<div class="col-auto">
-								<i class="fas fa-calendar fa-2x text-gray-300"></i>
+								<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
 							</div>
 						</div>
 					</div>
@@ -34,7 +34,7 @@
 								<div class="h5 mb-0 font-weight-bold text-gray-800">{{dictamenesPendientes}}</div>
 							</div>
 							<div class="col-auto">
-								<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+								<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
 							</div>
 						</div>
 					</div>
@@ -54,11 +54,11 @@
 									<div class="col-auto">
 										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{memorandumsPendientes}}</div>
 									</div>
-									<div class="col">
+									<!--div class="col">
 										<div class="progress progress-sm mr-2">
 											<div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
-									</div>
+									</div-->
 								</div>
 							</div>
 							<div class="col-auto">
@@ -81,22 +81,53 @@
 				memorandumsPendientes: 0
 			}
 		},
-		methods: {
-			getOficiosPendientes() {
-				return 35;
-			},
-			getDictamenesPendientes() {
-				return 1;
-			},
-			getMemorandumsPendientes() {
-				return 25;
-			}
-		},
 		mounted() {
-			this.oficiosPendientes = this.getOficiosPendientes();
-			this.dictamenesPendientes = this.getDictamenesPendientes();
-			this.memorandumsPendientes = this.getMemorandumsPendientes();
+			this.getConteo('/api/oficio/get/pendientes',this.setOficiosPendientes);
+			this.getConteo('/api/dictamen/get/pendientes',this.setDictamenesPendientes);
+			this.getConteo('/api/memorandum/get/pendientes',this.setMemorandumsPendientes);
 
+		},
+		methods: {
+			getConteo(url, callback) {
+				let conteo = null;
+				axios.get(url).then(response => {
+					callback(response.data.conteo);
+				})
+				.catch(error => {
+					this.mostrarErrores(error, "Error al obtener los oficios pendientes", "Ha ocurrido un error");
+				});
+				return conteo;
+			},
+			setOficiosPendientes(conteo) {
+				this.oficiosPendientes = conteo;
+			},
+			setDictamenesPendientes(conteo) {
+				this.dictamenesPendientes = conteo;
+			},
+			setMemorandumsPendientes(conteo) {
+				this.memorandumsPendientes = conteo;
+			},
+			mostrarErrores(error, titulo, mensaje) {
+				let cadena = '';
+				if(error.response.status == 403) {
+					cadena = 'No tiene permisos para realizar esta acción';
+				} else if(error.response.status == 404) {
+					cadena = 'No se encontró la ruta a la que intenta acceder';
+				} else if(error.response.status == 500) {
+					cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+				} else if(error.response.status == 503){
+					cadena = error.response.request.response;
+				} else if (error.response.status == 422) {
+					let response = JSON.parse(error.response.request.response);
+					cadena = `${mensaje}`;
+					cadena += '<ul class="list-group">';
+					$.each(response.errors, function (i, field) {
+						cadena +=`<li class="list-group-item"><span class="text-danger">${field}</span></li>`;
+					});
+					cadena += '</ul>';
+				}
+				Swal.fire(titulo, `${cadena}`, 'error');
+			}
 		}
 	}
 </script>

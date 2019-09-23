@@ -8,6 +8,7 @@ use App\Http\Requests\AsignarOficioRequest;
 use App\Http\Requests\AsignarPdfOficioRequest;
 use App\Oficio;
 use App\Asignacion;
+use DB;
 
 class OficioController extends Controller
 {
@@ -104,5 +105,19 @@ class OficioController extends Controller
                 return response()->json("Ocurrió un error. Por favor intente más tarde", 503);
             }
         }
+    }
+
+    public function oficiosPendientes()
+    {
+        $oficios = DB::table('oficios')
+        ->select(DB::raw('COUNT(oficios.id) as conteo'))
+        ->leftJoin('asignaciones', function($join) {
+            $join->on('oficios.id', '=', 'asignaciones.oficio_id');
+            $join->on('oficios.anio', '=', 'asignaciones.oficio_anio')
+            ->where('asignaciones.tipo_documento_id', '=', 1)
+            ->where('asignaciones.path', '=', null);
+        })
+        ->first();
+        return response()->json($oficios, 200);
     }
 }

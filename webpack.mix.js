@@ -18,6 +18,6 @@ mix.js('resources/js/admin.js', 'public/js')
    .sass('resources/sass/admin.scss', 'public/css');
 
 mix.js('resources/js/session.js', 'public/js')
-   .sass('resources/sass/session.scss', 'public/css');
+   .sass('resources/sass/session.scss', 'public/css').sourceMaps();
 
 mix.sass('resources/sass/cover.scss', 'public/css');

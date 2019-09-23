@@ -31,7 +31,7 @@
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fa fa-sign-in fa-lg mr-2"></i>Acceder</button>
     <div class="text-center mt-3">
-        <a class="btn btn-link text-center link" href="/password/reset">Olvidé mi contraseña</a>
+        <!-- a class="btn btn-link text-center link" href="/password/reset">Olvidé mi contraseña</a-->
     </div>
     <!-- <p class="mt-5 mb-3 text-muted text-center">&copy; 2018-2019</p> -->
 </form>

@@ -241,7 +241,7 @@
               }).then((result) => {
                 this.data = response.data;
                 this.data.created_at = this.data.created_at.date;
-                this.datatable.row.add(this.data).draw();
+                this.datatable.row.add(this.data).draw(false);
               });
             })
             .catch(error => {

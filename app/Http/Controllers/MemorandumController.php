@@ -8,6 +8,7 @@ use App\Http\Requests\AsignarMemorandumRequest;
 use App\Http\Requests\AsignarPdfMemorandumRequest;
 use App\Memorandum;
 use App\Asignacion;
+use DB;
 
 class MemorandumController extends Controller
 {
@@ -104,5 +105,19 @@ class MemorandumController extends Controller
                 return response()->json("Ocurrió un error. Por favor intente más tarde", 503);
             }
         }
+    }
+
+    public function memorandumsPendientes()
+    {
+        $memorandums = DB::table('memorandums')
+        ->select(DB::raw('COUNT(memorandums.id) as conteo'))
+        ->leftJoin('asignaciones', function($join) {
+            $join->on('memorandums.id', '=', 'asignaciones.oficio_id');
+            $join->on('memorandums.anio', '=', 'asignaciones.oficio_anio')
+            ->where('asignaciones.tipo_documento_id', '=', 1)
+            ->where('asignaciones.path', '=', null);
+        })
+        ->first();
+        return response()->json($memorandums, 200);
     }
 }

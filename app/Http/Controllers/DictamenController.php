@@ -8,6 +8,7 @@ use App\Http\Requests\AsignarDictamenRequest;
 use App\Http\Requests\AsignarPdfDictamenRequest;
 use App\Dictamen;
 use App\Asignacion;
+use DB;
 
 class DictamenController extends Controller
 {
@@ -104,5 +105,19 @@ class DictamenController extends Controller
                 return response()->json("Ocurrió un error. Por favor intente más tarde", 503);
             }
         }
+    }
+
+    public function dictamenesPendientes()
+    {
+        $dictamenes = DB::table('dictamenes')
+        ->select(DB::raw('COUNT(dictamenes.id) as conteo'))
+        ->leftJoin('asignaciones', function($join) {
+            $join->on('dictamenes.id', '=', 'asignaciones.oficio_id');
+            $join->on('dictamenes.anio', '=', 'asignaciones.oficio_anio')
+            ->where('asignaciones.tipo_documento_id', '=', 1)
+            ->where('asignaciones.path', '=', null);
+        })
+        ->first();
+        return response()->json($dictamenes, 200);
     }
 }
