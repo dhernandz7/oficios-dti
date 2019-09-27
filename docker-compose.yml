@@ -1,0 +1,86 @@
+version: '3'
+services:
+ 
+  #PHP
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mi-app-laravel
+    container_name: app2
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - /var/tmp/docker/conf/service2/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network-b
+ 
+  #servers
+  server12:
+    image: nginx:alpine
+    container_name: server12
+    restart: unless-stopped
+    tty: true
+    #ports:
+    #  - "80:80"
+    #  - "443:443"
+    volumes:
+      - ./:/var/www
+      - /var/tmp/docker/conf/service2/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network-b
+
+  server23:
+    image: nginx:alpine
+    container_name: server23
+    restart: unless-stopped
+    tty: true
+    #ports:
+    #  - "80:80"
+    #  - "443:443"
+    volumes:
+      - ./:/var/www
+      - /var/tmp/docker/conf/service2/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network-b
+
+  # balanceador
+  nginx2:
+    image: nginx:alpine
+    container_name: balanceador2
+    links:
+      - server12
+      - server23
+    ports:
+      - "81:80"
+    volumes:
+      - /var/tmp/docker/conf/service2/nginx/balancer/site.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - app-network-b
+ 
+  #MySQL
+  #db:
+    #image: mysql:5.7.22
+    #container_name: db
+    #command: --default-authentication-plugin=mysql_native_passwordec
+    #restart: always
+    #environment:
+      #MYSQL_DATABASE: laravel
+      #MYSQL_ROOT_PASSWORD: 1234
+      #SERVICE_TAGS: dev
+      #SERVICE_NAME: mysql
+    #volumes:
+      #- /var/tmp/docker/data/mysql:/var/lib/mysql/
+      #- /var/tmp/docker/conf/mysql/my.cnf:/etc/mysql/my.cnf
+    #networks:
+      #- app-network-b
+ 
+#Redes
+networks:
+  app-network-b:
+    driver: bridge
