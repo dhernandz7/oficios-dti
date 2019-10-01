@@ -85,7 +85,7 @@
       inicializarTabla() {
         this.datatable = $('#datatable').DataTable({
           ajax: '/api/memorandum',
-          order: [[2,'asc'], [1, 'asc']],
+          order: [[2,'desc'], [1, 'desc']],
           lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
           info: true,
           paging: true,
