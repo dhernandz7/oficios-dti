@@ -93,7 +93,7 @@ class DictamenController extends Controller
             \Storage::delete($asignacion->path);
         }
         $hash_pdf = "$request->oficio_id-";
-        $hash_pdf = $hash_pdf . str_replace("/", "", \Hash::make("$request->oficio_id-$request->oficio_anio"));
+        $hash_pdf = $hash_pdf . str_random(7); //str_replace("/", "", \Hash::make("$request->oficio_id-$request->oficio_anio"));
         $path = $request->file('pdf')->storeAs("public/dictamen/$request->oficio_anio", "$hash_pdf.pdf");
 
         if($path != null) {
