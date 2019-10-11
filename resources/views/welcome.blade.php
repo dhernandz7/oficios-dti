@@ -7,7 +7,7 @@
     <title>Bienvenido</title>
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/cover.css">
-    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/favicon.ico">
 </head>
 <body class="bg-mineco text-center text-white">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">

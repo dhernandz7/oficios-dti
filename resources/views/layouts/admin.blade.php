@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <title>Documentos DTI</title>
   <link rel="stylesheet" href="/css/admin.css">
-  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="/favicon.ico">
   <style>
     .cards tbody td {
       display: block;

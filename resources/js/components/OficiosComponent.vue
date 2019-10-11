@@ -30,7 +30,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="adjuntarModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
-              Memorándum DTI-OF-{{data.oficio_id}}-{{data.oficio_anio}}
+              Oficio DTI-OF-{{data.oficio_id}}-{{data.oficio_anio}}
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
