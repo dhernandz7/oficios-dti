@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="hidden" id="ultimo" value="nada">
-    <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Providencia</h1>
+    <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Providencias</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
       <button v-if="showBotonReservar" v-on:click="reservarAutomaticamente" id="reservar-providencia" class="btn btn-primary mb-3">
         <i class="fa fa-bell fa-lg mr-2"></i>
@@ -175,7 +175,7 @@
           Swal.fire({
             title: 'Reservar providencia',
             html: `
-            ¿Está seguro de reservar el providencia <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>?
+            ¿Está seguro de reservar una providencia <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>?
             `,
             type: 'question',
             showCancelButton: true,
@@ -188,7 +188,7 @@
               let formulario = new FormData();
               formulario.append('oficio_id', this.data.oficio_id);
               formulario.append('oficio_anio', this.data.oficio_anio);
-              formulario.append('tipo_documento_id', 3);
+              formulario.append('tipo_documento_id', 4);
               formulario.append('user_id', localStorage.getItem("id"));
               formulario.append('name', localStorage.getItem("nombre"));
               axios.post(`/api/providencia/reservar`, formulario)
@@ -218,7 +218,7 @@
         Swal.fire({
           title: 'Reservar providencia',
           html: `
-          ¿Está seguro de reservar un providencia?
+          ¿Está seguro de reservar una providencia?
           `,
           type: 'question',
           showCancelButton: true,
@@ -230,7 +230,7 @@
           if( result.value) {
             let formulario = new FormData();
             formulario.append('name', localStorage.getItem("nombre"));
-            formulario.append('tipo_documento_id', 3);
+            formulario.append('tipo_documento_id', 4);
             formulario.append('user_id', localStorage.getItem("id"));
             axios.post("/api/providencia", formulario)
             .then(response => {

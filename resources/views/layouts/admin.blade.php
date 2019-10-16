@@ -175,6 +175,9 @@
       if(localStorage.getItem('id') == null) {
         localStorage.setItem('id', "{{Auth::user()->id}}");
       }
+      if(localStorage.getItem('iniciales') == null) {
+        localStorage.setItem('iniciales', "{{Auth::user()->iniciales}}");
+      }
       if(localStorage.getItem('app-name-od') == null) {
         localStorage.setItem('app-name-od', "{{config('app.name')}}");
       }
