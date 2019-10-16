@@ -21,13 +21,14 @@
                     <a href="/oficios" class="nav-link">Oficios</a>
                     <a href="/dictamenes" class="nav-link">Dictámenes</a>
                     <a href="/memorandums" class="nav-link">Memorándum</a>
+                    <a href="/providencias" class="nav-link">Providencias</a>
                 </nav>
             </div>
         </header>
         <main role="main" class="inner cover">
             <h1 class="cover-heading">Bienvenido a <span class="app-name-od"></span></h1>
             <p class="lead">
-                Sistema para gestión de oficios, memorándum y dictámenes de la Dirección de Tecnologías de la Información
+                Sistema para gestión de oficios, memorándum, dictámenes y providencias de la Dirección de Asuntos Jurídicos
             </p>
             <p class="lead">
                 @auth
@@ -39,7 +40,7 @@
         </main>
         <footer class="mastfoot mt-auto">
             <div class="inner">
-                <p>Dirección de Tecnologías de la Informacíón - Ministerio de Economía</p>
+                <p>Desarrollado por la Dirección de Tecnologías de la Informacíón - Ministerio de Economía</p>
             </div>
         </footer>
     </div>
