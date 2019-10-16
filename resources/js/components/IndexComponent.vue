@@ -127,6 +127,7 @@
 			this.getConteo('/api/dictamen/get/pendientes',this.setDictamenesPendientes);
 			this.getConteo('/api/memorandum/get/pendientes',this.setMemorandumsPendientes);
 			this.getConteo('/api/providencia/get/pendientes',this.setProvidenciasPendientes);
+			this.getConteo('/api/providencia/get/pendientes',this.grafica);
 		},
 		updated() {
 		},
@@ -153,18 +154,19 @@
 			setProvidenciasPendientes(conteo) {
 				this.providenciasPendientes = conteo;
 			},
+			setGrafica(callback) {
+				callback();
+			},
 			grafica() {
-				//Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-				//Chart.defaults.global.defaultFontColor = '#858796';
 				var ctx = document.getElementById("myAreaChart");
 				var myLineChart = new Chart(ctx, {
-					type: 'line',
+					type: 'bar',
 					data: {
 						labels: ["Oficios", "Dictámenes", "Memorándum", "Providencias"],
 						datasets: [{
 							label: "Cantidad de documentos pendientes",
 							lineTension: 0.3,
-							backgroundColor: "rgba(78, 115, 223, 0.05)",
+							backgroundColor: "rgba(78, 115, 223, 1)",
 							borderColor: "rgba(78, 115, 223, 1)",
 							pointRadius: 3,
 							pointBackgroundColor: "rgba(78, 115, 223, 1)",
