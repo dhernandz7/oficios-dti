@@ -33,7 +33,7 @@ class StoreOficioRequest extends FormRequest
     {
         return [
             'tipo_documento_id' => 'tipo de documento',
-            'user_id' => 'id del usuario que está reservando el memorándum'
+            'user_id' => 'id del usuario que está reservando el oficio'
         ];
     }
 

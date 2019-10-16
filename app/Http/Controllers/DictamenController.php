@@ -114,7 +114,7 @@ class DictamenController extends Controller
         ->leftJoin('asignaciones', function($join) {
             $join->on('dictamenes.id', '=', 'asignaciones.oficio_id');
             $join->on('dictamenes.anio', '=', 'asignaciones.oficio_anio')
-            ->where('asignaciones.tipo_documento_id', '=', 1)
+            ->where('asignaciones.tipo_documento_id', '=', 2)
             ->where('asignaciones.path', '=', null);
         })
         ->first();

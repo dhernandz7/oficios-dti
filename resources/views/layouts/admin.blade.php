@@ -10,19 +10,6 @@
   <title>Documentos DTI</title>
   <link rel="stylesheet" href="/css/admin.css">
   <link rel="shortcut icon" type="image/png" href="/favicon.ico">
-  <style>
-    .cards tbody td {
-      display: block;
-    }
-    .cards tbody tr {
-      float: left;
-      width: 20rem;
-      margin: 0.5rem;
-      border: 0.0625rem solid;
-      border-radius: 25rem;
-      box-shadow: 0.25rem 0.5rem rgba(0,0,0,0.2);
-    }
-  </style>
 </head>
 <body id="page-top">
   <div id="app">
@@ -76,6 +63,9 @@
               @endcan
               @can('memorandum')
               <router-link :to="{name: 'memorandums'}" class="collapse-item">Memorándum</router-link>
+              @endcan
+              @can('providencia')
+              <router-link :to="{name: 'providencias'}" class="collapse-item">Providencias</router-link>
               @endcan
             </div>
           </div>

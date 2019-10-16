@@ -191,7 +191,7 @@
               formulario.append('tipo_documento_id', 3);
               formulario.append('user_id', localStorage.getItem("id"));
               formulario.append('name', localStorage.getItem("nombre"));
-              axios.post(`/api/memorandum/reservar`, formulario)
+              axios.post(`/api/providencia/reservar`, formulario)
               .then(response => {
                 Swal.fire({
                   title: "Providencia reservado",
@@ -232,7 +232,7 @@
             formulario.append('name', localStorage.getItem("nombre"));
             formulario.append('tipo_documento_id', 3);
             formulario.append('user_id', localStorage.getItem("id"));
-            axios.post("/api/memorandum", formulario)
+            axios.post("/api/providencia", formulario)
             .then(response => {
               Swal.fire({
                 title: "Providencia reservado",
@@ -269,7 +269,7 @@
         formulario.append("pdf", this.pdf);
         formulario.append("oficio_id", this.data.oficio_id);
         formulario.append("oficio_anio", this.data.oficio_anio);
-        axios.post(`api/memorandum/${this.data.asignacion_id}/pdf`, formulario).then(response => {
+        axios.post(`api/providencia/${this.data.asignacion_id}/pdf`, formulario).then(response => {
           $("#adjuntarModal").modal("toggle");
           Swal.fire({
             title: 'Pdf cargado',

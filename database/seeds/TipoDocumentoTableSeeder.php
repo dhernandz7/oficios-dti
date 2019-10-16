@@ -23,5 +23,9 @@ class TipoDocumentoTableSeeder extends Seeder
         TipoDocumento::create([
         	'tipo_documento' => 'Memorándum'
         ]);
+
+        TipoDocumento::create([
+            'tipo_documento' => 'Providencia'
+        ]);
     }
 }

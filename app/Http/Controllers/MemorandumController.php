@@ -114,7 +114,7 @@ class MemorandumController extends Controller
         ->leftJoin('asignaciones', function($join) {
             $join->on('memorandums.id', '=', 'asignaciones.oficio_id');
             $join->on('memorandums.anio', '=', 'asignaciones.oficio_anio')
-            ->where('asignaciones.tipo_documento_id', '=', 1)
+            ->where('asignaciones.tipo_documento_id', '=', 3)
             ->where('asignaciones.path', '=', null);
         })
         ->first();
