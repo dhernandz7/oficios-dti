@@ -14,10 +14,10 @@
               <th>Asignacion id</th>
               <th>dictámen id</th>
               <th>dictámen anio</th>
-              <th>Número de oficio</th>
+              <th>Número de dictámen</th>
               <th>Reservado por</th>
               <th>Fecha y hora de reservación</th>
-              <th>Estado del oficio</th>
+              <th>Estado del dictámen</th>
               <th class="text-right">Acciones</th>
             </tr>
           </thead>

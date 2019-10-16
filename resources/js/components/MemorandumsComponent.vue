@@ -14,7 +14,7 @@
               <th>Asignacion id</th>
               <th>Memorandum id</th>
               <th>Memorandum anio</th>
-              <th>Número de oficio</th>
+              <th>Número de memorándum</th>
               <th>Reservado por</th>
               <th>Fecha y hora de reservación</th>
               <th>Estado del memorándum</th>
