@@ -110,7 +110,7 @@ class MemorandumController extends Controller
     public function memorandumsPendientes()
     {
         $memorandums = DB::table('memorandums')
-        ->select(DB::raw('COUNT(memorandums.id) as conteo'))
+        ->select(DB::raw('COUNT(asignaciones.id) as conteo'))
         ->leftJoin('asignaciones', function($join) {
             $join->on('memorandums.id', '=', 'asignaciones.oficio_id');
             $join->on('memorandums.anio', '=', 'asignaciones.oficio_anio')
