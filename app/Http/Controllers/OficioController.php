@@ -110,7 +110,7 @@ class OficioController extends Controller
     public function oficiosPendientes()
     {
         $oficios = DB::table('oficios')
-        ->select(DB::raw('COUNT(oficios.id) as conteo'))
+        ->select(DB::raw('COUNT(asignaciones.id) as conteo'))
         ->leftJoin('asignaciones', function($join) {
             $join->on('oficios.id', '=', 'asignaciones.oficio_id');
             $join->on('oficios.anio', '=', 'asignaciones.oficio_anio')

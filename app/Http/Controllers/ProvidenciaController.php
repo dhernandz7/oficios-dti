@@ -110,7 +110,7 @@ class ProvidenciaController extends Controller
     public function providenciasPendientes()
     {
         $providencias = DB::table('providencias')
-        ->select(DB::raw('COUNT(providencias.id) as conteo'))
+        ->select(DB::raw('COUNT(asignaciones.id) as conteo'))
         ->leftJoin('asignaciones', function($join) {
             $join->on('providencias.id', '=', 'asignaciones.oficio_id');
             $join->on('providencias.anio', '=', 'asignaciones.oficio_anio')

@@ -185,6 +185,7 @@
         $('#logout').submit();
         localStorage.removeItem('nombre');
         localStorage.removeItem('id');
+        localStorage.removeItem('iniciales');
       });
       $(".user").html(localStorage.getItem('nombre'));
       $(".app-name").html(localStorage.getItem('app-name-od').replace("DTI", "<sup>DTI</sup>"));

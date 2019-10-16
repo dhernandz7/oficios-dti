@@ -110,7 +110,7 @@ class DictamenController extends Controller
     public function dictamenesPendientes()
     {
         $dictamenes = DB::table('dictamenes')
-        ->select(DB::raw('COUNT(dictamenes.id) as conteo'))
+        ->select(DB::raw('COUNT(asignaciones.id) as conteo'))
         ->leftJoin('asignaciones', function($join) {
             $join->on('dictamenes.id', '=', 'asignaciones.oficio_id');
             $join->on('dictamenes.anio', '=', 'asignaciones.oficio_anio')
