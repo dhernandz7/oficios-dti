@@ -35,8 +35,8 @@ class AsignarDictamenRequest extends FormRequest
     public function attributes()
     {
         return [
-            'oficio_id' => 'memorándum id',
-            'oficio_anio' => 'memorándum año',
+            'oficio_id' => 'dictámen id',
+            'oficio_anio' => 'dictámen año',
             'tipo_documento_id' => 'tipo de documento',
             'user_id' => 'id del usuario que está reservando',
             'name' => 'nombre del usuario que está reservando'

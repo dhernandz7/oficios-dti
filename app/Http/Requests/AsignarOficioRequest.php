@@ -35,8 +35,8 @@ class AsignarOficioRequest extends FormRequest
     public function attributes()
     {
         return [
-            'oficio_id' => 'memorándum id',
-            'oficio_anio' => 'memorándum año',
+            'oficio_id' => 'oficio id',
+            'oficio_anio' => 'oficio año',
             'tipo_documento_id' => 'tipo de documento',
             'user_id' => 'id del usuario que está reservando',
             'name' => 'nombre del usuario que está reservando'
