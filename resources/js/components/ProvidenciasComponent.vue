@@ -196,7 +196,7 @@
                 Swal.fire({
                   title: "Providencia reservado",
                   type: "info",
-                  html: `Se reservó correctamente el providencia <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>`
+                  html: `Se reservó correctamente la providencia <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>`
                 }).then((result) => {
                   this.data.asignacion_id = response.data.asignacion_id;
                   this.data.name = response.data.name;
@@ -237,7 +237,7 @@
               Swal.fire({
                 title: "Providencia reservado",
                 type: "info",
-                html: `Se reservó correctamente el providencia <span class="font-weight-bold">DTI-ME-${response.data.oficio_id}-${response.data.oficio_anio}</span>`
+                html: `Se reservó correctamente la providencia <span class="font-weight-bold">DTI-ME-${response.data.oficio_id}-${response.data.oficio_anio}</span>`
               }).then((result) => {
                 this.data = response.data;
                 this.data.created_at = this.data.created_at.date;
@@ -275,7 +275,7 @@
             title: 'Pdf cargado',
             type: 'success',
             html: `
-            Se adjuntó correctamente el pdf al providencia <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>
+            Se adjuntó correctamente el pdf a la providencia <span class="font-weight-bold">DTI-ME-${this.data.oficio_id}-${this.data.oficio_anio}</span>
             `
           }).then((result) => {
             $("#formulario")[0].reset();
