@@ -24,7 +24,7 @@ class AsignarPdfOficioRequest extends FormRequest
     public function rules()
     {
         return [
-            'pdf' => 'required|mimes:pdf|max:3000'
+            'pdf' => 'required|mimes:pdf|max:10000'
         ];
     }
 
