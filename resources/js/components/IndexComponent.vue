@@ -95,19 +95,19 @@
 		</div>
 
 		<div class="row">
-            <div class="col-xl-12 col-lg-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Gráfica</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+			<div class="col-xl-12 col-lg-12">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+						<h6 class="m-0 font-weight-bold text-primary">Gráfica</h6>
+					</div>
+					<div class="card-body">
+						<div class="chart-area">
+							<canvas id="myAreaChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -127,12 +127,15 @@
 			this.getConteo('/api/dictamen/get/pendientes',this.setDictamenesPendientes);
 			this.getConteo('/api/memorandum/get/pendientes',this.setMemorandumsPendientes);
 			this.getConteo('/api/providencia/get/pendientes',this.setProvidenciasPendientes);
-			this.getConteo('/api/providencia/get/pendientes',this.grafica);
+			this.getConteo('nada', this.grafica);
 		},
 		updated() {
 		},
 		methods: {
 			getConteo(url, callback) {
+				if (url === 'nada') {
+					callback();
+				}
 				let conteo = null;
 				axios.get(url).then(response => {
 					callback(response.data.conteo);
@@ -153,9 +156,6 @@
 			},
 			setProvidenciasPendientes(conteo) {
 				this.providenciasPendientes = conteo;
-			},
-			setGrafica(callback) {
-				callback();
 			},
 			grafica() {
 				var ctx = document.getElementById("myAreaChart");
