@@ -13,22 +13,7 @@ class DepartamentosTableSeeder extends Seeder
     public function run()
     {
         Departamento::create([
-        	'departamento' => 'Director'
-        ]);
-        Departamento::create([
-        	'departamento' => 'Secretaria'
-        ]);
-        Departamento::create([
-        	'departamento' => 'Redes'
-        ]);
-        Departamento::create([
-        	'departamento' => 'Infraestructura'
-        ]);
-        Departamento::create([
-        	'departamento' => 'Soporte técnico'
-        ]);
-        Departamento::create([
-        	'departamento' => 'Desarrollo'
+        	'departamento' => 'Asuntos Jurídicos'
         ]);
     }
 }
