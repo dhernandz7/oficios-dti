@@ -28,6 +28,7 @@ class DictamenController extends Controller
             'dictamenes.anio as oficio_anio',
             'asignaciones.created_at',
             'users.name',
+            'users.iniciales',
             'asignaciones.path',
             'asignaciones.tipo_documento_id'
         ])
@@ -56,6 +57,7 @@ class DictamenController extends Controller
             'oficio_anio' => $asignacion->oficio_anio,
             'created_at' => $asignacion->created_at,
             'name' => $request->name,
+            'iniciales' => $request->iniciales,
             'path' => $asignacion->path,
             'tipo_documento_id' => $asignacion->tipo_documento_id
         ],200);
@@ -76,6 +78,7 @@ class DictamenController extends Controller
             'oficio_anio' => $asignacion->oficio_anio,
             'created_at' => $asignacion->created_at,
             'name' => $request->name,
+            'iniciales' => $request->iniciales,
             'path' => $asignacion->path,
             'tipo_documento_id' => $asignacion->tipo_documento_id
         ],200);

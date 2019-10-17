@@ -7,7 +7,6 @@
 					<thead class="bg-dark text-white">
 						<tr>
 							<th>id</th>
-							<th>Dpi</th>
 							<th>Nombre completo</th>
 							<th>Genero</th>
 							<th>Correo institucional</th>
@@ -46,7 +45,6 @@
 					autoWidth: false,
 					columns: [
 					{'data': 'id', 'name': 'id', 'visible': false},
-					{'data': 'dpi', 'name': 'dpi', 'visible': false},
 					{'data': 'name', 'name': 'name'},
 					{'data': 'genero_id', 'name': 'genero_id', "render": function(data) {
 						if(data == 1) {

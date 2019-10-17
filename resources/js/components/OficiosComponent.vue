@@ -3,7 +3,7 @@
     <input type="hidden" id="ultimo" value="nada">
     <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Oficios</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
-      <button v-if="showBotonReservar" v-on:click="reservarAutomaticamente" id="reservar-oficio" class="btn btn-primary mb-3">
+      <button v-on:click="reservarAutomaticamente" id="reservar-oficio" class="btn btn-primary mb-3">
         <i class="fa fa-bell fa-lg mr-2"></i>
         Reservar oficio
       </button>
@@ -67,9 +67,9 @@
         showEmbed: false,
         btnSubmit: false,
         mostrarInputFile: true,
-        showBotonReservar: true,
         pdf: null,
-        src: null
+        src: null,
+        misIniciales: localStorage.getItem('iniciales')
       }
     },
     mounted() {
@@ -77,9 +77,6 @@
       this.reservar();
       this.mostrarModalPdf();
       this.mostrarDocumento();
-    },
-    updated() {
-      this.mostrarBotonReservar();
     },
     methods: {
       inicializarTabla() {
@@ -95,7 +92,7 @@
           {'data': 'oficio_id', 'name': 'oficio_id', 'visible': false},
           {'data': 'oficio_anio', 'name': 'oficio_anio', 'visible': false},
           {'render': function(data, type, row) {
-            return `<span class="font-weight-bold">DTI-OF-${row.oficio_id}-${row.oficio_anio}</span>`;
+            return `<span class="font-weight-bold">${row.oficio_id}-${row.oficio_anio}/AJ/${row.iniciales}</span>`;
           }},
           {'data': 'name', 'name': 'name'},
           {'data': 'created_at', 'name': 'created_at', 'render': function(data) {
@@ -175,7 +172,7 @@
           Swal.fire({
             title: 'Reservar oficio',
             html: `
-            ¿Está seguro de reservar el oficio <span class="font-weight-bold">DTI-OF-${this.data.oficio_id}-${this.data.oficio_anio}</span>?
+            ¿Está seguro de reservar el oficio <span class="font-weight-bold">${this.data.oficio_id}-${this.data.oficio_anio}/AJ/${this.misIniciales}</span>?
             `,
             type: 'question',
             showCancelButton: true,
@@ -190,21 +187,22 @@
               formulario.append('oficio_anio', this.data.oficio_anio);
               formulario.append('tipo_documento_id', 1);
               formulario.append('user_id', localStorage.getItem("id"));
-              formulario.append('name', localStorage.getItem("nombre"));
+              formulario.append('name', this.misIniciales);
+              formulario.append('iniciales', this.misIniciales);
               axios.post(`/api/oficio/reservar`, formulario)
               .then(response => {
                 Swal.fire({
                   title: "Oficio reservado",
                   type: "info",
-                  html: `Se reservó correctamente el oficio <span class="font-weight-bold">DTI-OF-${this.data.oficio_id}-${this.data.oficio_anio}</span>`
+                  html: `Se reservó correctamente el oficio <span class="font-weight-bold">${this.data.oficio_id}-${this.data.oficio_anio}/AJ/${this.misIniciales}</span>`
                 }).then((result) => {
                   this.data.asignacion_id = response.data.asignacion_id;
                   this.data.name = response.data.name;
+                  this.data.iniciales = response.data.iniciales;
                   this.data.created_at = response.data.created_at.date;
                   this.datatable.row(this.idRow).data(this.data);
                   $("#ultimo").val("nada");
                   this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
-                  this.mostrarBotonReservar();
                 });
               }).catch( error => {
                 this.mostrarErrores(error, "Error reservar el oficio", "No pudimos asignar el oficio por los siguientes motivos:<br><br>");
@@ -230,6 +228,7 @@
           if( result.value) {
             let formulario = new FormData();
             formulario.append('name', localStorage.getItem("nombre"));
+            formulario.append('iniciales', this.misIniciales);
             formulario.append('tipo_documento_id', 1);
             formulario.append('user_id', localStorage.getItem("id"));
             axios.post("/api/oficio", formulario)
@@ -237,7 +236,7 @@
               Swal.fire({
                 title: "Oficio reservado",
                 type: "info",
-                html: `Se reservó correctamente el oficio <span class="font-weight-bold">DTI-OF-${response.data.oficio_id}-${response.data.oficio_anio}</span>`
+                html: `Se reservó correctamente el oficio <span class="font-weight-bold">${response.data.oficio_id}-${response.data.oficio_anio}/AJ/${response.data.iniciales}</span>`
               }).then((result) => {
                 this.data = response.data;
                 this.data.created_at = this.data.created_at.date;
@@ -275,7 +274,7 @@
             title: 'Pdf cargado',
             type: 'success',
             html: `
-            Se adjuntó correctamente el pdf al oficio <span class="font-weight-bold">DTI-OF-${this.data.oficio_id}-${this.data.oficio_anio}</span>
+            Se adjuntó correctamente el pdf al oficio <span class="font-weight-bold">${this.data.oficio_id}-${this.data.oficio_anio}/AJ/${this.data.iniciales}</span>
             `
           }).then((result) => {
             $("#formulario")[0].reset();
@@ -328,16 +327,7 @@
           cadena += '</ul>';
         }
         Swal.fire(titulo, `${cadena}`, 'error');
-      },
-
-      mostrarBotonReservar() {
-        if($("#ultimo").val() == "nada") {
-          this.showBotonReservar = true;
-        } else {
-          this.showBotonReservar = false;
-        }
       }
-
     }
   }
 </script>

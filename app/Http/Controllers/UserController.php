@@ -14,7 +14,6 @@ class UserController extends Controller
         ->join('generos', 'users.genero_id', 'generos.id')
         ->where('users.id',$id)
         ->select([
-            'users.dpi',
             'users.name',
             'users.fecha_nacimiento',
             'generos.genero',
