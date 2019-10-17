@@ -15,5 +15,9 @@ class DepartamentosTableSeeder extends Seeder
         Departamento::create([
         	'departamento' => 'Asuntos Jurídicos'
         ]);
+
+        Departamento::create([
+            'departamento' => 'Administrador de Sistema'
+        ]);
     }
 }
