@@ -100,11 +100,14 @@
 			this.getConteo('/api/oficio/get/pendientes',this.setOficiosPendientes);
 			this.getConteo('/api/dictamen/get/pendientes',this.setDictamenesPendientes);
 			this.getConteo('/api/memorandum/get/pendientes',this.setMemorandumsPendientes);
-			this.getConteo('/api/providencia/get/pendientes',this.grafica);
+			this.getConteo('nada', this.grafica);
 
 		},
 		methods: {
 			getConteo(url, callback) {
+				if (url === 'nada') {
+					callback();
+				}
 				let conteo = null;
 				axios.get(url).then(response => {
 					callback(response.data.conteo);
