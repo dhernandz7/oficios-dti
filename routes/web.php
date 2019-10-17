@@ -55,4 +55,10 @@ Route::prefix('api/providencia')->middleware(['auth', 'verified', 'only.ajax'])-
 	Route::get('get/pendientes', 'ProvidenciaController@providenciasPendientes')->name('api.providencia.pendientes');
 });
 
+Route::prefix('api/memorial')->middleware(['auth', 'verified', 'only.ajax'])->group(function() {
+	Route::get('/', 'MemorialController@index')->name('api.memorial.index')->middleware('permission:api.memorial.index');
+	Route::post('/', 'MemorialController@store')->name('api.memorial.store')->middleware('permission:api.memorial.store');
+	Route::post('/{id}', 'MemorialController@update')->name('api.memorial.update')->middleware('permission:api.memorial.update');
+});
+
 Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');

@@ -67,6 +67,9 @@
               @can('providencia')
               <router-link :to="{name: 'providencias'}" class="collapse-item">Providencias</router-link>
               @endcan
+              @can('memorial')
+              <router-link :to="{name: 'memoriales'}" class="collapse-item">Memoriales</router-link>
+              @endcan
             </div>
           </div>
         </li>
