@@ -13,15 +13,15 @@ class TipoProcesoTableSeeder extends Seeder
     public function run()
     {
         TipoProceso::create([
-        	'tipo_proceso' => 'A - Acción de amparo'
+        	'tipo_proceso' => 'Acción de amparo'
         ]);
 
         TipoProceso::create([
-        	'tipo_proceso' => 'B - Inconstitucionalidad'
+        	'tipo_proceso' => 'Inconstitucionalidad'
         ]);
 
         TipoProceso::create([
-        	'tipo_proceso' => 'C - Proceso contencioso-administrativo'
+        	'tipo_proceso' => 'Proceso contencioso-administrativo'
         ]);
     }
 }

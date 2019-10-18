@@ -187,6 +187,7 @@
       $('.logout').click(function(){
         $('#logout').submit();
         localStorage.removeItem('nombre');
+        localStorage.removeItem('app-name-od');
         localStorage.removeItem('id');
         localStorage.removeItem('iniciales');
       });

@@ -18,7 +18,7 @@
               <th>Reservado por</th>
               <th>Fecha y hora de reservación</th>
               <th>Estado del oficio</th>
-              <th class="text-right">Acciones</th>
+              <th class="text-center">Opciones</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -132,9 +132,9 @@
               `;
             }
             return `
-            <div class="dropdown dropleft text-right">
-            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Opciones
+            <div class="dropdown dropleft text-center">
+            <button class="btn btn-outline-primary" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog fa-lg"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
             ${opciones}

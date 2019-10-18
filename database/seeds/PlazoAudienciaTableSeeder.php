@@ -13,15 +13,15 @@ class PlazoAudienciaTableSeeder extends Seeder
     public function run()
     {
         PlazoAudiencia::create([
-        	'plazo_audiencia' => 'A - 24 horas'
+        	'plazo_audiencia' => '24 horas'
         ]);
 
         PlazoAudiencia::create([
-        	'plazo_audiencia' => 'B - 48 horas'
+        	'plazo_audiencia' => '48 horas'
         ]);
 
         PlazoAudiencia::create([
-        	'plazo_audiencia' => 'C - 15 días'
+        	'plazo_audiencia' => '15 días'
         ]);
     }
 }

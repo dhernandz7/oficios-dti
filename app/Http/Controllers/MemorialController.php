@@ -21,9 +21,12 @@ class MemorialController extends Controller
             'memoriales.fecha_evaluacion_audiencia',
             'memoriales.numero_proceso',
             'memoriales.path',
+            'memoriales.tipo_proceso_id',
             'tipo_proceso.tipo_proceso',
+            'memoriales.plazo_audiencia_id',
             'plazo_audiencia.plazo_audiencia',
             'users.name',
+            'memoriales.user_id',
             'memoriales.created_at',
             'memoriales.bloqueado'
         ])
@@ -48,7 +51,8 @@ class MemorialController extends Controller
             'path' => $path,
             'tipo_proceso_id' => $request->tipo_proceso_id,
             'plazo_audiencia_id' => $request->plazo_audiencia_id,
-            'user_id' => $request->user_id
+            'user_id' => $request->user_id,
+            'bloqueado' => 0
         ]);
 
         return response()->json([
@@ -57,8 +61,11 @@ class MemorialController extends Controller
             'fecha_evaluacion_audiencia' => $memorial->fecha_evaluacion_audiencia,
             'numero_proceso' => $memorial->numero_proceso,
             'path' => $memorial->path,
+            'tipo_proceso_id' => $memorial->tipo_proceso_id,
             'tipo_proceso' => $request->tipo_proceso,
+            'plazo_audiencia_id' => $memorial->plazo_audiencia_id,
             'plazo_audiencia' => $request->plazo_audiencia,
+            'user_id' => $memorial->user_id,
             'name' => $request->name,
             'created_at' => $memorial->created_at,
             'bloqueado' => $memorial->bloqueado
@@ -67,7 +74,44 @@ class MemorialController extends Controller
 
     public function update(MemorialUpdateRequest $request, $id)
     {
-    	Memorial::find($id)->update($request->all());
-        return response()->json([] ,200);
+        $memorial = Memorial::find($id);
+        $path = null;
+        $path_anterior = null;
+
+        if($request->hasFile('pdf')) {
+            $path_anterior = $memorial->path;
+            $hash_pdf = str_random(7);
+            $path = $request->file('pdf')->storeAs("public/memoriales/". substr($request->fecha_notificacion, 0, 4), "$hash_pdf.pdf");
+            $memorial->path = $path;
+        }
+
+        $memorial->fecha_notificacion = $request->fecha_notificacion;
+        $memorial->fecha_evaluacion_audiencia = $request->fecha_evaluacion_audiencia;
+        $memorial->numero_proceso = $request->numero_proceso;
+        $memorial->tipo_proceso_id = $request->tipo_proceso_id;
+        $memorial->plazo_audiencia_id = $request->plazo_audiencia_id;
+        $memorial->bloqueado = 1;
+
+        if($memorial->save()) {
+            \Storage::delete($path_anterior);
+            return response()->json([
+                'id' => $memorial->id,
+                'fecha_notificacion' => $memorial->fecha_notificacion,
+                'fecha_evaluacion_audiencia' => $memorial->fecha_evaluacion_audiencia,
+                'numero_proceso' => $memorial->numero_proceso,
+                'path' => $memorial->path,
+                'tipo_proceso_id' => $memorial->tipo_proceso_id,
+                'tipo_proceso' => $request->tipo_proceso,
+                'plazo_audiencia_id' => $memorial->plazo_audiencia_id,
+                'plazo_audiencia' => $request->plazo_audiencia,
+                'user_id' => $memorial->user_id,
+                'name' => $request->name,
+                'created_at' => $memorial->created_at,
+                'bloqueado' => $memorial->bloqueado
+            ] ,200);
+        } else {
+            \Storage::delete($path);
+            return response()->json("Lo sentimos, no se pudo actualizar el memorial $memorial->numero_proceso, intente más tarde",503);
+        }
     }
 }

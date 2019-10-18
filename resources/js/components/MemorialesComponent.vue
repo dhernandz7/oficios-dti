@@ -12,73 +12,134 @@
           <thead class="bg-dark text-white">
             <tr>
               <th>id</th>
-              <th>Fecha notificacion</th>
-              <th>Fecha evaluacion de audiencia</th>
-              <th>Número de proceso</th>
-              <th>Tipo de proceso</th>
-              <th>Plazo de audiencia</th>
-              <th>Usuario que registró el memorial</th>
-              <th>Fecha de creación</th>
-              <th class="text-right">Opciones</th>
+              <th>Número proceso</th>
+              <th>Tipo proceso</th>
+              <th>Plazo audiencia</th>
+              <th>Notificacion</th>
+              <th>Evaluacion de audiencia</th>
+              <th>Usuario</th>
+              <th>Fecha de registro</th>
+              <th class="text-center">Opciones</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
-    <div class="modal fade" id="memorialRegistrarModal" tabindex="-1" role="dialog" aria-labelledby="memorialRegistrarModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="registrarMemorialModal" tabindex="-1" role="dialog" aria-labelledby="registrarMemorialModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title font-weight-bold" id="memorialRegistrarModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
+            <h5 class="modal-title font-weight-bold" id="registrarMemorialModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
               Memorial {{data.numero_proceso}}
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form v-on:submit.prevent="registrarMemorial" id="formulario">
+          <form v-on:submit.prevent="registrarMemorial" id="formulario" autocomplete="off">
             <div class="modal-body">
               <div class="form-row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-2">
                   <label for="numero_proceso">Número de proceso<span class="text-danger ml-2">*</span></label>
                   <input v-model='data.numero_proceso' class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="fecha_notificacion">Fecha de notificación<span class="text-danger ml-2">*</span></label>
+                <div class="col-md-3 mb-2">
+                  <label for="fecha_notificacion">Notificación<span class="text-danger ml-2">*</span></label>
                   <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="fecha_evaluacion_audiencia">Fecha evaluación audiencia<span class="text-danger ml-2">*</span></label>
+                <div class="col-md-3 mb-2">
+                  <label for="fecha_evaluacion_audiencia">Evaluación audiencia<span class="text-danger ml-2">*</span></label>
                   <input v-model='data.fecha_evaluacion_audiencia' class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
                 </div>
+                <div class="col-md-3 mb-2">
+                  <label for="plazo_audiencia_id">Plazo de audiencia<span class="text-danger ml-2">*</span></label>
+                  <select v-model='data.plazo_audiencia_id' class="form-control" name="plazo_audiencia_id" id="plazo_audiencia_id" required>
+                    <option value=""></option>
+                    <option v-bind:value="plazoAudiencia.id" v-for="plazoAudiencia in plazosDeAudiencias">{{plazoAudiencia.plazo_audiencia}}</option>
+                  </select>
+                </div>
               </div>
+              <div class="form-row mb-2">
+                <div class="col-md-6 mb-2">
+                  <label for="tipo_proceso_id">Tipo de proceso<span class="text-danger ml-2">*</span></label>
+                  <select v-model='data.tipo_proceso_id' class="form-control" name="tipo_proceso_id" id="tipo_proceso_id" required>
+                    <option value=""></option>
+                    <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">{{tipoDeProceso.tipo_proceso}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="pdf">Seleccione documento pdf</label><br>
+                  <input v-on:change="mostrarEmbed" class="form-control" type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                </div>
+              </div>
+              <div v-if="showEmbed" class="embed-responsive embed-responsive-21by9">
+                <iframe class="embed-responsive-item" v-bind:src="src"></iframe>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button v-if="btnSubmit" type="submit" class="btn btn-primary"><i class="fa fa-upload fa-lg mr-2"></i>Adjuntar documento</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-lg mr-2"></i>Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="actualizarMemorialModal" tabindex="-1" role="dialog" aria-labelledby="actualizarMemorialModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold" id="actualizarMemorialModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
+              Memorial {{data.numero_proceso}}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form v-on:submit.prevent="actualizarMemorial" id="formularioActualizar" autocomplete="off">
+            <div class="modal-body">
               <div class="form-row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-2">
+                  <label for="numero_proceso">Número de proceso<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.numero_proceso' class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <label for="fecha_notificacion">Notificación<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <label for="fecha_evaluacion_audiencia">Evaluación audiencia<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.fecha_evaluacion_audiencia' class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
+                </div>
+                <div class="col-md-3 mb-2">
                   <label for="plazo_audiencia_id">Plazo de audiencia<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.plazo_audiencia_id' class="form-control" name="plazo_audiencia_id" id="plazo_audiencia_id" required>
                     <option value="">Seleccione plazo de audiencia</option>
                     <option v-bind:value="plazoAudiencia.id" v-for="plazoAudiencia in plazosDeAudiencias">{{plazoAudiencia.plazo_audiencia}}</option>
                   </select>
                 </div>
-                <div class="col-md-4 mb-3">
+              </div>
+              <div class="form-row">
+                <div class="col-md-6 mb-2">
                   <label for="tipo_proceso_id">Tipo de proceso<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.tipo_proceso_id' class="form-control" name="tipo_proceso_id" id="tipo_proceso_id" required>
                     <option value="">Seleccione tipo de proceso</option>
                     <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">{{tipoDeProceso.tipo_proceso}}</option>
                   </select>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-2">
                   <label for="pdf">Seleccione documento pdf</label><br>
-                  <input v-on:change="mostrarEmbed" type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                  <input v-on:change="mostrarEmbed" class="form-control" type="file" id="pdf" name="pdf" accept="application/pdf">
                 </div>
               </div>
-              <div v-if="showEmbed" class="embed-responsive embed-responsive-16by9">
+              <div v-if="showEmbed" class="embed-responsive embed-responsive-21by9">
                 <iframe class="embed-responsive-item" v-bind:src="src"></iframe>
               </div>
             </div>
             <div class="modal-footer">
-              <button v-if="btnSubmit" type="submit" class="btn btn-primary"><i class="fa fa-upload fa-lg mr-2"></i>Adjuntar documento</button>
+              <button v-if="btnSubmit" type="submit" class="btn btn-primary"><i class="fa fa-save fa-lg mr-2"></i>Registrar memorial</button>
+              <button v-if="btnUpdateSubmit" type="submit" class="btn btn-primary"><i class="fa fa-edit fa-lg mr-2"></i>Actualizar memorial</button>
               <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-lg mr-2"></i>Cancelar</button>
             </div>
           </form>
@@ -105,7 +166,8 @@
         idRow:0,
         showEmbed: false,
         btnSubmit: false,
-        pdf: null,
+        btnUpdateSubmit: false,
+        pdf: '',
         src: null,
         tipoDeProcesos: [],
         plazosDeAudiencias: []
@@ -114,6 +176,7 @@
     mounted() {
       this.inicializarTabla()
       this.obtenerCatalogos()
+      this.eventoParaActualizarMemorial()
     },
     methods: {
       inicializarTabla() {
@@ -125,17 +188,39 @@
           paging: true,
           autoWidth: false,
           columns: [
-          {'data': 'id', 'name': 'id'},
-          {'data': 'fecha_notificacion', 'name': 'fecha_notificacion'},
-          {'data': 'fecha_evaluacion_audiencia', 'name': 'fecha_evaluacion_audiencia'},
+          {'data': 'id', 'name': 'id', 'visible': false},
           {'data': 'numero_proceso', 'name': 'numero_proceso'},
           {'data': 'tipo_proceso', 'name': 'tipo_proceso'},
           {'data': 'plazo_audiencia', 'name': 'plazo_audiencia'},
+          {'data': 'fecha_notificacion', 'name': 'fecha_notificacion'},
+          {'data': 'fecha_evaluacion_audiencia', 'name': 'fecha_evaluacion_audiencia'},
           {'data': 'name', 'name': 'name'},
           {'data': 'created_at', 'name': 'created_at', 'render': function(data) {
             return data != null ? moment(data).locale('es').format('LLL') : '';
           }},
-          {'data': 'name', 'name': 'name'},
+          {'render': function(data, type, row) {
+            let opciones = '';
+            if (row.bloqueado == 0 && row.user_id == this.miId) {
+              opciones = `
+              <a href="/${this.obtenerUrl(row.path)}" class="dropdown-item" target="_blank"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</a>
+              <button class="modificar dropdown-item"><i class="fa fa-edit mr-2"></i>Modificar</button>
+              `
+            } else {
+              opciones = `
+              <a href="/${this.obtenerUrl(row.path)}" class="dropdown-item" target="_blank"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</a>
+              `
+            }
+            return `
+            <div class="dropdown dropleft text-center">
+            <button class="btn btn-outline-primary" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog fa-lg"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            ${opciones}
+            </div>
+            </div>
+            `;
+          }.bind(this)},
           ],
           language: {
             "sProcessing": "Procesando...",
@@ -161,7 +246,7 @@
       },
 
       mostrarModalMemorial() {
-        $("#memorialRegistrarModal").modal("show");
+        $("#registrarMemorialModal").modal("show");
       },
 
       registrarMemorial() {
@@ -179,7 +264,7 @@
 
         axios.post(`/api/memorial`, formulario)
         .then(response => {
-          $("#memorialRegistrarModal").modal("toggle")
+          $("#registrarMemorialModal").modal("toggle")
           this.showEmbed = false
           response.data.created_at = response.data.created_at.date
           this.datatable.row.add(response.data).draw(false)
@@ -191,7 +276,50 @@
             $("#formulario")[0].reset()
           })
         }).catch( error => {
-          this.mostrarErrores(error, "Error registrar el memorial", "No pudimos registrar el memorial por los siguientes motivos:<br><br>");
+          this.mostrarErrores(error, "Error al registrar el memorial", "No pudimos registrar el memorial por los siguientes motivos:<br><br>");
+        });
+      },
+
+      eventoParaActualizarMemorial() {
+        $("#datatable tbody").on("click", "button.modificar", function(e) {
+          this.data = this.datatable.row($(e.target).parents("tr")[0]).data()
+          this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index()
+          $("#actualizarMemorialModal").modal("show")
+          this.showEmbed = true
+          this.btnUpdateSubmit = true
+          this.src = this.obtenerUrl(this.data.path)
+        }.bind(this))
+      },
+
+      actualizarMemorial() {
+        let formulario = new FormData();
+        formulario.append('fecha_notificacion', this.data.fecha_notificacion)
+        formulario.append('fecha_evaluacion_audiencia', this.data.fecha_evaluacion_audiencia)
+        formulario.append('numero_proceso', this.data.numero_proceso)
+        formulario.append('pdf', this.pdf)
+        formulario.append('tipo_proceso_id', this.data.tipo_proceso_id)
+        formulario.append('tipo_proceso', $('#tipo_proceso_id option:selected').html())
+        formulario.append('plazo_audiencia_id', this.data.plazo_audiencia_id)
+        formulario.append('plazo_audiencia', $('#plazo_audiencia_id option:selected').html())
+        formulario.append('user_id', this.miId)
+        formulario.append('name', this.miNombre)
+        formulario.append('_method', 'PUT')
+
+        axios.post(`/api/memorial/${this.data.id}`, formulario)
+        .then(response => {
+          $("#actualizarMemorialModal").modal("toggle")
+          this.showEmbed = false
+          response.data.created_at = response.data.created_at.date
+          this.datatable.row(this.idRow).data(response.data)
+          Swal.fire({
+            title: "Memorial actualizado",
+            type: "success",
+            html: `Se actualizó correctamente el memorial <span class="font-weight-bold">${response.data.numero_proceso}</span>`
+          }).then((result)=>{
+            $("#formularioActualizar")[0].reset()
+          })
+        }).catch( error => {
+          this.mostrarErrores(error, "Error al actualizar el memorial", "No pudimos actualizar el memorial por los siguientes motivos:<br><br>");
         });
       },
 
@@ -224,6 +352,12 @@
         this.btnSubmit = true;
         this.pdf = document.getElementById("pdf").files[0];
         this.src = URL.createObjectURL(this.pdf);
+      },
+
+      obtenerUrl(url) {
+        if(url){
+          return url.replace('public', 'storage')
+        }
       },
 
       mostrarErrores(error, titulo, mensaje) {

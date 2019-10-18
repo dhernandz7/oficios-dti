@@ -58,7 +58,7 @@ Route::prefix('api/providencia')->middleware(['auth', 'verified', 'only.ajax'])-
 Route::prefix('api/memorial')->middleware(['auth', 'verified', 'only.ajax'])->group(function() {
 	Route::get('/', 'MemorialController@index')->name('api.memorial.index')->middleware('permission:api.memorial.index');
 	Route::post('/', 'MemorialController@store')->name('api.memorial.store')->middleware('permission:api.memorial.store');
-	Route::post('/{id}', 'MemorialController@update')->name('api.memorial.update')->middleware('permission:api.memorial.update');
+	Route::put('/{id}', 'MemorialController@update')->name('api.memorial.update')->middleware('permission:api.memorial.update');
 });
 
 Route::prefix('api/catalogos')->middleware(['auth', 'verified'])->group(function() {

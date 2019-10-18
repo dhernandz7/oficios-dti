@@ -51,7 +51,19 @@ class MemorialStoreRequest extends FormRequest
     {
         return [
             'fecha_notificacion.required' => 'La :attribute es requerida',
-            'fecha_notificacion.date' => 'La :attribute debe ser una fecha'
+            'fecha_notificacion.date' => 'La :attribute debe ser una fecha',
+            'fecha_evaluacion_audiencia.required' => 'La :attribute es requerida',
+            'fecha_evaluacion_audiencia.date' => 'La :attribute debe ser una fecha',
+            'numero_proceso.required' => 'El :attribute es requerido',
+            'pdf.required' => 'El :attribute es requerido',
+            'pdf.mimes:pdf' => 'El :attribute debe ser de tipo pdf',
+            'pdf.max:10000' => 'El :attribute debe pesar como máximo 10MB',
+            'tipo_proceso_id.required'=> 'El :attribute es requerido',
+            'tipo_proceso_id.integer'=> 'El :attribute debe ser un entero',
+            'plazo_audiencia_id.required'=> 'El :attribute es requerido',
+            'plazo_audiencia_id.integer'=> 'El :attribute debe ser un entero',
+            'user_id.required'=> 'El :attribute es requerido',
+            'user_id.integer'=> 'El :attribute debe ser un entero'
         ];
     }
 }
