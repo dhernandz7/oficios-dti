@@ -26,9 +26,9 @@
             </div>
         </header>
         <main role="main" class="inner cover">
-            <h1 class="cover-heading">Bienvenido a <span class="app-name-od"></span></h1>
+            <h1 class="cover-heading">Bienvenido a <span class="app-name-aj"></span></h1>
             <p class="lead">
-                Sistema para gestión de oficios, memorándum, dictámenes y providencias de la Dirección de Asuntos Jurídicos
+                Sistema para gestión de oficios, memorándum, dictámenes, providencias y memoriales de la Asesoría Jurídica
             </p>
             <p class="lead">
                 @auth
@@ -46,10 +46,10 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            if(localStorage.getItem('app-name-od') == null) {
-                localStorage.setItem('app-name-od', "{{config('app.name')}}");
+            if(localStorage.getItem('app-name-aj') == null) {
+                localStorage.setItem('app-name-aj', "{{config('app.name')}}");
             }
-            document.getElementsByClassName('app-name-od')[0].innerHTML = localStorage.getItem('app-name-od');
+            document.getElementsByClassName('app-name-aj')[0].innerHTML = localStorage.getItem('app-name-aj');
         });
     </script>
 </body>

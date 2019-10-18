@@ -60,7 +60,7 @@
             }
         });
 
-        $(".app-name").html(localStorage.getItem('app-name-od'));
+        $(".app-name").html(localStorage.getItem('app-name-aj'));
     });
 </script>
 @endsection

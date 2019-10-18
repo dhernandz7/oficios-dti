@@ -181,18 +181,17 @@
       if(localStorage.getItem('iniciales') == null) {
         localStorage.setItem('iniciales', "{{Auth::user()->iniciales}}");
       }
-      if(localStorage.getItem('app-name-od') == null) {
-        localStorage.setItem('app-name-od', "{{config('app.name')}}");
+      if(localStorage.getItem('app-name-aj') == null) {
+        localStorage.setItem('app-name-aj', "{{config('app.name')}}");
       }
       $('.logout').click(function(){
         $('#logout').submit();
         localStorage.removeItem('nombre');
-        localStorage.removeItem('app-name-od');
         localStorage.removeItem('id');
         localStorage.removeItem('iniciales');
       });
       $(".user").html(localStorage.getItem('nombre'));
-      $(".app-name").html(localStorage.getItem('app-name-od').replace("DTI", "<sup>DTI</sup>"));
+      $(".app-name").html(localStorage.getItem('app-name-aj').replace("AJ", "<sup>AJ</sup>"));
     });
   </script>
 </body>

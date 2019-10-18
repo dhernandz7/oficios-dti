@@ -295,7 +295,7 @@
           this.btnSubmit = false;
           this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
           this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index();
-          this.src = this.data.path.replace("public", "storage");
+          this.src = this.data.path.replace("public", "storage") + '#toolbar=0&navpanes=0&scrollbar=0';
           $("#adjuntarModal").modal("show");
         }.bind(this));
       },

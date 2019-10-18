@@ -146,6 +146,31 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="mostrarDocumento" tabindex="-1" role="dialog" aria-labelledby="adjuntarModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold" id="adjuntarModalLabel">
+              <i class="fa fa-file-pdf fa-lg mr-2"></i>
+              Memorial 
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="embed-responsive embed-responsive-4by3">
+              <iframe class="embed-responsive-item" v-bind:src="src"></iframe>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button v-if="btnSubmit" type="submit" class="btn btn-primary"><i class="fa fa-upload fa-lg mr-2"></i>Adjuntar documento</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-lg mr-2"></i>Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -177,6 +202,7 @@
       this.inicializarTabla()
       this.obtenerCatalogos()
       this.eventoParaActualizarMemorial()
+      this.mostrarDocumento()
     },
     methods: {
       inicializarTabla() {
@@ -202,12 +228,12 @@
             let opciones = '';
             if (row.bloqueado == 0 && row.user_id == this.miId) {
               opciones = `
-              <a href="/${this.obtenerUrl(row.path)}" class="dropdown-item" target="_blank"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</a>
+              <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
               <button class="modificar dropdown-item"><i class="fa fa-edit mr-2"></i>Modificar</button>
               `
             } else {
               opciones = `
-              <a href="/${this.obtenerUrl(row.path)}" class="dropdown-item" target="_blank"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</a>
+              <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
               `
             }
             return `
@@ -323,6 +349,14 @@
         });
       },
 
+      mostrarDocumento() {
+        $("#datatable tbody").on("click", "button.mostrar", function(e){
+          this.data = this.datatable.row($(e.target).parents("tr")[0]).data();
+          this.src = this.obtenerUrl(this.data.path);
+          $("#mostrarDocumento").modal("show");
+        }.bind(this));
+      },
+
       obtenerCatalogos() {
         axios.get('/api/catalogos/tipos-de-procesos')
         .then(response => {
@@ -356,7 +390,7 @@
 
       obtenerUrl(url) {
         if(url){
-          return url.replace('public', 'storage')
+          return `${url.replace('public', 'storage')}#toolbar=0&navpanes=0&scrollbar=0`
         }
       },
 

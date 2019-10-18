@@ -50,6 +50,6 @@
 @endsection
 @section('script')
 <script>
-    document.getElementsByClassName("app-name")[0].innerHTML = localStorage.getItem('app-name-od');
+    document.getElementsByClassName("app-name")[0].innerHTML = localStorage.getItem('app-name-aj');
 </script>
 @endsection
