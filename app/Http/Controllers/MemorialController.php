@@ -21,9 +21,10 @@ class MemorialController extends Controller
             'memoriales.fecha_evaluacion_audiencia',
             'memoriales.numero_proceso',
             'memoriales.path',
+            'tipo_proceso.tipo_proceso',
             'plazo_audiencia.plazo_audiencia',
-            'memoriales.plazo_audiencia_id',
             'users.name',
+            'memoriales.created_at',
             'memoriales.bloqueado'
         ])
         ->get();
@@ -47,24 +48,20 @@ class MemorialController extends Controller
             'path' => $path,
             'tipo_proceso_id' => $request->tipo_proceso_id,
             'plazo_audiencia_id' => $request->plazo_audiencia_id,
-            'user_id' => $request->user_id,
-            'bloqueado' => $request->bloqueado
+            'user_id' => $request->user_id
         ]);
 
-
-
-        return response()->json(['data' =>
-            [
-                'id' => $memorial->id,
-                'fecha_notificacion' => $memorial->fecha_notificacion,
-                'fecha_evaluacion_audiencia' => $memorial->fecha_evaluacion_audiencia,
-                'numero_proceso' => $memorial->numero_proceso,
-                'path' => $memorial->path,
-                'tipo_proceso_id' => $request->tipo_proceso,
-                'plazo_audiencia_id' => $request->plazo_audiencia,
-                'user_id' => $memorial->user_id,
-                'bloqueado' => $memorial->bloqueado
-            ]
+        return response()->json([
+            'id' => $memorial->id,
+            'fecha_notificacion' => $memorial->fecha_notificacion,
+            'fecha_evaluacion_audiencia' => $memorial->fecha_evaluacion_audiencia,
+            'numero_proceso' => $memorial->numero_proceso,
+            'path' => $memorial->path,
+            'tipo_proceso' => $request->tipo_proceso,
+            'plazo_audiencia' => $request->plazo_audiencia,
+            'name' => $request->name,
+            'created_at' => $memorial->created_at,
+            'bloqueado' => $memorial->bloqueado
         ] ,200);
     }
 

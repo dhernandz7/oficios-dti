@@ -3,7 +3,7 @@
     <input type="hidden" id="ultimo" value="nada">
     <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Memoriales</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
-      <button v-on:click="memorial" id="registrar-memorial" class="btn btn-primary mb-3">
+      <button v-on:click="mostrarModalMemorial" id="registrar-memorial" class="btn btn-primary mb-3">
         <i class="fa fa-plus-circle fa-lg mr-2"></i>
         Registrar memorial
       </button>
@@ -37,20 +37,20 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form v-on:submit.prevent="subirPdf" id="formulario">
+          <form v-on:submit.prevent="registrarMemorial" id="formulario">
             <div class="modal-body">
               <div class="form-row">
                 <div class="col-md-4 mb-3">
                   <label for="numero_proceso">Número de proceso<span class="text-danger ml-2">*</span></label>
-                  <input class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
+                  <input v-model='data.numero_proceso' class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="fecha_notificacion">Fecha de notificación<span class="text-danger ml-2">*</span></label>
-                  <input class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
+                  <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="fecha_evaluacion_audiencia">Fecha evaluación audiencia<span class="text-danger ml-2">*</span></label>
-                  <input class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
+                  <input v-model='data.fecha_evaluacion_audiencia' class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
                 </div>
               </div>
               <div class="form-row">
@@ -58,21 +58,17 @@
                   <label for="plazo_audiencia_id">Plazo de audiencia<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.plazo_audiencia_id' class="form-control" name="plazo_audiencia_id" id="plazo_audiencia_id" required>
                     <option value="">Seleccione plazo de audiencia</option>
-                    <option v-bind:value="plazoAudiencia.id" v-for="plazoAudiencia in plazosDeAudiencias">
-                      {{plazoAudiencia.plazo_audiencia}}
-                    </option>
+                    <option v-bind:value="plazoAudiencia.id" v-for="plazoAudiencia in plazosDeAudiencias">{{plazoAudiencia.plazo_audiencia}}</option>
                   </select>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="tipo_proceso_id">Tipo de proceso<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.tipo_proceso_id' class="form-control" name="tipo_proceso_id" id="tipo_proceso_id" required>
                     <option value="">Seleccione tipo de proceso</option>
-                    <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">
-                      {{tipoDeProceso.tipo_proceso}}
-                    </option>
+                    <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">{{tipoDeProceso.tipo_proceso}}</option>
                   </select>
                 </div>
-                <div v-if="mostrarInputFile" class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3">
                   <label for="pdf">Seleccione documento pdf</label><br>
                   <input v-on:change="mostrarEmbed" type="file" id="pdf" name="pdf" accept="application/pdf" required>
                 </div>
@@ -97,11 +93,18 @@
     data() {
       return {
         datatable: [],
-        data: {},
+        data: {
+          'fecha_notificacion': '',
+          'fecha_evaluacion_audiencia': '',
+          'numero_proceso': '',
+          'tipo_proceso_id': '',
+          'plazo_audiencia_id': ''
+        },
+        miId: localStorage.getItem("id"),
+        miNombre: localStorage.getItem("nombre"),
         idRow:0,
         showEmbed: false,
         btnSubmit: false,
-        mostrarInputFile: true,
         pdf: null,
         src: null,
         tipoDeProcesos: [],
@@ -116,23 +119,23 @@
       inicializarTabla() {
         this.datatable = $('#datatable').DataTable({
           ajax: '/api/memorial',
-          order: [[2,'desc'], [1, 'desc']],
+          order: [[0,'desc']],
           lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "todos"]],
           info: true,
           paging: true,
           autoWidth: false,
           columns: [
           {'data': 'id', 'name': 'id'},
-          {'data': 'fecha_notificacion', 'name': 'oficio_id'},
-          {'data': 'fecha_evaluacion_audiencia', 'name': 'oficio_anio'},
+          {'data': 'fecha_notificacion', 'name': 'fecha_notificacion'},
+          {'data': 'fecha_evaluacion_audiencia', 'name': 'fecha_evaluacion_audiencia'},
           {'data': 'numero_proceso', 'name': 'numero_proceso'},
-          {'data': 'tipo_proceso_id', 'name': 'numero_proceso'},
-          {'data': 'plazo_audiencia_id', 'name': 'numero_proceso'},
-          {'data': 'user_id', 'name': 'numero_proceso'},
+          {'data': 'tipo_proceso', 'name': 'tipo_proceso'},
+          {'data': 'plazo_audiencia', 'name': 'plazo_audiencia'},
+          {'data': 'name', 'name': 'name'},
           {'data': 'created_at', 'name': 'created_at', 'render': function(data) {
             return data != null ? moment(data).locale('es').format('LLL') : '';
           }},
-          {'data': 'user_id', 'name': 'numero_proceso'},
+          {'data': 'name', 'name': 'name'},
           ],
           language: {
             "sProcessing": "Procesando...",
@@ -157,13 +160,42 @@
         });
       },
 
-      memorial() {
+      mostrarModalMemorial() {
         $("#memorialRegistrarModal").modal("show");
       },
 
+      registrarMemorial() {
+        let formulario = new FormData();
+        formulario.append('fecha_notificacion', this.data.fecha_notificacion)
+        formulario.append('fecha_evaluacion_audiencia', this.data.fecha_evaluacion_audiencia)
+        formulario.append('numero_proceso', this.data.numero_proceso)
+        formulario.append('pdf', this.pdf)
+        formulario.append('tipo_proceso_id', this.data.tipo_proceso_id)
+        formulario.append('tipo_proceso', $('#tipo_proceso_id option:selected').html())
+        formulario.append('plazo_audiencia_id', this.data.plazo_audiencia_id)
+        formulario.append('plazo_audiencia', $('#plazo_audiencia_id option:selected').html())
+        formulario.append('user_id', this.miId)
+        formulario.append('name', this.miNombre)
+
+        axios.post(`/api/memorial`, formulario)
+        .then(response => {
+          $("#memorialRegistrarModal").modal("toggle")
+          this.showEmbed = false
+          response.data.created_at = response.data.created_at.date
+          this.datatable.row.add(response.data).draw(false)
+          Swal.fire({
+            title: "Memorial registrado",
+            type: "success",
+            html: `Se registró correctamente el memorial <span class="font-weight-bold">${response.data.numero_proceso}</span>`
+          }).then((result)=>{
+            $("#formulario")[0].reset()
+          })
+        }).catch( error => {
+          this.mostrarErrores(error, "Error registrar el memorial", "No pudimos registrar el memorial por los siguientes motivos:<br><br>");
+        });
+      },
+
       obtenerCatalogos() {
-        this.data.tipo_proceso_id = ''
-        this.data.plazo_audiencia_id = ''
         axios.get('/api/catalogos/tipos-de-procesos')
         .then(response => {
           this.tipoDeProcesos = response.data
@@ -197,13 +229,30 @@
       mostrarErrores(error, titulo, mensaje) {
         let cadena = '';
         if(error.response.status == 403) {
-          cadena = 'No tiene permisos para realizar esta acción';
+          cadena = `
+          <ul class="list-group">
+          <li class="list-group-item text-danger">No tiene permisos para realizar esta acción</li>
+          </ul>
+          `;
         } else if(error.response.status == 404) {
-          cadena = 'No se encontró la ruta a la que intenta acceder';
+          cadena = `
+          <ul class="list-group">
+          <li class="list-group-item text-danger">No se encontró la ruta a la que intenta acceder</li>
+          </ul>
+          `;
         } else if(error.response.status == 500) {
-          cadena = 'Ha ocurrido un error interno, por favor intente más tarde';
+          cadena = `
+          <ul class="list-group">
+          <li class="list-group-item text-danger">Ha ocurrido un error interno, por favor intente más tarde</li>
+          </ul>
+          `;
+          cadena = '';
         } else if(error.response.status == 503){
-          cadena = error.response.request.response;
+          cadena = `
+          <ul class="list-group">
+          <li class="list-group-item text-danger">error.response.request.response</li>
+          </ul>
+          `;
         } else if (error.response.status == 422) {
           let response = JSON.parse(error.response.request.response);
           cadena = `${mensaje}`;
