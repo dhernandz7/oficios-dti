@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="modal fade" id="memorialRegistrarModal" tabindex="-1" role="dialog" aria-labelledby="memorialRegistrarModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="memorialRegistrarModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
@@ -39,9 +39,43 @@
           </div>
           <form v-on:submit.prevent="subirPdf" id="formulario">
             <div class="modal-body">
-              <div v-if="mostrarInputFile" class="form-group">
-                <label for="pdf">Seleccione un documento pdf</label><br>
-                <input v-on:change="mostrarEmbed" type="file" id="pdf" name="pdf" accept="application/pdf" required>
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <label for="numero_proceso">Número de proceso<span class="text-danger ml-2">*</span></label>
+                  <input class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="fecha_notificacion">Fecha de notificación<span class="text-danger ml-2">*</span></label>
+                  <input class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="fecha_evaluacion_audiencia">Fecha evaluación audiencia<span class="text-danger ml-2">*</span></label>
+                  <input class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <label for="plazo_audiencia_id">Plazo de audiencia<span class="text-danger ml-2">*</span></label>
+                  <select v-model='data.plazo_audiencia_id' class="form-control" name="plazo_audiencia_id" id="plazo_audiencia_id" required>
+                    <option value="">Seleccione plazo de audiencia</option>
+                    <option v-bind:value="plazoAudiencia.id" v-for="plazoAudiencia in plazosDeAudiencias">
+                      {{plazoAudiencia.plazo_audiencia}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="tipo_proceso_id">Tipo de proceso<span class="text-danger ml-2">*</span></label>
+                  <select v-model='data.tipo_proceso_id' class="form-control" name="tipo_proceso_id" id="tipo_proceso_id" required>
+                    <option value="">Seleccione tipo de proceso</option>
+                    <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">
+                      {{tipoDeProceso.tipo_proceso}}
+                    </option>
+                  </select>
+                </div>
+                <div v-if="mostrarInputFile" class="col-md-4 mb-3">
+                  <label for="pdf">Seleccione documento pdf</label><br>
+                  <input v-on:change="mostrarEmbed" type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                </div>
               </div>
               <div v-if="showEmbed" class="embed-responsive embed-responsive-16by9">
                 <iframe class="embed-responsive-item" v-bind:src="src"></iframe>
@@ -70,13 +104,13 @@
         mostrarInputFile: true,
         pdf: null,
         src: null,
+        tipoDeProcesos: [],
+        plazosDeAudiencias: []
       }
     },
     mounted() {
-      this.inicializarTabla();
-      this.reservar();
-      this.mostrarModalPdf();
-      this.mostrarDocumento();
+      this.inicializarTabla()
+      this.obtenerCatalogos()
     },
     methods: {
       inicializarTabla() {
@@ -125,6 +159,39 @@
 
       memorial() {
         $("#memorialRegistrarModal").modal("show");
+      },
+
+      obtenerCatalogos() {
+        this.data.tipo_proceso_id = ''
+        this.data.plazo_audiencia_id = ''
+        axios.get('/api/catalogos/tipos-de-procesos')
+        .then(response => {
+          this.tipoDeProcesos = response.data
+        }).catch( error => {
+          Swal.fire({
+            title: 'Error al obtener el catálogos',
+            html: 'No pudimos obtener el catálogos "tipos de procesos"',
+            type: 'error'
+          });
+        });
+
+        axios.get('/api/catalogos/plazos-de-audiencias')
+        .then(response => {
+          this.plazosDeAudiencias = response.data
+        }).catch( error => {
+          Swal.fire({
+            title: 'Error al obtener el catálogos',
+            html: 'No pudimos obtener el catálogos "plazos de audiencias"',
+            type: 'error'
+          });
+        });
+      },
+
+      mostrarEmbed() {
+        this.showEmbed = true;
+        this.btnSubmit = true;
+        this.pdf = document.getElementById("pdf").files[0];
+        this.src = URL.createObjectURL(this.pdf);
       },
 
       mostrarErrores(error, titulo, mensaje) {

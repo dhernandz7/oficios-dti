@@ -26,7 +26,7 @@ class RemoveDpiToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('dpi', 6)->nullable()->after('objectguid');
+            $table->string('dpi', 13)->nullable()->after('objectguid');
         });
     }
 }

@@ -61,4 +61,9 @@ Route::prefix('api/memorial')->middleware(['auth', 'verified', 'only.ajax'])->gr
 	Route::post('/{id}', 'MemorialController@update')->name('api.memorial.update')->middleware('permission:api.memorial.update');
 });
 
+Route::prefix('api/catalogos')->middleware(['auth', 'verified'])->group(function() {
+	Route::get('/tipos-de-procesos', 'CatalogosController@tiposDeProcesos');
+	Route::get('/plazos-de-audiencias', 'CatalogosController@plazosDeAudiencias');
+});
+
 Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');

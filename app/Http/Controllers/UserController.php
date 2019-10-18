@@ -15,7 +15,6 @@ class UserController extends Controller
         ->where('users.id',$id)
         ->select([
             'users.name',
-            'users.fecha_nacimiento',
             'generos.genero',
             'users.genero_id',
             'users.email',
