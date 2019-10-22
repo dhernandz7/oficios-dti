@@ -190,7 +190,7 @@
           'tipo_proceso_id': '',
           'plazo_audiencia_id': ''
         },
-        miId: localStorage.getItem("id"),
+        miId: localStorage.getItem("id").split("$")[1],
         miNombre: localStorage.getItem("nombre"),
         idRow:0,
         showEmbed: false,
@@ -306,6 +306,7 @@
           this.showEmbed = false
           response.data.created_at = response.data.created_at.date
           this.datatable.row.add(response.data).draw(false)
+          this.btnSubmit = false
           Swal.fire({
             title: "Memorial registrado",
             type: "success",

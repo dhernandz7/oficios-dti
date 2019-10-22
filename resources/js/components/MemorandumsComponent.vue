@@ -186,7 +186,7 @@
               formulario.append('oficio_id', this.data.oficio_id);
               formulario.append('oficio_anio', this.data.oficio_anio);
               formulario.append('tipo_documento_id', 3);
-              formulario.append('user_id', localStorage.getItem("id"));
+              formulario.append('user_id', localStorage.getItem("id").split("$")[1]);
               formulario.append('name', localStorage.getItem("nombre"));
               formulario.append('iniciales', this.misIniciales);
               axios.post(`/api/memorandum/reservar`, formulario)
@@ -230,7 +230,7 @@
             formulario.append('name', localStorage.getItem("nombre"));
             formulario.append('iniciales', this.misIniciales);
             formulario.append('tipo_documento_id', 3);
-            formulario.append('user_id', localStorage.getItem("id"));
+            formulario.append('user_id', localStorage.getItem("id").split("$")[1]);
             axios.post("/api/memorandum", formulario)
             .then(response => {
               Swal.fire({

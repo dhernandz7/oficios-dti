@@ -176,7 +176,7 @@
         localStorage.setItem('nombre', "{{Auth::user()->name}}");
       }
       if(localStorage.getItem('id') == null) {
-        localStorage.setItem('id', "{{Auth::user()->id}}");
+        localStorage.setItem('id', Math.random().toString(36).substring(7)+ "${{Auth::user()->id}}");
       }
       if(localStorage.getItem('iniciales') == null) {
         localStorage.setItem('iniciales', "{{Auth::user()->iniciales}}");
