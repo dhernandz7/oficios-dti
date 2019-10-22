@@ -189,6 +189,7 @@
         localStorage.removeItem('nombre');
         localStorage.removeItem('id');
         localStorage.removeItem('iniciales');
+        localStorage.removeItem('app-name-aj');
       });
       $(".user").html(localStorage.getItem('nombre'));
       $(".app-name").html(localStorage.getItem('app-name-aj').replace("AJ", "<sup>AJ</sup>"));

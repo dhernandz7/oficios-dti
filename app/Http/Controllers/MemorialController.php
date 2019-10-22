@@ -18,7 +18,7 @@ class MemorialController extends Controller
         ->select([
             'memoriales.id',
             'memoriales.fecha_notificacion',
-            'memoriales.fecha_evaluacion_audiencia',
+            'memoriales.fecha_evacuacion_audiencia',
             'memoriales.numero_proceso',
             'memoriales.path',
             'memoriales.tipo_proceso_id',
@@ -46,7 +46,7 @@ class MemorialController extends Controller
 
         $memorial = Memorial::create([
             'fecha_notificacion' => $request->fecha_notificacion,
-            'fecha_evaluacion_audiencia' => $request->fecha_evaluacion_audiencia,
+            'fecha_evacuacion_audiencia' => $request->fecha_evacuacion_audiencia,
             'numero_proceso' => $request->numero_proceso,
             'path' => $path,
             'tipo_proceso_id' => $request->tipo_proceso_id,
@@ -58,7 +58,7 @@ class MemorialController extends Controller
         return response()->json([
             'id' => $memorial->id,
             'fecha_notificacion' => $memorial->fecha_notificacion,
-            'fecha_evaluacion_audiencia' => $memorial->fecha_evaluacion_audiencia,
+            'fecha_evacuacion_audiencia' => $memorial->fecha_evacuacion_audiencia,
             'numero_proceso' => $memorial->numero_proceso,
             'path' => $memorial->path,
             'tipo_proceso_id' => $memorial->tipo_proceso_id,
@@ -86,7 +86,7 @@ class MemorialController extends Controller
         }
 
         $memorial->fecha_notificacion = $request->fecha_notificacion;
-        $memorial->fecha_evaluacion_audiencia = $request->fecha_evaluacion_audiencia;
+        $memorial->fecha_evacuacion_audiencia = $request->fecha_evacuacion_audiencia;
         $memorial->numero_proceso = $request->numero_proceso;
         $memorial->tipo_proceso_id = $request->tipo_proceso_id;
         $memorial->plazo_audiencia_id = $request->plazo_audiencia_id;
@@ -97,7 +97,7 @@ class MemorialController extends Controller
             return response()->json([
                 'id' => $memorial->id,
                 'fecha_notificacion' => $memorial->fecha_notificacion,
-                'fecha_evaluacion_audiencia' => $memorial->fecha_evaluacion_audiencia,
+                'fecha_evacuacion_audiencia' => $memorial->fecha_evacuacion_audiencia,
                 'numero_proceso' => $memorial->numero_proceso,
                 'path' => $memorial->path,
                 'tipo_proceso_id' => $memorial->tipo_proceso_id,

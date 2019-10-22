@@ -16,7 +16,7 @@ class CreateMemorialesTable extends Migration
         Schema::create('memoriales', function (Blueprint $table) {
             $table->increments('id');
             $table->date('fecha_notificacion');
-            $table->date('fecha_evaluacion_audiencia');
+            $table->date('fecha_evacuacion_audiencia');
             $table->string('numero_proceso');
             $table->string('path')->nullable();
             $table->integer('tipo_proceso_id')->unsigned();

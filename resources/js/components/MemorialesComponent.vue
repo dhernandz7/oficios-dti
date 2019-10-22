@@ -15,9 +15,9 @@
               <th>Número proceso</th>
               <th>Tipo proceso</th>
               <th>Plazo audiencia</th>
-              <th>Notificacion</th>
-              <th>Evaluacion de audiencia</th>
-              <th>Usuario</th>
+              <th>Fecha de notificacion</th>
+              <th>Fecha de evacuación de audiencia</th>
+              <th>Asesor jurídico</th>
               <th>Fecha de registro</th>
               <th class="text-center">Opciones</th>
             </tr>
@@ -40,19 +40,11 @@
           <form v-on:submit.prevent="registrarMemorial" id="formulario" autocomplete="off">
             <div class="modal-body">
               <div class="form-row">
-                <div class="col-md-3 mb-2">
+                <div class="form-group col-md-6">
                   <label for="numero_proceso">Número de proceso<span class="text-danger ml-2">*</span></label>
                   <input v-model='data.numero_proceso' class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
                 </div>
-                <div class="col-md-3 mb-2">
-                  <label for="fecha_notificacion">Notificación<span class="text-danger ml-2">*</span></label>
-                  <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
-                </div>
-                <div class="col-md-3 mb-2">
-                  <label for="fecha_evaluacion_audiencia">Evaluación audiencia<span class="text-danger ml-2">*</span></label>
-                  <input v-model='data.fecha_evaluacion_audiencia' class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
-                </div>
-                <div class="col-md-3 mb-2">
+                <div class="form-group col-md-6">
                   <label for="plazo_audiencia_id">Plazo de audiencia<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.plazo_audiencia_id' class="form-control" name="plazo_audiencia_id" id="plazo_audiencia_id" required>
                     <option value=""></option>
@@ -60,17 +52,27 @@
                   </select>
                 </div>
               </div>
-              <div class="form-row mb-2">
-                <div class="col-md-6 mb-2">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="fecha_evacuacion_audiencia">Fecha de evacuación de audiencia<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.fecha_evacuacion_audiencia' class="form-control" type="date" name="fecha_evacuacion_audiencia" id="fecha_evacuacion_audiencia" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="fecha_notificacion">Fecha de notificación<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
                   <label for="tipo_proceso_id">Tipo de proceso<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.tipo_proceso_id' class="form-control" name="tipo_proceso_id" id="tipo_proceso_id" required>
                     <option value=""></option>
                     <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">{{tipoDeProceso.tipo_proceso}}</option>
                   </select>
                 </div>
-                <div class="col-md-6 mb-2">
+                <div class="form-group col-md-6">
                   <label for="pdf">Seleccione documento pdf</label><br>
-                  <input v-on:change="mostrarEmbed" class="form-control" type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                  <input v-on:change="mostrarEmbed('pdf', true)" class="form-control" type="file" id="pdf" name="pdf" accept="application/pdf" required>
                 </div>
               </div>
               <div v-if="showEmbed" class="embed-responsive embed-responsive-21by9">
@@ -100,19 +102,11 @@
           <form v-on:submit.prevent="actualizarMemorial" id="formularioActualizar" autocomplete="off">
             <div class="modal-body">
               <div class="form-row">
-                <div class="col-md-3 mb-2">
+                <div class="form-group col-md-6">
                   <label for="numero_proceso">Número de proceso<span class="text-danger ml-2">*</span></label>
                   <input v-model='data.numero_proceso' class="form-control" type="text" name="numero_proceso" id="numero_proceso" required>
                 </div>
-                <div class="col-md-3 mb-2">
-                  <label for="fecha_notificacion">Notificación<span class="text-danger ml-2">*</span></label>
-                  <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
-                </div>
-                <div class="col-md-3 mb-2">
-                  <label for="fecha_evaluacion_audiencia">Evaluación audiencia<span class="text-danger ml-2">*</span></label>
-                  <input v-model='data.fecha_evaluacion_audiencia' class="form-control" type="date" name="fecha_evaluacion_audiencia" id="fecha_evaluacion_audiencia" required>
-                </div>
-                <div class="col-md-3 mb-2">
+                <div class="form-group col-md-6">
                   <label for="plazo_audiencia_id">Plazo de audiencia<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.plazo_audiencia_id' class="form-control" name="plazo_audiencia_id" id="plazo_audiencia_id" required>
                     <option value="">Seleccione plazo de audiencia</option>
@@ -121,16 +115,26 @@
                 </div>
               </div>
               <div class="form-row">
-                <div class="col-md-6 mb-2">
+                <div class="form-group col-md-6">
+                  <label for="fecha_evacuacion_audiencia">Fecha de evaluación de audiencia<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.fecha_evacuacion_audiencia' class="form-control" type="date" name="fecha_evacuacion_audiencia" id="fecha_evacuacion_audiencia" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="fecha_notificacion">Fecha de notificación<span class="text-danger ml-2">*</span></label>
+                  <input v-model='data.fecha_notificacion' class="form-control" type="date" name="fecha_notificacion" id="fecha_notificacion" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
                   <label for="tipo_proceso_id">Tipo de proceso<span class="text-danger ml-2">*</span></label>
                   <select v-model='data.tipo_proceso_id' class="form-control" name="tipo_proceso_id" id="tipo_proceso_id" required>
                     <option value="">Seleccione tipo de proceso</option>
                     <option v-bind:value="tipoDeProceso.id" v-for="tipoDeProceso in tipoDeProcesos">{{tipoDeProceso.tipo_proceso}}</option>
                   </select>
                 </div>
-                <div class="col-md-6 mb-2">
+                <div class="form-group col-md-6">
                   <label for="pdf">Seleccione documento pdf</label><br>
-                  <input v-on:change="mostrarEmbed" class="form-control" type="file" id="pdf" name="pdf" accept="application/pdf">
+                  <input v-on:change="mostrarEmbed('pdf2', false)" class="form-control" type="file" id="pdf2" name="pdf" accept="application/pdf">
                 </div>
               </div>
               <div v-if="showEmbed" class="embed-responsive embed-responsive-21by9">
@@ -153,7 +157,7 @@
           <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="adjuntarModalLabel">
               <i class="fa fa-file-pdf fa-lg mr-2"></i>
-              Memorial 
+              Memorial {{data.numero_proceso}}
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -181,7 +185,7 @@
         datatable: [],
         data: {
           'fecha_notificacion': '',
-          'fecha_evaluacion_audiencia': '',
+          'fecha_evacuacion_audiencia': '',
           'numero_proceso': '',
           'tipo_proceso_id': '',
           'plazo_audiencia_id': ''
@@ -201,6 +205,7 @@
     mounted() {
       this.inicializarTabla()
       this.obtenerCatalogos()
+      this.bloquearMemorial()
       this.eventoParaActualizarMemorial()
       this.mostrarDocumento()
     },
@@ -218,8 +223,12 @@
           {'data': 'numero_proceso', 'name': 'numero_proceso'},
           {'data': 'tipo_proceso', 'name': 'tipo_proceso'},
           {'data': 'plazo_audiencia', 'name': 'plazo_audiencia'},
-          {'data': 'fecha_notificacion', 'name': 'fecha_notificacion'},
-          {'data': 'fecha_evaluacion_audiencia', 'name': 'fecha_evaluacion_audiencia'},
+          {'data': 'fecha_notificacion', 'name': 'fecha_notificacion', 'render': function(data) {
+            return data != null ? moment(data).locale('es').format('L') : '';
+          }},
+          {'data': 'fecha_evacuacion_audiencia', 'name': 'fecha_evacuacion_audiencia', 'render': function(data) {
+            return data != null ? moment(data).locale('es').format('L') : '';
+          }},
           {'data': 'name', 'name': 'name'},
           {'data': 'created_at', 'name': 'created_at', 'render': function(data) {
             return data != null ? moment(data).locale('es').format('LLL') : '';
@@ -230,6 +239,7 @@
               opciones = `
               <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
               <button class="modificar dropdown-item"><i class="fa fa-edit mr-2"></i>Modificar</button>
+              <button class="bloquear dropdown-item"><i class="fa fa-lock mr-2"></i>Bloquear</button>
               `
             } else {
               opciones = `
@@ -272,13 +282,15 @@
       },
 
       mostrarModalMemorial() {
+        $('#formulario')[0].reset();
+        this.showEmbed = false;
         $("#registrarMemorialModal").modal("show");
       },
 
       registrarMemorial() {
         let formulario = new FormData();
         formulario.append('fecha_notificacion', this.data.fecha_notificacion)
-        formulario.append('fecha_evaluacion_audiencia', this.data.fecha_evaluacion_audiencia)
+        formulario.append('fecha_evacuacion_audiencia', this.data.fecha_evacuacion_audiencia)
         formulario.append('numero_proceso', this.data.numero_proceso)
         formulario.append('pdf', this.pdf)
         formulario.append('tipo_proceso_id', this.data.tipo_proceso_id)
@@ -306,6 +318,56 @@
         });
       },
 
+      bloquearMemorial() {
+        $("#datatable tbody").on("click", "button.bloquear", function(e) {
+          this.data = this.datatable.row($(e.target).parents("tr")[0]).data()
+          this.idRow = this.datatable.row( $(e.target).parents("tr")[0] ).index()
+          Swal.fire({
+            title: 'Bloquear memorial',
+            html: `
+            ¿Está seguro de bloquear el memorial <span class="font-weight-bold">${this.data.numero_proceso}</span>?
+            <br><br>
+            Esta acción hará que ya no se pueda modificar ningún dato
+            `,
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar oficio',
+            cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
+          }).then( (result) => {
+            if( result.value) {
+              let formulario = new FormData();
+              formulario.append('fecha_notificacion', this.data.fecha_notificacion)
+              formulario.append('fecha_evacuacion_audiencia', this.data.fecha_evacuacion_audiencia)
+              formulario.append('numero_proceso', this.data.numero_proceso)
+              formulario.append('pdf', this.pdf)
+              formulario.append('tipo_proceso_id', this.data.tipo_proceso_id)
+              formulario.append('tipo_proceso', $('#tipo_proceso_id option:selected').html())
+              formulario.append('plazo_audiencia_id', this.data.plazo_audiencia_id)
+              formulario.append('plazo_audiencia', $('#plazo_audiencia_id option:selected').html())
+              formulario.append('user_id', this.miId)
+              formulario.append('name', this.miNombre)
+              formulario.append('_method', 'PUT')
+
+              axios.post(`/api/memorial/${this.data.id}`, formulario)
+              .then(response => {
+                response.data.created_at = response.data.created_at.date
+                this.datatable.row(this.idRow).data(response.data)
+                Swal.fire({
+                  title: "Memorial bloqueado",
+                  type: "success",
+                  html: `Se bloqueo correctamente el memorial <span class="font-weight-bold">${response.data.numero_proceso}</span>`
+                }).then((result)=>{
+                })
+              }).catch( error => {
+                this.mostrarErrores(error, "Error al bloquear el memorial", "No pudimos bloquear el memorial por los siguientes motivos:<br><br>");
+              });
+            }
+          })
+        }.bind(this))
+      },
+
       eventoParaActualizarMemorial() {
         $("#datatable tbody").on("click", "button.modificar", function(e) {
           this.data = this.datatable.row($(e.target).parents("tr")[0]).data()
@@ -320,7 +382,7 @@
       actualizarMemorial() {
         let formulario = new FormData();
         formulario.append('fecha_notificacion', this.data.fecha_notificacion)
-        formulario.append('fecha_evaluacion_audiencia', this.data.fecha_evaluacion_audiencia)
+        formulario.append('fecha_evacuacion_audiencia', this.data.fecha_evacuacion_audiencia)
         formulario.append('numero_proceso', this.data.numero_proceso)
         formulario.append('pdf', this.pdf)
         formulario.append('tipo_proceso_id', this.data.tipo_proceso_id)
@@ -381,11 +443,11 @@
         });
       },
 
-      mostrarEmbed() {
-        this.showEmbed = true;
-        this.btnSubmit = true;
-        this.pdf = document.getElementById("pdf").files[0];
-        this.src = URL.createObjectURL(this.pdf);
+      mostrarEmbed(pdf, registrar) {
+        this.showEmbed = true
+        this.btnSubmit = registrar
+        this.pdf = document.getElementById(pdf).files[0]
+        this.src = URL.createObjectURL(this.pdf)
       },
 
       obtenerUrl(url) {

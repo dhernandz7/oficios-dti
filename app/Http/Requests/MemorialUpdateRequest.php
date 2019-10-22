@@ -25,7 +25,7 @@ class MemorialUpdateRequest extends FormRequest
     {
         return [
             'fecha_notificacion' => 'required|date',
-            'fecha_evaluacion_audiencia' => 'required|date',
+            'fecha_evacuacion_audiencia' => 'required|date',
             'numero_proceso' => 'required|string',
             'pdf' => 'nullable|mimes:pdf|max:10000',
             'tipo_proceso_id' => 'required|integer',
@@ -37,7 +37,7 @@ class MemorialUpdateRequest extends FormRequest
     {
         return [
             'fecha_notificacion' => 'fecha de notificación',
-            'fecha_evaluacion_audiencia' => 'fecha de evaluación audiencia',
+            'fecha_evacuacion_audiencia' => 'fecha de evacuación audiencia',
             'numero_proceso' => 'número de proceso',
             'pdf' => 'archivo',
             'tipo_proceso_id' => 'tipo de proceso',
@@ -49,7 +49,7 @@ class MemorialUpdateRequest extends FormRequest
     {
         return [
             'fecha_notificacion.date' => 'La :attribute debe ser una fecha',
-            'fecha_evaluacion_audiencia.date' => 'La :attribute debe ser una fecha',
+            'fecha_evacuacion_audiencia.date' => 'La :attribute debe ser una fecha',
             'pdf.mimes:pdf' => 'El :attribute debe ser de tipo pdf',
             'pdf.max:10000' => 'El :attribute debe pesar como máximo 10MB',
             'tipo_proceso_id.integer'=> 'El :attribute debe ser un entero',
