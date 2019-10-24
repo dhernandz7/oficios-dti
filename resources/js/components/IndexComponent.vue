@@ -94,7 +94,7 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<!--div class="row">
 			<div class="col-xl-12 col-lg-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -107,12 +107,12 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div-->
 	</div>
 </template>
 
 <script>
-	import Chart from '../../plugins/sbadmin2/vendor/chart.js/Chart.min.js'
+	//import Chart from '../../plugins/sbadmin2/vendor/chart.js/Chart.min.js'
 	export default {
 		data() {
 			return {
@@ -127,15 +127,17 @@
 			this.getConteo('/api/dictamen/get/pendientes',this.setDictamenesPendientes);
 			this.getConteo('/api/memorandum/get/pendientes',this.setMemorandumsPendientes);
 			this.getConteo('/api/providencia/get/pendientes',this.setProvidenciasPendientes);
-			this.getConteo('nada', this.grafica);
+			//this.getConteo('nada', this.grafica);
 		},
 		updated() {
 		},
 		methods: {
 			getConteo(url, callback) {
+				/*
 				if (url === 'nada') {
 					callback();
 				}
+				*/
 				let conteo = null;
 				axios.get(url).then(response => {
 					callback(response.data.conteo);
@@ -157,6 +159,7 @@
 			setProvidenciasPendientes(conteo) {
 				this.providenciasPendientes = conteo;
 			},
+			/*,
 			grafica() {
 				var ctx = document.getElementById("myAreaChart");
 				var myLineChart = new Chart(ctx, {
@@ -252,6 +255,7 @@
 				});
 
 			},
+			*/
 			mostrarErrores(error, titulo, mensaje) {
 				let cadena = '';
 				if(error.response.status == 403) {
