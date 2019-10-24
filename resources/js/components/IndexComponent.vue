@@ -3,8 +3,7 @@
 		<h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
 		<h3 class="h4 mb-4 text-gray-800">Documentos pendientes de adjuntar</h3>
 		<div class="row">
-			<!-- Earnings (Monthly) Card Example -->
-			<div class="col-xl-4 col-md-6 mb-4">
+			<div class="col-xl-4 col-md-4 mb-4">
 				<div v-bind:class="{ 'border-left-success shadow h-100 py-2': oficiosPendientes == 0, 'border-left-danger shadow h-100 py-2': oficiosPendientes > 0 }" class="card">
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
@@ -22,8 +21,7 @@
 				</div>
 			</div>
 
-			<!-- Earnings (Monthly) Card Example -->
-			<div class="col-xl-4 col-md-6 mb-4">
+			<div class="col-xl-4 col-md-4 mb-4">
 				<div v-bind:class="{ 'border-left-success shadow h-100 py-2': dictamenesPendientes == 0, 'border-left-danger shadow h-100 py-2': dictamenesPendientes > 0 }" class="card">
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
@@ -41,8 +39,7 @@
 				</div>
 			</div>
 
-			<!-- Earnings (Monthly) Card Example -->
-			<div class="col-xl-4 col-md-6 mb-4">
+			<div class="col-xl-4 col-md-4 mb-4">
 				<div v-bind:class="{ 'border-left-success shadow h-100 py-2': memorandumsPendientes == 0, 'border-left-danger shadow h-100 py-2': memorandumsPendientes > 0 }" class="card">
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
@@ -69,7 +66,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+
+		<!--div class="row">
 			<div class="col-xl-12 col-lg-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -82,12 +80,12 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div-->
 	</div>
 </template>
 
 <script>
-	import Chart from '../../plugins/sbadmin2/vendor/chart.js/Chart.min.js'
+	//import Chart from '../../plugins/sbadmin2/vendor/chart.js/Chart.min.js'
 	export default {
 		data() {
 			return {
@@ -100,14 +98,17 @@
 			this.getConteo('/api/oficio/get/pendientes',this.setOficiosPendientes);
 			this.getConteo('/api/dictamen/get/pendientes',this.setDictamenesPendientes);
 			this.getConteo('/api/memorandum/get/pendientes',this.setMemorandumsPendientes);
-			this.getConteo('nada', this.grafica);
-
+			//this.getConteo('nada', this.grafica);
+		},
+		updated() {
 		},
 		methods: {
 			getConteo(url, callback) {
+				/*
 				if (url === 'nada') {
 					callback();
 				}
+				*/
 				let conteo = null;
 				axios.get(url).then(response => {
 					callback(response.data.conteo);
@@ -126,12 +127,16 @@
 			setMemorandumsPendientes(conteo) {
 				this.memorandumsPendientes = conteo;
 			},
+			setProvidenciasPendientes(conteo) {
+				this.providenciasPendientes = conteo;
+			},
+			/*,
 			grafica() {
 				var ctx = document.getElementById("myAreaChart");
 				var myLineChart = new Chart(ctx, {
 					type: 'bar',
 					data: {
-						labels: ["Oficios", "Dictámenes", "Memorándum"],
+						labels: ["Oficios", "Dictámenes", "Memorándum", "Providencias"],
 						datasets: [{
 							label: "Cantidad de documentos pendientes",
 							lineTension: 0.3,
@@ -148,7 +153,8 @@
 							data: [
 							this.oficiosPendientes,
 							this.dictamenesPendientes,
-							this.memorandumsPendientes
+							this.memorandumsPendientes,
+							this.providenciasPendientes
 							],
 						}],
 					},
@@ -220,6 +226,7 @@
 				});
 
 			},
+			*/
 			mostrarErrores(error, titulo, mensaje) {
 				let cadena = '';
 				if(error.response.status == 403) {

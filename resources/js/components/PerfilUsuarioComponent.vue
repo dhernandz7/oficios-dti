@@ -2,10 +2,7 @@
 	<div>
 		<h1 class="h3 mb-4 text-gray-800"><i class="fa fa-user mr-2"></i>Mi perfil</h1>
 		<div class="row">
-			<div class="col-md-4">
-				
-			</div>
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<!--button class="btn btn-outline-secondary float-right">
 					<i class="fa fa-edit fa-lg mr-2"></i>
 					Modificar perfil
@@ -36,7 +33,7 @@
 							</select>
 						</div>
 						<div class="alert alert-info">
-							Esta opción se encuentra en desarrollo.
+							Ested módulo se encuentra en desarrollo.
 						</div>
 					</div>
 				</div>
