@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             TipoDocumentoTableSeeder::class,
             PermissionsTableSeeder::class,
             RolesTableSeeder::class,
-            PermissionsRolesTableSeeder::class
+            PermissionsRolesTableSeeder::class,
             TipoProcesoTableSeeder::class,
             PlazoAudienciaTableSeeder::class
         ]);
