@@ -336,7 +336,7 @@
       actualizarTabla() {
         this.datatable.ajax.reload(() => Swal.fire({
           title: 'Información',
-          html: 'La lista de oficios fue actualizada correctamente',
+          html: 'La lista de dictámenes fue actualizada correctamente',
           type: 'success'}))
       }
     }

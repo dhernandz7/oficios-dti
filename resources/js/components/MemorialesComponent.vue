@@ -503,7 +503,7 @@
       actualizarTabla() {
         this.datatable.ajax.reload(() => Swal.fire({
           title: 'Información',
-          html: 'La lista de oficios fue actualizada correctamente',
+          html: 'La lista de memoriales fue actualizada correctamente',
           type: 'success'}), true)
       }
     }
