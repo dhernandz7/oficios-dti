@@ -7,6 +7,10 @@
         <i class="fa fa-bell fa-lg mr-2"></i>
         Reservar dictámen
       </button>
+      <button v-on:click="actualizarTabla" class="btn btn-primary float-right">
+        <i class="fa fa-sync fa-lg mr-2"></i>
+        Actualizar página
+      </button>
       <div class="table-responsive">
         <table class="table table-hover border" id="datatable">
           <thead class="bg-dark text-white">
@@ -327,6 +331,13 @@
           cadena += '</ul>';
         }
         Swal.fire(titulo, `${cadena}`, 'error');
+      },
+
+      actualizarTabla() {
+        this.datatable.ajax.reload(() => Swal.fire({
+          title: 'Información',
+          html: 'La lista de oficios fue actualizada correctamente',
+          type: 'success'}))
       }
     }
   }
