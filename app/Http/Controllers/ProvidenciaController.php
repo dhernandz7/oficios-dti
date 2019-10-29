@@ -30,7 +30,8 @@ class ProvidenciaController extends Controller
             'users.name',
             'users.iniciales',
             'asignaciones.path',
-            'asignaciones.tipo_documento_id'
+            'asignaciones.tipo_documento_id',
+            'asignaciones.user_id'
         ])
         ->orderBy('providencias.id')
         ->get();
@@ -59,7 +60,8 @@ class ProvidenciaController extends Controller
             'name' => $request->name,
             'iniciales' => $request->iniciales,
             'path' => $asignacion->path,
-            'tipo_documento_id' => $asignacion->tipo_documento_id
+            'tipo_documento_id' => $asignacion->tipo_documento_id,
+            'user_id' => $asignacion->user_id
         ],200);
     }
 
@@ -80,7 +82,8 @@ class ProvidenciaController extends Controller
             'name' => $request->name,
             'iniciales' => $request->iniciales,
             'path' => $asignacion->path,
-            'tipo_documento_id' => $asignacion->tipo_documento_id
+            'tipo_documento_id' => $asignacion->tipo_documento_id,
+            'user_id' => $asignacion->user_id
         ],200);
     }
 

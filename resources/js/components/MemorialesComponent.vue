@@ -195,6 +195,7 @@
           'plazo_audiencia_id': ''
         },
         miId: localStorage.getItem("id").split("$")[1],
+        jefeId: 1,
         miNombre: localStorage.getItem("nombre"),
         idRow:0,
         showEmbed: false,
@@ -245,10 +246,16 @@
               <button class="modificar dropdown-item"><i class="fa fa-edit mr-2"></i>Modificar</button>
               <button class="bloquear dropdown-item"><i class="fa fa-lock mr-2"></i>Bloquear</button>
               `
-            } else {
+            } else if(row.user_id == this.miId) {
               opciones = `
               <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
               `
+            } else if(this.miId == this.idJefe) {
+              opciones = `
+              <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
+              `
+            } else {
+              return ''
             }
             return `
             <div class="dropdown dropleft text-center">

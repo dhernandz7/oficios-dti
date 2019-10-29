@@ -1,6 +1,5 @@
 <template>
   <div>
-    <input type="hidden" id="ultimo" value="nada">
     <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Oficios</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
       <button v-on:click="reservarAutomaticamente" id="reservar-oficio" class="btn btn-primary mb-3">
@@ -73,7 +72,9 @@
         mostrarInputFile: true,
         pdf: null,
         src: null,
-        misIniciales: localStorage.getItem('iniciales')
+        misIniciales: localStorage.getItem('iniciales'),
+        miId: localStorage.getItem("id").split("$")[1],
+        idJefe: 1
       }
     },
     mounted() {
@@ -103,37 +104,30 @@
             return data != null ? moment(data).locale('es').format('LLL') : '';
           }},
           {'render': function(data, type, row) {
-            if(row.name == null && $("#ultimo").val() == "nada"){
-              return '<i class="fa fa-bell mr-2 text-primary"></i>Disponible para reservar';
-            } else if(row.name == localStorage.getItem('nombre') && row.path == null) {
+            if(row.user_id == this.miId && row.path == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Tengo pendiente de subir documento';
-            } else if(row.name != null && row.path == null) {
+            } else if(row.path == null) {
               return '<i class="fa fa-bell mr-2 text-danger"></i>Pendiente de subir documento';
-            } else if(row.path != null) {
-              return '<i class="fa fa-bell mr-2 text-success"></i>Documento cargado';
             } else {
-              return '<i class="fa fa-bell mr-2 text-info"></i>Sin asignar';
+              return '<i class="fa fa-bell mr-2 text-success"></i>Documento cargado';
             }
-          }},
+          }.bind(this)},
           {'render': function(data, type, row) {
             let opciones = ``;
-            if(row.name == null && $("#ultimo").val() == "nada") {
-              opciones += `
-              <button class="asignar dropdown-item"><i class="fa fa-bell mr-2"></i>Reservar oficio</button>
-              `;
-              $("#ultimo").val(row.id);
-            } else if(row.name == localStorage.getItem('nombre') && row.path == null) {
+            if(row.user_id == this.miId && row.path == null) {
               opciones += `
               <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
-            } else if(row.name != localStorage.getItem('nombre') && row.path == null) {
-              return '';
-            } else if(row.name == null && row.path == null) {
-              return '';
-            } else {
+            } else if(row.user_id == this.miId && row.path != null) {
               opciones += `
               <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
-              `;
+              `
+            } else if(this.miId == this.idJefe && row.path != null) {
+              opciones += `
+              <button class="mostrar dropdown-item"><i class="fa fa-file-pdf mr-2"></i>Mostrar documento</button>
+              `
+            } else {
+              return ''
             }
             return `
             <div class="dropdown dropleft text-center">
@@ -145,7 +139,7 @@
             </div>
             </div>
             `;
-          }}],
+          }.bind(this)}],
           language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -213,7 +207,7 @@
               });
             }
           });
-        }.bind(this));
+        });
       },
 
       reservarAutomaticamente() {
