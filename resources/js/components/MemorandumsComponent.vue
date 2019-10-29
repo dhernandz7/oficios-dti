@@ -1,6 +1,5 @@
 <template>
   <div>
-    <input type="hidden" id="ultimo" value="nada">
     <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Memorándum</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
       <button v-on:click="reservarAutomaticamente" id="reservar-memorandum" class="btn btn-primary mb-3">
@@ -115,14 +114,7 @@
           }.bind(this)},
           {'render': function(data, type, row) {
             let opciones = ``;
-            if(row.name == null && $("#ultimo").val() == "nada") {
-              opciones += `
-              <button class="asignar dropdown-item"><i class="fa fa-bell mr-2"></i>Reservar memorándum</button>
-              `;
-              $("#ultimo").val(row.id);
-            } else if(row.user_id == null ) {
-              return ''
-            } else if(row.user_id == this.miId && row.path == null) {
+            if(row.user_id == this.miId && row.path == null) {
               opciones += `
               <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
@@ -207,7 +199,6 @@
                   this.data.iniciales = response.data.iniciales;
                   this.data.created_at = response.data.created_at.date;
                   this.datatable.row(this.idRow).data(this.data);
-                  $("#ultimo").val("nada");
                   this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
                 });
               }).catch( error => {

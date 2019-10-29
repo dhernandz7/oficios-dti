@@ -1,6 +1,5 @@
 <template>
   <div>
-    <input type="hidden" id="ultimo" value="nada">
     <h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Memoriales</h1>
     <div class="shadow-lg p-4 mb-5 bg-white rounded">
       <button v-on:click="mostrarModalMemorial" id="registrar-memorial" class="btn btn-primary mb-3">

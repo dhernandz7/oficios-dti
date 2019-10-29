@@ -199,7 +199,6 @@
                   this.data.iniciales = response.data.iniciales;
                   this.data.created_at = response.data.created_at.date;
                   this.datatable.row(this.idRow).data(this.data);
-                  $("#ultimo").val("nada");
                   this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
                 });
               }).catch( error => {

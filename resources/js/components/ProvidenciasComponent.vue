@@ -114,9 +114,7 @@
           }.bind(this)},
           {'render': function(data, type, row) {
             let opciones = ``;
-            if(row.user_id == null ) {
-              return ''
-            } else if(row.user_id == this.miId && row.path == null) {
+            if(row.user_id == this.miId && row.path == null) {
               opciones += `
               <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
@@ -201,7 +199,6 @@
                   this.data.iniciales = response.data.iniciales;
                   this.data.created_at = response.data.created_at.date;
                   this.datatable.row(this.idRow).data(this.data);
-                  $("#ultimo").val("nada");
                   this.datatable.row(this.idRow+1).data(this.datatable.row(this.idRow+1).data());
                 });
               }).catch( error => {
