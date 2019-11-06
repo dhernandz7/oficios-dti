@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Memorial extends Model
 {
+	use SoftDeletes;
+	
 	protected $table = 'memoriales';
 	protected $fillable = [
 		'fecha_notificacion',

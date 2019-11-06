@@ -26,7 +26,7 @@ class MemorialStoreRequest extends FormRequest
         return [
             'fecha_notificacion' => 'required|date',
             'fecha_evacuacion_audiencia' => 'required|date',
-            'numero_proceso' => 'required|string',
+            'numero_proceso' => 'required|string|unique:memoriales',
             'pdf' => 'required|mimes:pdf|max:10000',
             'tipo_proceso_id' => 'required|integer',
             'plazo_audiencia_id' => 'required|integer',
