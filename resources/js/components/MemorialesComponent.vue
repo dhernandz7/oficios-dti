@@ -194,7 +194,7 @@
           'plazo_audiencia_id': ''
         },
         miId: localStorage.getItem("id").split("$")[1],
-        jefeId: 1,
+        idJefe: 1,
         miNombre: localStorage.getItem("nombre"),
         idRow:0,
         showEmbed: false,
@@ -344,7 +344,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: '<i class="fa fa-bell fa-lg mr-2"></i>Reservar oficio',
+            confirmButtonText: '<i class="fa fa-lock fa-lg mr-2"></i>Bloquear memorial',
             cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>Cancelar'
           }).then( (result) => {
             if( result.value) {
