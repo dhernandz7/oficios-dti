@@ -9,7 +9,7 @@ window.Vue = require('vue');
 
 Vue.component('app-component', require('./components/AppComponent.vue').default);
 
-import router from './routes'
+import router from './router'
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title;

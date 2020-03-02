@@ -70,6 +70,9 @@
               @can('memorial')
               <router-link :to="{name: 'memoriales'}" class="collapse-item">Memoriales</router-link>
               @endcan
+              @can('procesos.contenciosos.administrativo')
+              <router-link :to="{name: 'procesos-contenciosos-administrativo'}" class="collapse-item">Procesos contenciosos administrativos</router-link>
+              @endcan
             </div>
           </div>
         </li>
@@ -170,6 +173,7 @@
     @csrf
   </form>
   <script src="/js/admin.js"></script>
+  {{--
   <script>
     $(document).ready(function() {
       if(localStorage.getItem('nombre') == null) {
@@ -195,5 +199,6 @@
       $(".app-name").html(localStorage.getItem('app-name-aj').replace("AJ", "<sup>AJ</sup>"));
     });
   </script>
+  --}}
 </body>
 </html>
