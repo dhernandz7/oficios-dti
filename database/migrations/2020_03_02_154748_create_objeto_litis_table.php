@@ -15,11 +15,11 @@ class CreateObjetoLitisTable extends Migration
     {
         Schema::create('objeto_litis', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('objeto_de_litis');
+            $table->string('objeto_litis');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique('objeto_de_litis', 'unique_objeto_litis');
+            $table->unique('objeto_litis', 'unique_objeto_litis');
         });
     }
 

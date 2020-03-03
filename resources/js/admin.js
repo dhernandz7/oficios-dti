@@ -12,11 +12,11 @@ Vue.component('app-component', require('./components/AppComponent.vue').default)
 import router from './router'
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
-  next();
+	document.title = to.meta.title;
+	next();
 });
 
 const app = new Vue({
-    el: '#app',
-    router
+	el: '#app',
+	router
 });

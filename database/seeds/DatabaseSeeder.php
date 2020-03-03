@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             PermissionsRolesTableSeeder::class,
             TipoProcesoTableSeeder::class,
-            PlazoAudienciaTableSeeder::class
+            PlazoAudienciaTableSeeder::class,
+            ProvenienciasTableSeeder::class,
+            ObjetoLitisTableSeeder::class,
+            EstadoProcesoTableSeeder::class
         ]);
     }
 }
