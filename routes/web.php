@@ -61,6 +61,12 @@ Route::prefix('api/memorial')->middleware(['auth', 'verified', 'only.ajax'])->gr
 	Route::put('/{id}', 'MemorialController@update')->name('api.memorial.update')->middleware('permission:api.memorial.update');
 });
 
+Route::prefix('api/procesos-contenciosos-administrativos')->middleware(['auth', 'verified', 'only.ajax'])->group(function() {
+	Route::get('/', 'ProcesoContenciosoAdministrativoController@index')->name('api.procesos.contenciosos.administrativos.index');
+	Route::post('/', 'ProcesoContenciosoAdministrativoController@store')->name('api.procesos.contenciosos.administrativos.store');
+	Route::put('/{id}', 'ProcesoContenciosoAdministrativoController@update')->name('api.procesos.contenciosos.administrativos.update');
+});
+
 Route::prefix('api/catalogos')->middleware(['auth', 'verified'])->group(function() {
 	Route::get('/tipos-de-procesos', 'CatalogosController@tiposDeProcesos');
 	Route::get('/plazos-de-audiencias', 'CatalogosController@plazosDeAudiencias');
