@@ -7,7 +7,7 @@
 				Registrar proceso
 			</button>
 			<div class="table-responsive">
-				<table class="table table-hover border">
+				<table class="table table-hover border" id="procesos">
 					<thead class="thead-dark">
 						<tr>
 							<th>id</th>
@@ -212,12 +212,12 @@
 		},
 
 		mounted() {
-			
+			this.inicializarTabla()
 		},
 
 		methods: {
 			inicializarTabla() {
-				this.procesos = $('#products').DataTable({
+				this.procesos = $('#procesos').DataTable({
 					ajax: '/api/procesos-contenciosos-administrativos',
 					order: [[0,'asc'], [1,'asc']],
 					lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, 'todos']],
@@ -315,10 +315,6 @@
 			setProceso(event) {
 				this.proceso = this.procesos.row($(event.target).parents("tr")[0]).data()
 				this.idRow = this.procesos.row( $(event.target).parents("tr")[0] ).index()
-			},
-
-			actualizarProceso() {
-
 			},
 
 			limpiarFormulario() {
