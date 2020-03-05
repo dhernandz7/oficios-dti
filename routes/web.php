@@ -72,5 +72,5 @@ Route::prefix('api/catalogos')->middleware(['auth', 'verified'])->group(function
 	Route::get('/plazos-de-audiencias', 'CatalogosController@plazosDeAudiencias');
 });
 
-//Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');
-Route::get('/{any}', 'AppController@any')->where('any', '.*');
+Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');
+//Route::get('/{any}', 'AppController@any')->where('any', '.*');

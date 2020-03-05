@@ -6,11 +6,15 @@
 				<i class="fa fa-plus-square fa-lg mr-2"></i>
 				Registrar proceso
 			</button>
+			<button v-on:click="actualizarTabla" class="btn btn-primary float-right">
+				<i class="fa fa-sync fa-lg mr-2"></i>
+				Actualizar página
+			</button>
 			<div class="table-responsive">
 				<table class="table table-hover border" id="procesos">
 					<thead class="thead-dark">
 						<tr>
-							<th>id</th>
+							<th>Número de orden</th>
 							<th>Fecha de proceso</th>
 							<th>Número de proceso</th>
 							<th>Proveniente de</th>
@@ -63,12 +67,12 @@
 									Proveniente de
 									<span class="text-danger">*</span>
 								</label>
-								<select class="form-control" id="proveniente de" name="proveniente de" v-model="proceso.proveniente_id" v-validate="'required'">
+								<select class="form-control" id="proveniente de" name="proveniente de" v-model="proceso.proveniencia" v-validate="'required'">
 									<option value="">Seleccione una opción</option>
-									<option value="1">Corte de Constitucionalidad</option>
-									<option value="2">Corte Suprema de Justicia</option>
-									<option value="3">Juzgado</option>
-									<option value="4">Sala</option>
+									<option v-bind:value="{ proveniente_id: 1, proveniencia: 'Corte de Constitucionalidad'}">Corte de Constitucionalidad</option>
+									<option v-bind:value="{ proveniente_id: 2, proveniencia: 'Corte Suprema de Justicia'}">Corte Suprema de Justicia</option>
+									<option v-bind:value="{ proveniente_id: 3, proveniencia: 'Juzgado'}">Juzgado</option>
+									<option v-bind:value="{ proveniente_id: 4, proveniencia: 'Sala'}">Sala</option>
 								</select>
 								<div class="invalid-feedback">{{errors.first('proveniente de')}}</div>
 							</div>
@@ -86,14 +90,14 @@
 								Objeto de Litis
 								<span class="text-danger">*</span>
 							</label>
-							<select class="form-control" id="objeto de litis" name="objeto de litis" v-model="proceso.objeto_litis_id" v-validate="'required'">
+							<select class="form-control" id="objeto de litis" name="objeto de litis" v-model="proceso.objeto_litis" v-validate="'required'">
 								<option value="">Seleccione una opción</option>
-								<option value="1">Aclaración y/o Ampliación</option>
-								<option value="2">Amparo</option>
-								<option value="3">Casación</option>
-								<option value="4">Contencioso Administrativo</option>
-								<option value="5">Inconstitucionalidad</option>
-								<option value="6">Otro</option>
+								<option v-bind:value="{ objeto_litis_id: 1, objeto_litis: 'Aclaración y/o Ampliación'}">Aclaración y/o Ampliación</option>
+								<option v-bind:value="{ objeto_litis_id: 2, objeto_litis: 'Amparo'}">Amparo</option>
+								<option v-bind:value="{ objeto_litis_id: 3, objeto_litis: 'Casación'}">Casación</option>
+								<option v-bind:value="{ objeto_litis_id: 4, objeto_litis: 'Contencioso Administrativo'}">Contencioso Administrativo</option>
+								<option v-bind:value="{ objeto_litis_id: 5, objeto_litis: 'Inconstitucionalidad'}">Inconstitucionalidad</option>
+								<option v-bind:value="{ objeto_litis_id: 6, objeto_litis: 'Otro'}">Otro</option>
 							</select>
 							<div class="invalid-feedback">{{errors.first('objeto de litis')}}</div>
 						</div>
@@ -121,12 +125,12 @@
 									Tipo de evacuación
 									<span class="text-danger">*</span>
 								</label>
-								<select class="form-control" id="tipo de evacuación" name="tipo de evacuación" v-model="proceso.tipo_evacuacion_id" v-validate="'required'">
+								<select class="form-control" id="tipo de evacuación" name="tipo de evacuación" v-model="proceso.tipo_evacuacion" v-validate="'required'">
 									<option value="">Selecciona una opción</option>
-									<option value="1">Contestación de demanda</option>
-									<option value="2">Día para la vista</option>
-									<option value="3">Evacuación de audiencia 48 hora</option>
-									<option value="4">Otro</option>
+									<option v-bind:value="{ tipo_evacuacion_id: 1, tipo_evacuacion: 'Contestación de demanda'}">Contestación de demanda</option>
+									<option v-bind:value="{ tipo_evacuacion_id: 2, tipo_evacuacion: 'Día para la vista'}">Día para la vista</option>
+									<option v-bind:value="{ tipo_evacuacion_id: 3, tipo_evacuacion: 'Evacuación de audiencia 48 hora'}">Evacuación de audiencia 48 hora</option>
+									<option v-bind:value="{ tipo_evacuacion_id: 4, tipo_evacuacion: 'Otro'}">Otro</option>
 								</select>
 								<div class="invalid-feedback">{{errors.first('tipo de evacuación')}}</div>
 							</div>
@@ -135,10 +139,10 @@
 									Estado del proceso
 									<span class="text-danger">*</span>
 								</label>
-								<select class="form-control" id="estado del proceso" name="estado del proceso" v-model="proceso.estado_proceso_id" v-validate="'required'">
+								<select class="form-control" id="estado del proceso" name="estado del proceso" v-model="proceso.estado_proceso" v-validate="'required'">
 									<option value="">Seleccione una opción</option>
-									<option value="1">En proceso</option>
-									<option value="2">Finalizado</option>
+									<option v-bind:value="{ estado_proceso_id: 1, estado_proceso: 'En proceso'}">En proceso</option>
+									<option value="2" v-bind:value="{ estado_proceso_id: 2, estado_proceso: 'Finalizado'}">Finalizado</option>
 								</select>
 								<div class="invalid-feedback">{{errors.first('estado del proceso')}}</div>
 							</div>
@@ -163,7 +167,6 @@
 								<li v-for="error in errorsServer">{{error}}</li>
 							</ul>
 						</div>
-						<pre>{{errors}}</pre>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary" v-on:click="registrarProcesoContenciosoAdministrativo">
@@ -219,24 +222,47 @@
 			inicializarTabla() {
 				this.procesos = $('#procesos').DataTable({
 					ajax: '/api/procesos-contenciosos-administrativos',
-					order: [[0,'asc'], [1,'asc']],
+					order: [[0,'desc']],
 					lengthMenu: [[5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, 'todos']],
 					info: true,
 					paging: true,
 					autoWidth: false,
 					columns: [
-					{data: 'title', name: 'title'},
-					{data: 'body', name: 'body', searchable: false},
+					{data: 'id', name: 'id'},
+					{render: function(data, type, row) {
+						return moment(row.fecha).locale('es').format('L')
+					}},
+					{data: 'numero_de_proceso', name: 'numero_de_proceso'},
+					{data: 'proveniencia', name: 'proveniencia'},
+					{render: function(data, type, row) {
+						return moment(row.fecha_de_notificacion).locale('es').format('L')
+					}},
+					{data: 'objeto_litis', name: 'objeto_litis'},
+					{data: 'nombre_de_entidad_demandante', name: 'nombre_de_entidad_demandante'},
+					{data: 'nombre_de_demandado', name: 'nombre_de_demandado'},
+					{data: 'tipo_evacuacion', name: 'tipo_evacuacion'},
+					{render: function(data, type, row) {
+						if (row.estado_proceso_id == 2) {
+							return '<span class="badge badge-success">Finalizado</span>'
+						}
+						return `<span class="badge badge-danger">${row.estado_proceso}</span>`
+					}},
+					{data: 'anotacion', name: 'anotacion'},
 					{render: function(data, type, row){
+						if(row.estado_proceso_id == 2) {
+							return ''
+						}
+
 						return `
 						<div class="dropleft">
-						<a href="#" class="badge badge-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						opciones
+						<a href="#" class="badge badge-warning p-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-cog fa-lg"></i>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="/productos/${row.id}/show">Mostrar</a>
-						<a class="dropdown-item" href="#">Another action</a>
-						<a class="dropdown-item" href="#">Something else here</a>
+						<a class="editar dropdown-item" href="#">
+						<i class="fa fa-fw fa-edit mr-2"></i>
+						Actualizar estado
+						</a>
 						</div>
 						</div>
 						`
@@ -271,9 +297,16 @@
 						}
 					}
 				})
-				.on('tbody click', 'button.editar', function(event) {
+				.on('tbody click', 'a.editar', function(event) {
 					this.setProceso(event)
+					this.confirmarActualizacionDeEstadoDeProcesoContenciosoAdministrativo()
 				}.bind(this))
+			},
+
+			actualizarTabla() {
+				this.procesos.ajax.reload(() => Swal.fire({
+					html: 'El listado de procesos contenciosos administrativos fue actualizado',
+					type: 'success'}))
 			},
 
 			crearProcesoContenciosoAdministrativo() {
@@ -315,6 +348,69 @@
 			setProceso(event) {
 				this.proceso = this.procesos.row($(event.target).parents("tr")[0]).data()
 				this.idRow = this.procesos.row( $(event.target).parents("tr")[0] ).index()
+			},
+
+			confirmarActualizacionDeEstadoDeProcesoContenciosoAdministrativo() {
+				Swal.fire({
+					title: '¿Desea cambiar el estado?',
+					html: `Se cambiará el estado del número de proceso
+					<span class="font-weight-bold">${this.proceso.numero_de_proceso}</span> a
+					<span class="font-weight-bold">finalizado</span>
+					`,
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: '<i class="fa fa-edit fa-lg mr-2"></i>Si',
+					cancelButtonText: '<i class="fa fa-times fa-lg mr-2"></i>No'
+				}).then((result) => {
+					if (result.value) {
+						this.actualizarEstadoDeProcesoContenciosoAdministrativo()
+					}
+				})
+			},
+
+			actualizarEstadoDeProcesoContenciosoAdministrativo() {
+				axios.post(`/api/procesos-contenciosos-administrativos/${this.proceso.id}`, { estado_proceso_id: 2, _method: 'PUT' })
+				.then(response => {
+					Swal.fire({
+						title: 'Actualización exitosa',
+						type: 'success',
+						html: `Se actualizó el estado del número de proceso
+						<span class="font-weight-bold">${this.proceso.numero_de_proceso}</span> a
+						<span class="font-weight-bold">finalizado</span>
+						`
+					}).then(result => {
+						this.actualizarFilaDeProcesoContenciosoAdministrativo(response.data)
+						this.limpiarFormulario()
+					})
+				})
+				.catch(error => {
+					if (typeof error.response.data === 'object') {
+						this.errorsServer = _.flatten(_.toArray(error.response.data.errors))
+					} else {
+						this.errorsServer = [error.response.data]
+					}
+
+					let errors = ''
+					let errorServer
+					
+					for(errorServer of this.errorsServer) {
+						errors += `<li class="list-group-item">${errorServer}</li>`
+					}
+
+					Swal.fire({
+						title: 'Error',
+						html: `<ul class="list-group">${errors}</ul>`,
+						type: 'error'
+					})
+				})
+
+			},
+
+			actualizarFilaDeProcesoContenciosoAdministrativo(estado_proceso_id) {
+				this.proceso.estado_proceso_id = estado_proceso_id
+				this.procesos.row(this.idRow).data(this.proceso)
 			},
 
 			limpiarFormulario() {

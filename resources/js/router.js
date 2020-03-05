@@ -53,10 +53,12 @@ export default new Router({
 		component: require('./components/EmptyRouteView').default,
 		children: [
 		{
+			meta: {title: 'Procesos Contenciosos Administrativos'},
 			name: 'procesos-contenciosos-administrativos',
 			path: '',
 			component: require('./components/procesos-contenciosos-administrativos/IndexComponent').default
-		},
+		}
+		/*,
 		{
 			name: 'procesos-contenciosos-administrativos-create',
 			path: 'create',
@@ -71,7 +73,7 @@ export default new Router({
 			name: 'procesos-contenciosos-administrativos-edit',
 			path: ':id/edit',
 			component: require('./components/procesos-contenciosos-administrativos/EditComponent').default
-		}
+		}*/
 		]
 	},
 	{

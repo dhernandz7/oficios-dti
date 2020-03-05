@@ -26,13 +26,13 @@ class CreateProcesoContenciosoAdministrativoRequest extends FormRequest
         return [
             'fecha' => 'required|date',
             'numero_de_proceso' => 'required|string|unique:procesos_contenciosos_administrativos',
-            'proveniente_id' => 'required|integer',
+            'proveniencia' => 'required|array',
             'fecha_de_notificacion' => 'required|date',
-            'objeto_litis_id' => 'required|integer',
+            'objeto_litis' => 'required|array',
             'nombre_de_entidad_demandante' => 'required|string|max:255',
             'nombre_de_demandado' => 'required|string|max:255',
-            'tipo_evacuacion_id' => 'required|integer',
-            'estado_proceso_id' => 'required|integer',
+            'tipo_evacuacion' => 'required|array',
+            'estado_proceso' => 'required|array',
             'anotacion' => 'nullable|string|max:255'
         ];
     }
@@ -42,13 +42,13 @@ class CreateProcesoContenciosoAdministrativoRequest extends FormRequest
         return [
             'fecha' => 'fecha de proceso',
             'numero_de_proceso' => 'número de proceso',
-            'proveniente_id' => 'proveniente de',
+            'proveniencia' => 'proveniente de',
             'fecha_de_notificacion' => 'fecha de notificación',
-            'objeto_litis_id' => 'objeto de litis',
+            'objeto_litis' => 'objeto de litis',
             'nombre_de_entidad_demandante' => 'nombre de la entidad demandante',
             'nombre_de_demandado' => 'nombre del demandado',
-            'tipo_evacuacion_id' => 'tipo de evacuación',
-            'estado_proceso_id' => 'estado del proceso',
+            'tipo_evacuacion' => 'tipo de evacuación',
+            'estado_proceso' => 'estado del proceso',
             'anotacion' => 'anotación'
         ];
     }

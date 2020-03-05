@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             PlazoAudienciaTableSeeder::class,
             ProvenienciasTableSeeder::class,
             ObjetoLitisTableSeeder::class,
+            TipoEvacuacionTableSeeder::class,
             EstadoProcesoTableSeeder::class
         ]);
     }
