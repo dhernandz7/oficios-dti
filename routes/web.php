@@ -72,5 +72,9 @@ Route::prefix('api/catalogos')->middleware(['auth', 'verified'])->group(function
 	Route::get('/plazos-de-audiencias', 'CatalogosController@plazosDeAudiencias');
 });
 
+
+Route::get('procesos-contenciosos-administrativos/reporte', 'ReporteProcesoContenciosoAdministrativoController@index');
+//Route::get('procesos-contenciosos-administrativos/reporte', 'ReporteProcesoContenciosoAdministrativoController@getProcesos');
+
 Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');
 //Route::get('/{any}', 'AppController@any')->where('any', '.*');

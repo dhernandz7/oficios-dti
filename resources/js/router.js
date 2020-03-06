@@ -53,27 +53,17 @@ export default new Router({
 		component: require('./components/EmptyRouteView').default,
 		children: [
 		{
-			meta: {title: 'Procesos Contenciosos Administrativos'},
+			meta: {title: 'Procesos contenciosos administrativos'},
 			name: 'procesos-contenciosos-administrativos',
 			path: '',
 			component: require('./components/procesos-contenciosos-administrativos/IndexComponent').default
+		},
+		{
+			meta: {title: 'Reporte de procesos contenciosos administrativos'},
+			name: 'procesos-contenciosos-administrativos-reporte',
+			path: 'reporte',
+			component: require('./components/procesos-contenciosos-administrativos/ReporteComponent').default
 		}
-		/*,
-		{
-			name: 'procesos-contenciosos-administrativos-create',
-			path: 'create',
-			component: require('./components/procesos-contenciosos-administrativos/CreateComponent').default
-		},
-		{
-			name: 'procesos-contenciosos-administrativos-show',
-			path: ':id/show',
-			component: require('./components/procesos-contenciosos-administrativos/ShowComponent').default
-		},
-		{
-			name: 'procesos-contenciosos-administrativos-edit',
-			path: ':id/edit',
-			component: require('./components/procesos-contenciosos-administrativos/EditComponent').default
-		}*/
 		]
 	},
 	{
