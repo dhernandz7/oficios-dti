@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -451,7 +451,7 @@ eval("/**\n * First we will load all of this project's JavaScript dependencies w
 
 /***/ }),
 
-/***/ 2:
+/***/ 4:
 /*!***************************************!*\
   !*** multi ./resources/js/session.js ***!
   \***************************************/

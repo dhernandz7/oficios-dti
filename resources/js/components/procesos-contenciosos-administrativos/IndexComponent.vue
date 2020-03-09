@@ -10,8 +10,8 @@
 				<i class="fa fa-sync fa-lg mr-2"></i>
 				Actualizar página
 			</button>
-			<div class="table-responsive">
-				<table class="table table-hover border" id="procesos">
+			<div class="table-responsive mt-3">
+				<table class="table table-hover border" id="procesos" style="width:100%">
 					<thead class="thead-dark">
 						<tr>
 							<th>Número de orden</th>
@@ -49,7 +49,7 @@
 									Fecha de proceso
 									<span class="text-danger">*</span>
 								</label>
-								<input class="form-control" id="fecha de proceso" name="fecha de proceso" type="date" v-model="proceso.fecha" v-validate="'required'">
+								<input class="form-control" id="fecha de proceso" name="fecha de proceso" type="date" v-model="proceso.fecha" v-validate="'required|date_format:dd/mm/aaaa'">
 								<div class="invalid-feedback">{{errors.first('fecha de proceso')}}</div>
 							</div>
 							<div class="form-group col-md-6">
@@ -81,7 +81,7 @@
 									Fecha de notificación
 									<span class="text-danger">*</span>
 								</label>
-								<input class="form-control" id="fecha de notificación" name="fecha de notificación" type="date" v-model="proceso.fecha_de_notificacion" v-validate="'required'">
+								<input class="form-control" id="fecha de notificación" name="fecha de notificación" type="date" v-model="proceso.fecha_de_notificacion" v-validate="'required|date_format:dd/mm/aaaa'">
 								<div class="invalid-feedback">{{errors.first('fecha de notificación')}}</div>
 							</div>
 						</div>
@@ -248,7 +248,7 @@
 						return `<span class="badge badge-danger">${row.estado_proceso}</span>`
 					}},
 					{data: 'anotacion', name: 'anotacion'},
-					{render: function(data, type, row){
+					{print:false, render: function(data, type, row){
 						if(row.estado_proceso_id == 2) {
 							return ''
 						}
@@ -267,6 +267,16 @@
 						</div>
 						`
 					}, searchable: false, orderable: false}
+					],
+					dom: `<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>"
+					"<'row'<'col-sm-12 col-md-12'B>>"
+					"<'row'<'col-sm-12'tr>>"
+					"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+					buttons: [
+					{extend: 'copy', text: 'Copiar'},
+					{extend: 'csv', text: 'CSV'},
+					//{extend: 'pdf',text: 'Exportar a PDF'},
+					{extend: 'print', text: 'Imprimir'}
 					],
 					language: {
 						sProcessing: 'Procesando...',
@@ -306,7 +316,7 @@
 			actualizarTabla() {
 				this.procesos.ajax.reload(() => Swal.fire({
 					html: 'El listado de procesos contenciosos administrativos fue actualizado',
-					type: 'success'}))
+					type: 'success'}), false)
 			},
 
 			crearProcesoContenciosoAdministrativo() {
@@ -435,3 +445,14 @@
 		}
 	}
 </script>
+
+<style>
+.is-invalid {
+	background: #ff3111 !important;
+	color: #fff !important;
+	background: rgb(251, 227, 228 )!important;
+    border: 1px solid #fbc2c4 !important;
+    color: #8a1f11 !important;
+    display: inline-block !important;
+}
+</style>

@@ -57,12 +57,6 @@ export default new Router({
 			name: 'procesos-contenciosos-administrativos',
 			path: '',
 			component: require('./components/procesos-contenciosos-administrativos/IndexComponent').default
-		},
-		{
-			meta: {title: 'Reporte de procesos contenciosos administrativos'},
-			name: 'procesos-contenciosos-administrativos-reporte',
-			path: 'reporte',
-			component: require('./components/procesos-contenciosos-administrativos/ReporteComponent').default
 		}
 		]
 	},
