@@ -49,7 +49,7 @@
 									Fecha de proceso
 									<span class="text-danger">*</span>
 								</label>
-								<input class="form-control" id="fecha de proceso" name="fecha de proceso" type="date" v-model="proceso.fecha" v-validate="'required|date_format:dd/mm/aaaa'">
+								<input class="form-control" id="fecha de proceso" name="fecha de proceso" type="date" v-model="proceso.fecha" v-validate="'required'">
 								<div class="invalid-feedback">{{errors.first('fecha de proceso')}}</div>
 							</div>
 							<div class="form-group col-md-6">
@@ -81,7 +81,7 @@
 									Fecha de notificación
 									<span class="text-danger">*</span>
 								</label>
-								<input class="form-control" id="fecha de notificación" name="fecha de notificación" type="date" v-model="proceso.fecha_de_notificacion" v-validate="'required|date_format:dd/mm/aaaa'">
+								<input class="form-control" id="fecha de notificación" name="fecha de notificación" type="date" v-model="proceso.fecha_de_notificacion" v-validate="'required'">
 								<div class="invalid-feedback">{{errors.first('fecha de notificación')}}</div>
 							</div>
 						</div>
