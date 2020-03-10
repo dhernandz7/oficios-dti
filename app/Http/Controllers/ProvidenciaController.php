@@ -41,13 +41,13 @@ class ProvidenciaController extends Controller
 
     public function reservarAutomaticamente(StoreProvidenciaRequest $request)
     {
-        $memorandum = Providencia::create([
+        $providencia = Providencia::create([
             'anio' => date('Y')
         ]);
 
         $asignacion = Asignacion::create([
-            'oficio_id' => $memorandum->id,
-            'oficio_anio' => $memorandum->anio,
+            'oficio_id' => $providencia->id,
+            'oficio_anio' => $providencia->anio,
             'path' => null,
             'tipo_documento_id' => $request->tipo_documento_id,
             'user_id' => $request->user_id
@@ -100,7 +100,7 @@ class ProvidenciaController extends Controller
         }
         $hash_pdf = "$request->oficio_id-";
         $hash_pdf = $hash_pdf . str_random(7); //str_replace("/", "", \Hash::make("$request->oficio_id-$request->oficio_anio"));
-        $path = $request->file('pdf')->storeAs("public/memorandums/$request->oficio_anio", "$hash_pdf.pdf");
+        $path = $request->file('pdf')->storeAs("public/providencias/$request->oficio_anio", "$hash_pdf.pdf");
 
         if($path != null) {
             $asignacion->path = $path;
