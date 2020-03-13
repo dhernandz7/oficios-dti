@@ -18,7 +18,6 @@ class ProcesoContenciosoAdministrativoController extends Controller
         ->join('estado_proceso', 'procesos_contenciosos_administrativos.estado_proceso_id', 'estado_proceso.id')
         ->select([
             'procesos_contenciosos_administrativos.id',
-            'procesos_contenciosos_administrativos.fecha',
             'procesos_contenciosos_administrativos.numero_de_proceso',
             'procesos_contenciosos_administrativos.proveniente_id',
             'proveniencias.proveniencia',
@@ -41,7 +40,6 @@ class ProcesoContenciosoAdministrativoController extends Controller
     public function store(CreateProcesoContenciosoAdministrativoRequest $request)
     {
         $proceso = ProcesoContenciosoAdministrativo::create([
-            'fecha' => $request->fecha,
             'numero_de_proceso' => $request->numero_de_proceso,
             'proveniente_id' => $request->proveniencia["proveniente_id"],
             'fecha_de_notificacion' => $request->fecha_de_notificacion,
@@ -55,7 +53,6 @@ class ProcesoContenciosoAdministrativoController extends Controller
 
         return response()->json([
             'id' => $proceso->id,
-            'fecha' => $request->fecha,
             'numero_de_proceso' => $request->numero_de_proceso,
             'proveniente_id' => $request->proveniencia["proveniente_id"],
             'proveniencia' => $request->proveniencia["proveniencia"],

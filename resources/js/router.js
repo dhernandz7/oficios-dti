@@ -53,7 +53,7 @@ export default new Router({
 		component: require('./components/EmptyRouteView').default,
 		children: [
 		{
-			meta: {title: 'Procesos contenciosos administrativos'},
+			meta: {title: 'Procedimientos Administrativos Judiciales'},
 			name: 'procesos-contenciosos-administrativos',
 			path: '',
 			component: require('./components/procesos-contenciosos-administrativos/IndexComponent').default

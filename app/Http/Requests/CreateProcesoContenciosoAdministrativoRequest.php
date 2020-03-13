@@ -24,7 +24,6 @@ class CreateProcesoContenciosoAdministrativoRequest extends FormRequest
     public function rules()
     {
         return [
-            'fecha' => 'required|date',
             'numero_de_proceso' => 'required|string|unique:procesos_contenciosos_administrativos',
             'proveniencia' => 'required|array',
             'fecha_de_notificacion' => 'required|date',
@@ -40,7 +39,6 @@ class CreateProcesoContenciosoAdministrativoRequest extends FormRequest
     public function attributes()
     {
         return [
-            'fecha' => 'fecha de proceso',
             'numero_de_proceso' => 'número de proceso',
             'proveniencia' => 'proveniente de',
             'fecha_de_notificacion' => 'fecha de notificación',

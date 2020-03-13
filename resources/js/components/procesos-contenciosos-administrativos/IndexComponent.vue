@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Procesos Contenciosos Administrativos</h1>
+		<h1 class="h3 mb-4 text-gray-800"><i class="fa fa-book mr-2"></i>Procedimientos Administrativos Judiciales</h1>
 		<div class="shadow-lg p-4 mb-5 bg-white rounded">
 			<button class="btn btn-primary mb-3" v-on:click="crearProcesoContenciosoAdministrativo">
 				<i class="fa fa-plus-square fa-lg mr-2"></i>
@@ -15,7 +15,6 @@
 					<thead class="thead-dark">
 						<tr>
 							<th>Número de orden</th>
-							<th>Fecha de proceso</th>
 							<th>Número de proceso</th>
 							<th>Proveniente de</th>
 							<th>Fecha de notificación</th>
@@ -36,30 +35,20 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title font-weight-bold" id="adjuntarModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
-							Nuevo Proceso Contencioso Administrativo
+							Nuevo Procedimiento Administrativo Judicial
 						</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label for="fecha de proceso">
-									Fecha de proceso
-									<span class="text-danger">*</span>
-								</label>
-								<input class="form-control" id="fecha de proceso" name="fecha de proceso" type="date" v-model="proceso.fecha" v-validate="'required'">
-								<div class="invalid-feedback">{{errors.first('fecha de proceso')}}</div>
-							</div>
-							<div class="form-group col-md-6">
-								<label for="número de proceso">
-									Número de proceso
-									<span class="text-danger">*</span>
-								</label>
-								<input autocomplete="off" class="form-control" id="número de proceso" name="número de proceso" type="text" v-model="proceso.numero_de_proceso" v-validate="'required'">
-								<div class="invalid-feedback">{{errors.first('número de proceso')}}</div>
-							</div>
+						<div class="form-group">
+							<label for="número de proceso">
+								Número de proceso
+								<span class="text-danger">*</span>
+							</label>
+							<input autocomplete="off" class="form-control" id="número de proceso" name="número de proceso" type="text" v-model="proceso.numero_de_proceso" v-validate="'required'">
+							<div class="invalid-feedback">{{errors.first('número de proceso')}}</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-6">
@@ -229,9 +218,6 @@
 					autoWidth: false,
 					columns: [
 					{data: 'id', name: 'id'},
-					{render: function(data, type, row) {
-						return moment(row.fecha).locale('es').format('L')
-					}},
 					{data: 'numero_de_proceso', name: 'numero_de_proceso'},
 					{data: 'proveniencia', name: 'proveniencia'},
 					{render: function(data, type, row) {
@@ -451,8 +437,8 @@
 	background: #ff3111 !important;
 	color: #fff !important;
 	background: rgb(251, 227, 228 )!important;
-    border: 1px solid #fbc2c4 !important;
-    color: #8a1f11 !important;
-    display: inline-block !important;
+	border: 1px solid #fbc2c4 !important;
+	color: #8a1f11 !important;
+	display: inline-block !important;
 }
 </style>

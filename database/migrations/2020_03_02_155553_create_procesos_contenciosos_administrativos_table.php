@@ -15,7 +15,6 @@ class CreateProcesosContenciososAdministrativosTable extends Migration
     {
         Schema::create('procesos_contenciosos_administrativos', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha');
             $table->string('numero_de_proceso');
             $table->integer('proveniente_id')->unsigned();
             $table->date('fecha_de_notificacion');

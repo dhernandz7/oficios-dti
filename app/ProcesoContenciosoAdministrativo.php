@@ -9,7 +9,6 @@ class ProcesoContenciosoAdministrativo extends Model
 	protected $table = 'procesos_contenciosos_administrativos';
 
 	protected $fillable = [
-		'fecha',
 		'numero_de_proceso',
 		'proveniente_id',
 		'fecha_de_notificacion',
