@@ -77,6 +77,9 @@
               @can('memorandum')
               <router-link :to="{name: 'memorandums'}" class="collapse-item">Memorándum</router-link>
               @endcan
+              @can('providencias')
+              <router-link :to="{name: 'providencias'}" class="collapse-item">Providencias</router-link>
+              @endcan
             </div>
           </div>
         </li>
@@ -163,7 +166,7 @@
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; Oficios DTI 2019</span>
+              <span>Copyright &copy; Oficios DTI 2021</span>
             </div>
           </div>
         </footer>

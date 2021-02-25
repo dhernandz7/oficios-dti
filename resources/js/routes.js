@@ -36,6 +36,12 @@ export default new Router({
 		meta: {title: 'Memorándum'}
 	},
 	{
+		path: '/providencias',
+		name: 'providencias',
+		component: require('./components/ProvidenciasComponent').default,
+		meta: {title: 'Providencias'}
+	},
+	{
 		path: '/perfil',
 		name: 'perfil',
 		component: require('./components/PerfilUsuarioComponent').default,

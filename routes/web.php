@@ -39,6 +39,7 @@ Route::prefix('api/dictamen')->middleware(['auth', 'verified'])->group(function(
 	Route::post('{id}/pdf', 'DictamenController@pdf')->name('api.dictamen.pdf.store')->middleware('permission:api.dictamen.pdf.store');
 	Route::get('get/pendientes', 'DictamenController@dictamenesPendientes')->name('api.dictamen.pendientes');
 });
+
 Route::prefix('api/memorandum')->middleware(['auth', 'verified'])->group(function(){
 	Route::get('/', 'MemorandumController@index')->name('api.memorandum.index')->middleware('permission:api.memorandum.index');
 	Route::post('/', 'MemorandumController@reservarAutomaticamente')->name('api.memorandum.asignar-automaticamente')->middleware('permission:api.memorandum.asignar-automaticamente');
@@ -46,5 +47,15 @@ Route::prefix('api/memorandum')->middleware(['auth', 'verified'])->group(functio
 	Route::post('{id}/pdf', 'MemorandumController@pdf')->name('api.memorandum.pdf.store')->middleware('permission:api.memorandum.pdf.store');
 	Route::get('get/pendientes', 'MemorandumController@memorandumsPendientes')->name('api.memorandum.pendientes');
 });
+
+Route::prefix('api/providencias')->middleware(['auth', 'verified'])->group(function(){
+	Route::get('/', 'ProvidenciaController@index')->name('api.providencias.index')->middleware('permission:api.providencias.index');
+	Route::post('/', 'ProvidenciaController@reservarAutomaticamente')->name('api.providencias.asignar-automaticamente')->middleware('permission:api.providencias.asignar-automaticamente');
+	Route::post('/reservar', 'ProvidenciaController@reservar')->name('api.providencias.reservar')->middleware('permission:api.providencias.reservar');
+	Route::post('{id}/pdf', 'ProvidenciaController@pdf')->name('api.providencias.pdf.store')->middleware('permission:api.providencias.pdf.store');
+	Route::get('get/pendientes', 'ProvidenciaController@providenciasPendientes')->name('api.providencias.pendientes');
+});
+
+Route::get('/api/providencias/conteo', 'ReporteController@counteoDelAnio')->middleware(['auth', 'verified','permission:api.providencias.reporte']);
 
 Route::get('/{any}', 'AppController@any')->middleware(['auth', 'verified'])->where('any', '.*');
