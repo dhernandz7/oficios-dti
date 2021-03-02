@@ -72,7 +72,7 @@
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-									<router-link :to="{name: 'memorandums'}">Providencias</router-link>
+									<router-link :to="{name: 'providencias'}">Providencias</router-link>
 								</div>
 								<div class="row no-gutters align-items-center">
 									<div class="col-auto">
@@ -165,7 +165,7 @@
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-									<router-link :to="{name: 'memorandums'}">Providencias</router-link>
+									<router-link :to="{name: 'providencias'}">Providencias</router-link>
 								</div>
 								<div class="row no-gutters align-items-center">
 									<div class="col-auto">

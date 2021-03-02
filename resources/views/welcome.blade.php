@@ -21,6 +21,7 @@
                     <a href="/oficios" class="nav-link">Oficios</a>
                     <a href="/dictamenes" class="nav-link">Dictámenes</a>
                     <a href="/memorandums" class="nav-link">Memorándum</a>
+                    <a href="/providencias" class="nav-link">Providencias</a>
                 </nav>
             </div>
         </header>
