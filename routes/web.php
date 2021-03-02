@@ -13,6 +13,7 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function() {
 	Route::delete('usuarios/{id}', 'AdminController@destroy')->name('api.admin.usuarios.destroy');
 	Route::put('usuarios/{id}/rol', 'AdminController@role')->name('api.admin.usuarios.rol.update');
 
+	/*
 	Route::get('roles', 'RoleController@index')->name('api.admin.roles.index');
 	Route::put('roles/{id}', 'RoleController@update')->name('api.admin.roles.update');
 	Route::delete('roles/{id}', 'RoleController@delete')->name('api.admin.roles.delete');
@@ -20,6 +21,7 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function() {
 	Route::get('permisos', 'PermissionController@index')->name('api.admin.permisos.index');
 	Route::put('permisos/{id}', 'PermissionController@update')->name('api.admin.permisos.update');
 	Route::delete('permisos/{id}', 'PermissionController@delete')->name('api.admin.permisos.delete');
+	*/
 });
 
 Route::prefix('api/user')->middleware(['auth', 'verified'])->group(function() {
