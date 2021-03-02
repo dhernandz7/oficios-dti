@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Documentos DTI</title>
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/admin.css?v=2">
   <link rel="shortcut icon" type="image/png" href="/favicon.ico">
   <style>
     .cards tbody td {
@@ -179,7 +179,7 @@
   <form action="/logout" method="post" id="logout">
     @csrf
   </form>
-  <script src="/js/admin.js?v=1"></script>
+  <script src="/js/admin.js?v=2"></script>
   <script>
     $(document).ready(function() {
       if(localStorage.getItem('nombre') == null) {
