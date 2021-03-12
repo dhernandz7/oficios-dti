@@ -34,7 +34,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="adjuntarModalLabel"><i class="fa fa-file-pdf fa-lg mr-2"></i>
-              Providencia TI-PROV-{{data.oficio_id}}-{{data.oficio_anio}}
+              Providencia DTI-{{data.oficio_id}}-{{data.oficio_anio}}
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -99,7 +99,7 @@
           {'data': 'oficio_id', 'name': 'oficio_id', 'visible': false},
           {'data': 'oficio_anio', 'name': 'oficio_anio', 'visible': false},
           {'render': function(data, type, row) {
-            return `<span class="font-weight-bold">TI-PROV-${row.oficio_id}-${row.oficio_anio}</span>`;
+            return `<span class="font-weight-bold">DTI-${row.oficio_id}-${row.oficio_anio}</span>`;
           }},
           {'data': 'name', 'name': 'name'},
           {'data': 'created_at', 'name': 'created_at', 'render': function(data) {
@@ -179,7 +179,7 @@
           Swal.fire({
             title: 'Reservar providencia',
             html: `
-            ¿Está seguro de reservar la providencia <span class="font-weight-bold">TI-PROV-${this.data.oficio_id}-${this.data.oficio_anio}</span>?
+            ¿Está seguro de reservar la providencia <span class="font-weight-bold">DTI-${this.data.oficio_id}-${this.data.oficio_anio}</span>?
             `,
             type: 'question',
             showCancelButton: true,
@@ -200,7 +200,7 @@
                 Swal.fire({
                   title: "Providencia reservada",
                   type: "info",
-                  html: `Se reservó correctamente la providencia <span class="font-weight-bold">TI-PROV-${this.data.oficio_id}-${this.data.oficio_anio}</span>`
+                  html: `Se reservó correctamente la providencia <span class="font-weight-bold">DTI-${this.data.oficio_id}-${this.data.oficio_anio}</span>`
                 }).then((result) => {
                   this.data.asignacion_id = response.data.asignacion_id;
                   this.data.name = response.data.name;
@@ -241,7 +241,7 @@
               Swal.fire({
                 title: "Providencia reservada",
                 type: "info",
-                html: `Se reservó correctamente la providencia <span class="font-weight-bold">TI-PROV-${response.data.oficio_id}-${response.data.oficio_anio}</span>`
+                html: `Se reservó correctamente la providencia <span class="font-weight-bold">DTI-${response.data.oficio_id}-${response.data.oficio_anio}</span>`
               }).then((result) => {
                 this.data = response.data;
                 this.data.created_at = this.data.created_at.date;
@@ -279,7 +279,7 @@
             title: 'Pdf cargado',
             type: 'success',
             html: `
-            Se adjuntó correctamente el pdf al providencia <span class="font-weight-bold">TI-PROV-${this.data.oficio_id}-${this.data.oficio_anio}</span>
+            Se adjuntó correctamente el pdf al providencia <span class="font-weight-bold">DTI-${this.data.oficio_id}-${this.data.oficio_anio}</span>
             `
           }).then((result) => {
             $("#formulario")[0].reset();
