@@ -11,14 +11,16 @@ class RecordatorioDeDocumentosPendientesDeAdjuntarNotify extends Notification
 {
     use Queueable;
 
+    protected $documentos;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($documentos)
     {
-        //
+        $this->documentos = $documentos;
     }
 
     /**
@@ -40,7 +42,12 @@ class RecordatorioDeDocumentosPendientesDeAdjuntarNotify extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('notifications.recordatorio-de-documentos-pendientes-de-adjuntar');
+        return (new MailMessage)
+            ->subject("Recordatorio de documentos pendientes de adjuntar")
+            ->markdown('notifications.recordatorio-de-documentos-pendientes-de-adjuntar', [
+            'user' => $notifiable,
+            'documentos' => $this->documentos
+        ]);
     }
 
     /**

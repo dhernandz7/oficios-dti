@@ -1,12 +1,20 @@
 @component('mail::message')
-# Introduction
+# {{$user->genero_id == '1' ? 'Estimado' : 'Estimada'}} {{$user->name}}
 
-The body of your message.
+Usted ha recibido este correo porque en el sistema **{{config('app.name')}}**, tiene <b>{{count($documentos)}}</b> documento(s) pendiente(s) de adjuntar:
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::table')
+| Tipo de documento | Correlativo     |
+|:------------------|:----------------|
+@foreach($documentos as $documento)
+| {{$documento->tipo_documento}} {{$documento->oficio_anio}}           | DTI{{$documento->prefijo ? "-". $documento->prefijo : ''}}-{{str_pad($documento->oficio_id, 3, "0", STR_PAD_LEFT)}}-{{$documento->oficio_anio}} |
+@endforeach
 @endcomponent
 
-Thanks,<br>
+@component('mail::button', ['url' => config('app.url') . "/dashboard"])
+Ir al sistema
+@endcomponent
+
+Atentamente,<br>
 {{ config('app.name') }}
 @endcomponent
