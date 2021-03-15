@@ -72,7 +72,7 @@ class RecordatorioDeDocumentosPendientesDeAdjuntar extends Command
 
         $usuarios_actuales = User::
         join('asignaciones AS a', 'users.id', 'a.user_id')
-        ->select(DB::raw('DISTINCT users.id, users.name, users.email', 'users.genero_id'))
+        ->select(DB::raw('DISTINCT users.id, users.name, users.email, users.genero_id'))
         ->where('a.path', null)
         ->where('a.created_at', '>=', $FECHA_COMIENZO_RECORDATORIO)
         ->get();

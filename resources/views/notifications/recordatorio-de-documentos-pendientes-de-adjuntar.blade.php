@@ -1,5 +1,5 @@
 @component('mail::message')
-# {{$user->genero_id == '1' ? 'Estimado' : 'Estimada'}} {{$user->name}}
+# {{$user->genero_id == 2 ? 'Estimada' : 'Estimado'}} {{$user->name}}
 
 Usted ha recibido este correo porque en el sistema **{{config('app.name')}}**, tiene <b>{{count($documentos)}}</b> documento(s) pendiente(s) de adjuntar:
 
