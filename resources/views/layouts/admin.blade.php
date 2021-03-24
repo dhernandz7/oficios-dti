@@ -179,7 +179,7 @@
   <form action="/logout" method="post" id="logout">
     @csrf
   </form>
-  <script src="/js/admin.js?v=3"></script>
+  <script src="/js/admin.js?v=4"></script>
   <script>
     $(document).ready(function() {
       if(localStorage.getItem('nombre') == null) {

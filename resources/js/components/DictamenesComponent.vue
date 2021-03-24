@@ -130,7 +130,9 @@
               <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
               `;
             } else if(row.name != localStorage.getItem('nombre') && row.path == null) {
-              return '';
+              opciones += `
+              <button class="adjuntar dropdown-item"><i class="fa fa-upload mr-2"></i>Subir documento</button>
+              `;
             } else if(row.name == null && row.path == null) {
               return '';
             } else {
